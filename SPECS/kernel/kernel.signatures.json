@@ -4,6 +4,8 @@
     "config": "60050fe56fd5d00e9794e232a57e5f982c990c57f2ddfe4ce20c32dc994ce951",
     "config_aarch64": "b0ae7f091065ec8edd399a7e88660fac65239e8268c6f56fbe718cbc01905ce2",
     "sha512hmac-openssl.sh": "02ab91329c4be09ee66d759e4d23ac875037c3b56e5a598e32fd1206da06a27f",
-    "kernel-5.15.133.1.tar.gz": "de627dba4ea5a7bc47c4d1999aa28a8f14b9b4046c55ac6e4fbce93e1db2c559"
+    "kernel-5.15.133.1.tar.gz": "de627dba4ea5a7bc47c4d1999aa28a8f14b9b4046c55ac6e4fbce93e1db2c559",
+    "cpupower.service": "b057fe9e5d0e8c36f485818286b80e3eba8ff66ff44797940e99b1fd5361bb98",
+    "cpupower":  "0d6993742297527ff875b394449305f4eb9a739f5057cced9bcac4c52ea05e10"
   }
 }
