@@ -24,6 +24,7 @@ BuildRequires:  fuse-devel
 BuildRequires:  git
 BuildRequires:  glib-devel
 BuildRequires:  gobject-introspection-devel
+BuildRequires:  libxslt
 BuildRequires:  python3-gobject-introspection
 BuildRequires:  gpgme-devel
 BuildRequires:  gtk-doc

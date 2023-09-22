@@ -26,6 +26,7 @@ BuildRequires:  gettext
 BuildRequires:  gobject-introspection-devel
 BuildRequires:  gperf
 BuildRequires:  gtk-doc
+BuildRequires:  libxslt
 BuildRequires:  meson
 BuildRequires:  pkg-config
 BuildRequires:  systemd-rpm-macros

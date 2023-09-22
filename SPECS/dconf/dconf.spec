@@ -15,6 +15,7 @@ BuildRequires:  dbus-devel
 BuildRequires:  gcc
 BuildRequires:  glib2-devel >= %{glib2_version}
 BuildRequires:  gtk-doc
+BuildRequires:  libxslt
 BuildRequires:  meson
 BuildRequires:  vala
 Requires:       dbus
