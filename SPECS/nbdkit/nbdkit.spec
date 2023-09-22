@@ -804,6 +804,9 @@ skip_test tests/test-cache-max-size.sh
 # https://www.redhat.com/archives/libguestfs/2020-March/msg00191.html
 skip_test tests/test-nbd-tls.sh tests/test-nbd-tls-psk.sh
 
+# As downstream packagers, we don't care if the code is linted
+skip_test tests/pycodestyle.sh
+
 # Make sure we can see the debug messages (RHBZ#1230160).
 export LIBGUESTFS_DEBUG=1
 export LIBGUESTFS_TRACE=1
