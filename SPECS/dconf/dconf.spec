@@ -12,12 +12,17 @@ Source0:        https://download.gnome.org/sources/dconf/%{majmin}/%{name}-%{ver
 Patch1:         dconf-override.patch
 BuildRequires:  bash-completion
 BuildRequires:  dbus-devel
+BuildRequires:  docbook-dtd-xml
+BuildRequires:  docbook-style-xsl
 BuildRequires:  gcc
 BuildRequires:  glib2-devel >= %{glib2_version}
 BuildRequires:  gtk-doc
 BuildRequires:  libxslt
 BuildRequires:  meson
 BuildRequires:  vala
+BuildRequires:  xml-common
+
+
 Requires:       dbus
 Requires:       glib2 >= %{glib2_version}
 

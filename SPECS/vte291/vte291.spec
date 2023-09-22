@@ -21,6 +21,8 @@ Source0:        https://download.gnome.org/sources/vte/%{majorver}/vte-%{version
 # https://bugzilla.redhat.com/show_bug.cgi?id=1103380
 # https://gitlab.gnome.org/GNOME/vte/-/issues/226
 Patch100:       vte291-cntnr-precmd-preexec-scroll.patch
+BuildRequires:  docbook-dtd-xml
+BuildRequires:  docbook-style-xsl
 BuildRequires:  gcc-c++
 BuildRequires:  gettext
 BuildRequires:  gobject-introspection-devel
@@ -41,6 +43,8 @@ BuildRequires:  pkgconfig(icu-uc) >= %{icu_uc_version}
 BuildRequires:  pkgconfig(libpcre2-8) >= %{pcre2_version}
 BuildRequires:  systemd-devel >= %{libsystemd_version}
 BuildRequires:  pkgconfig(pango) >= %{pango_version}
+BuildRequires:  xml-common
+
 Requires:       fribidi >= %{fribidi_version}
 Requires:       glib2 >= %{glib2_version}
 Requires:       gnutls >= %{gnutls_version}

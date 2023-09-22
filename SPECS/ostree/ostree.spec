@@ -18,6 +18,8 @@ BuildRequires:  autoconf
 BuildRequires:  automake
 BuildRequires:  bison
 BuildRequires:  curl-devel
+BuildRequires:  docbook-dtd-xml
+BuildRequires:  docbook-style-xsl
 BuildRequires:  dracut
 BuildRequires:  e2fsprogs-devel
 BuildRequires:  fuse-devel
@@ -39,6 +41,7 @@ BuildRequires:  sqlite-devel
 BuildRequires:  systemd-devel
 BuildRequires:  which
 BuildRequires:  xz-devel
+BuildRequires:  xml-common
 BuildRequires:  zlib-devel
 Requires:       dracut
 Requires:       gpgme
