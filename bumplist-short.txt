@@ -1,3 +1,0 @@
-./acl
-./ypbind
-./yp-tools
