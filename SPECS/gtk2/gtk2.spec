@@ -40,12 +40,14 @@ BuildRequires:  autoconf
 BuildRequires:  automake
 BuildRequires:  cairo-devel
 BuildRequires:  cups-devel
+BuildRequires:  docbook-dtd-xml
+BuildRequires:  docbook-style-xsl
 BuildRequires:  gettext
-# Bootstrap requirements
 BuildRequires:  gtk-doc
 BuildRequires:  libtool
+BuildRequires:  libxslt
+BuildRequires:  xml-common
 BuildRequires:  pkg-config
-# For setting shebang of gtk-builder-convert:
 BuildRequires:  python3-devel
 BuildRequires:  pkgconfig(atk) >= %{atk_version}
 BuildRequires:  pkgconfig(gdk-pixbuf-2.0)
@@ -60,7 +62,6 @@ BuildRequires:  pkgconfig(xi)
 BuildRequires:  pkgconfig(xinerama)
 BuildRequires:  pkgconfig(xrandr)
 BuildRequires:  pkgconfig(xrender)
-BuildRequires:  libxslt
 
 Requires:       atk >= %{atk_version}
 # required to support all the different image formats
