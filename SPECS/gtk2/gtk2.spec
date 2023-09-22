@@ -60,6 +60,8 @@ BuildRequires:  pkgconfig(xi)
 BuildRequires:  pkgconfig(xinerama)
 BuildRequires:  pkgconfig(xrandr)
 BuildRequires:  pkgconfig(xrender)
+BuildRequires:  libxslt
+
 Requires:       atk >= %{atk_version}
 # required to support all the different image formats
 Requires:       gdk-pixbuf2-modules%{?_isa}
