@@ -28,6 +28,8 @@ BuildRequires:  gettext
 BuildRequires:  gobject-introspection-devel
 BuildRequires:  gperf
 BuildRequires:  gtk-doc
+BuildRequires:  libxml2
+BuildRequires:  libxml2-devel
 BuildRequires:  libxslt
 BuildRequires:  meson
 BuildRequires:  pkg-config

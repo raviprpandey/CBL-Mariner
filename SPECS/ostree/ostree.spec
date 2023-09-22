@@ -26,8 +26,6 @@ BuildRequires:  fuse-devel
 BuildRequires:  git
 BuildRequires:  glib-devel
 BuildRequires:  gobject-introspection-devel
-BuildRequires:  libxslt
-BuildRequires:  python3-gobject-introspection
 BuildRequires:  gpgme-devel
 BuildRequires:  gtk-doc
 BuildRequires:  icu-devel
@@ -36,7 +34,11 @@ BuildRequires:  libcap-devel
 BuildRequires:  libpsl-devel
 BuildRequires:  libsoup-devel
 BuildRequires:  libtool
+BuildRequires:  libxml2
+BuildRequires:  libxml2-devel
+BuildRequires:  libxslt
 BuildRequires:  openssl-devel
+BuildRequires:  python3-gobject-introspection
 BuildRequires:  sqlite-devel
 BuildRequires:  systemd-devel
 BuildRequires:  which

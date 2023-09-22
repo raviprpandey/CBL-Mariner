@@ -45,6 +45,8 @@ BuildRequires:  docbook-style-xsl
 BuildRequires:  gettext
 BuildRequires:  gtk-doc
 BuildRequires:  libtool
+BuildRequires:  libxml2
+BuildRequires:  libxml2-devel
 BuildRequires:  libxslt
 BuildRequires:  xml-common
 BuildRequires:  pkg-config

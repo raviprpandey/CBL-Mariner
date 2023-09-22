@@ -18,7 +18,6 @@ BuildRequires:  pkg-config
 BuildRequires:  xorg-x11-util-macros
 BuildRequires:  pkgconfig(ice)
 BuildRequires:  pkgconfig(sm)
-BuildRequires:  pkgconfig(x11)
 BuildRequires:  pkgconfig(xproto)
 
 Requires:       libX11%{?_isa} >= 1.6
