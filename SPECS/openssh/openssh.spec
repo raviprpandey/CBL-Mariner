@@ -3,7 +3,7 @@
 Summary:        Free version of the SSH connectivity tools
 Name:           openssh
 Version:        %{openssh_ver}
-Release:        2%{?dist}
+Release:        3%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -175,6 +175,10 @@ pushd pam_ssh_agent_auth-%{pam_ssh_agent_ver}
 popd
 
 %check
+# This target is required for security key regression tests,
+# but is not built as a dependency of the default or `test` targets
+%make_build regress/misc/sk-dummy/sk-dummy.so
+
 if ! getent passwd sshd >/dev/null; then
    useradd sshd
 fi
@@ -263,6 +267,9 @@ fi
 %{_mandir}/man8/ssh-sk-helper.8.gz
 
 %changelog
+* Fri Sep 22 Olivia Crain <oliviacrain@microsoft.com> - 8.9p1-3
+- Fix package test by manually building security key test module
+
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 8.9p1-2
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
 
