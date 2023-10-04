@@ -26,13 +26,13 @@ var (
 func replaceRunNodesWithPrebuiltNodes(pkgGraph *pkggraph.PkgGraph) (err error) {
 	for _, node := range pkgGraph.AllNodes() {
 
-		if node.Type != pkggraph.TypeRun {
+		if node.Type != pkggraph.TypeLocalRun {
 			continue
 		}
 
-		isPrebuilt, _, missing := pkggraph.IsSRPMPrebuilt(node.SrpmPath, pkgGraph, nil)
+		_, missing := pkggraph.FindRPMFiles(node.SrpmPath, pkgGraph, nil)
 
-		if isPrebuilt == false {
+		if len(missing) > 0 {
 			logger.Log.Tracef("Can't mark %s as prebuilt, missing: %v", node.SrpmPath, missing)
 			continue
 		}
@@ -67,9 +67,7 @@ func main() {
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 	logger.InitBestEffort(*logFile, *logLevel)
 
-	scrubbedGraph := pkggraph.NewPkgGraph()
-
-	err := pkggraph.ReadDOTGraphFile(scrubbedGraph, *inputGraphFile)
+	scrubbedGraph, err := pkggraph.ReadDOTGraphFile(*inputGraphFile)
 	if err != nil {
 		logger.Log.Panicf("Failed to read graph to file, %s. Error: %s", *inputGraphFile, err)
 	}

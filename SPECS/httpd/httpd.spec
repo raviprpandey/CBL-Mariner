@@ -2,8 +2,8 @@
 %define _confdir %{_sysconfdir}
 Summary:        The Apache HTTP Server
 Name:           httpd
-Version:        2.4.55
-Release:        1%{?dist}
+Version:        2.4.56
+Release:        2%{?dist}
 License:        Apache-2.0
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -21,9 +21,10 @@ Source8:        10-listen443.conf
 Source9:        httpd-init.service
 Source10:       httpd-ssl-gencerts
 
-# https://www.linuxfromscratch.org/patches/blfs/svn/httpd-2.4.53-blfs_layout-1.patch
+# https://www.linuxfromscratch.org/patches/blfs/svn/httpd-2.4.56-blfs_layout-1.patch
 Patch0:         httpd-2.4.53-blfs_layout-3.patch
 Patch1:         httpd-uncomment-ServerName.patch
+Patch2:         httpd-fix-apache-layout-log-path.patch
 
 # CVE-1999-0236 must be mitigated by the user. See "Server Side Includes" at https://httpd.apache.org/docs/2.4/misc/security_tips.html
 Patch100:       CVE-1999-0236.nopatch
@@ -142,6 +143,7 @@ Security (TLS) protocols.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 %configure \
@@ -205,7 +207,8 @@ After=network.target remote-fs.target nss-lookup.target
 
 [Service]
 Type=forking
-PIDFile=%{_var}/run/httpd/httpd.pid
+PIDFile=/run/httpd/httpd.pid
+RuntimeDirectory=httpd
 ExecStart=%{_sbindir}/httpd -k start
 ExecStop=%{_sbindir}/httpd -k stop
 ExecReload=%{_sbindir}/httpd -k graceful
@@ -342,6 +345,13 @@ fi
 %{_libexecdir}/httpd-ssl-pass-dialog
 
 %changelog
+* Wed Aug 16 2023 Andy Zaugg <azaugg@linkedin.com> - 2.4.56-1
+- Patch config.layout and provide and provide a real log path
+- Fix PIDfile reference to /run/httpd/httpd.pid
+
+* Tue Mar 14 2023 Thien Trung Vuong <tvuong@microsoft.com> - 2.4.56-1
+- Upgrade to version 2.4.56 - Fixes CVE-2023-27522, CVE-2023-25690
+
 * Tue Feb 07 2023 Rachel Menge <rachelmenge@microsoft.com> - 2.4.55-1
 - Upgrade to version 2.4.55. Fixes CVE-2022-36760
 

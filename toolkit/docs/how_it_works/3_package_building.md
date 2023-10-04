@@ -55,11 +55,14 @@ The single SPEC provides the base package `example`, but also provides a virtual
 
 All package dependency information is written to `./../build/pkg_artifacts/specs.json`.
 
-### Or Clauses
-Spec files can have `(a or b)` style requirements. When the build system encounters such a requirement it will record both options into the graph so that all possible requirements will be made available to pick from during package install allowing for maximum flexibility. This means that the build system requires all optional RPMs to be available to build/download even if they will not be used for a specific configuration.
+### Rich dependencies
+Spec files can have `(a <condition> b)` style requirements. Depending on the condition the following will happen:
+- `and`, `or`, `with`: the build system will record both options into the graph so that all possible requirements will be made available to pick from during package install allowing for maximum flexibility. This means that the build system requires all optional RPMs to be available to build/download even if they will not be used for a specific configuration.
+- `if`: the build will record the requirement on the left side of the clause as a dependency. That means that the build system will require the package to be available to build/download even if it will not be used for a specific configuration.
+- `else`, `unless`, `without`, or multiple clauses of any kind: unsupported, the build will fail with an error.
 
 #### Warning:
-The build system will print a warning (`'OR' clause found (...), please refer to 'docs/how_it_works/3_package_building.md#or-clauses' for explanation of limitations.`) when it encounters an `or` clause. If be build fails make sure all conditional packages are available locally/online, or remove the unavailable conditional packages from the SPEC file.
+The build system will print a warning when it encounters a rich dependency. If the build fails, make sure all conditional packages are following the guidelines from the message or remove the unavailable conditional packages from the SPEC file.
 
 ## Dependency Graphing
 
@@ -69,7 +72,7 @@ A critical component of package building is ensuring that the packages are built
 
 ### Types of Nodes
 The graph contains several types of nodes, with various states. As the graph is processed by each tool nodes are updated, pruned, or added as needed.
-#### TypeBuild
+#### TypeLocalBuild
 > This represents a local package which may be passed to the build worker to generate an RPM from.
 > It can be either:
 >
@@ -79,7 +82,7 @@ The graph contains several types of nodes, with various states. As the graph is 
 >
 > `StateUpToDate`: Package is already available locally
 
-#### TypeRun
+#### TypeLocalRun
 > This node represents a package which is may be installed or used as a dependency.
 > Run nodes are always:
 >
@@ -91,7 +94,7 @@ The graph contains several types of nodes, with various states. As the graph is 
 >
 > `StateMeta`: Organizational node used to impose ordering on other nodes
 
-#### TypeRemote
+#### TypeRemoteRun
 > This node represents a package which is unknown to the local build system, but has been requested as a dependency. It will need to be resolved from a remote source. `TypeRemote` nodes are considered equivalent to `TypeRun` nodes in most cases.
 > Remote nodes may be either:
 >

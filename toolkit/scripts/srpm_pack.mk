@@ -40,6 +40,7 @@ $(call create_folder,$(BUILD_SRPMS_DIR))
 $(call create_folder,$(SRPM_BUILD_CHROOT_DIR))
 
 # General targets
+##help:target:input-srpms=Scan the local `*.spec` files, locate sources, and create `*.src.rpm` files. Limit via SRPM_PACK_LIST.
 .PHONY: toolchain-input-srpms input-srpms clean-input-srpms
 input-srpms: $(BUILD_SRPMS_DIR)
 toolchain-input-srpms: $(STATUS_FLAGS_DIR)/build_toolchain_srpms.flag
@@ -48,6 +49,7 @@ clean: clean-input-srpms
 clean-input-srpms:
 	rm -rf $(BUILD_SRPMS_DIR)
 	rm -rf $(STATUS_FLAGS_DIR)/build_srpms.flag
+	rm -rf $(STATUS_FLAGS_DIR)/build_toolchain_srpms.flag
 	@echo Verifying no mountpoints present in $(SRPM_BUILD_CHROOT_DIR)
 	$(SCRIPTS_DIR)/safeunmount.sh "$(SRPM_BUILD_CHROOT_DIR)" && \
 	rm -rf $(SRPM_BUILD_CHROOT_DIR)
@@ -97,7 +99,14 @@ $(STATUS_FLAGS_DIR)/build_srpms.flag: $(chroot_worker) $(local_specs) $(local_sp
 		$(if $(filter y,$(RUN_CHECK)),--run-check) \
 		$(if $(SRPM_PACK_LIST),--pack-list=$(srpm_pack_list_file)) \
 		--log-file=$(SRPM_BUILD_LOGS_DIR)/srpmpacker.log \
-		--log-level=$(LOG_LEVEL) && \
+		--log-level=$(LOG_LEVEL) \
+		--cpu-prof-file=$(PROFILE_DIR)/srpm_packer.cpu.pprof \
+		--mem-prof-file=$(PROFILE_DIR)/srpm_packer.mem.pprof \
+		--trace-file=$(PROFILE_DIR)/srpm_packer.trace \
+		$(if $(filter y,$(ENABLE_CPU_PROFILE)),--enable-cpu-prof) \
+		$(if $(filter y,$(ENABLE_MEM_PROFILE)),--enable-mem-prof) \
+		$(if $(filter y,$(ENABLE_TRACE)),--enable-trace) \
+		--timestamp-file=$(TIMESTAMP_DIR)/srpm_packer.jsonl && \
 	touch $@
 
 $(STATUS_FLAGS_DIR)/build_toolchain_srpms.flag: $(toolchain_spec_list) $(go-srpmpacker)
@@ -114,6 +123,13 @@ $(STATUS_FLAGS_DIR)/build_toolchain_srpms.flag: $(toolchain_spec_list) $(go-srpm
 		--pack-list=$(toolchain_spec_list) \
 		$(if $(filter y,$(RUN_CHECK)),--run-check) \
 		--log-file=$(LOGS_DIR)/toolchain/srpms/toolchain_srpmpacker.log \
-		--log-level=$(LOG_LEVEL) && \
+		--log-level=$(LOG_LEVEL) \
+		--cpu-prof-file=$(PROFILE_DIR)/srpm_toolchain_packer.cpu.pprof \
+		--mem-prof-file=$(PROFILE_DIR)/srpm_toolchain_packer.mem.pprof \
+		--trace-file=$(PROFILE_DIR)/srpm_toolchain_packer.trace \
+		$(if $(filter y,$(ENABLE_CPU_PROFILE)),--enable-cpu-prof) \
+		$(if $(filter y,$(ENABLE_MEM_PROFILE)),--enable-mem-prof) \
+		$(if $(filter y,$(ENABLE_TRACE)),--enable-trace) \
+		--timestamp-file=$(TIMESTAMP_DIR)/srpm_toolchain_packer.jsonl && \
 	touch $@
 endif

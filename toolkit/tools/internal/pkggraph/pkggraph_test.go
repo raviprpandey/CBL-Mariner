@@ -6,7 +6,7 @@ package pkggraph
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"os"
 	"testing"
 
@@ -21,8 +21,8 @@ import (
 // The nodes listed will NOT be found in an actual graph, they are just representative copies which can be used for equality
 // testing and as a source to build real nodes from.
 
-//
 // Full Test Graph:
+//
 //	A(v1):
 //	-> D(v<1)
 //	-> B(v2):
@@ -98,12 +98,11 @@ func TestMain(m *testing.M) {
 
 // buildRunNode creates a new 'Run' PkgNode based on a PackageVer struct
 func buildRunNodeHelper(pkg *pkgjson.PackageVer) (node *PkgNode) {
-	var pkgCopy pkgjson.PackageVer
-	pkgCopy = *pkg
+	pkgCopy := *pkg
 	node = &PkgNode{
 		VersionedPkg: &pkgCopy,
 		State:        StateMeta,
-		Type:         TypeRun,
+		Type:         TypeLocalRun,
 		SrpmPath:     pkgCopy.Name + ".src.rpm",
 		RpmPath:      pkgCopy.Name + ".rpm",
 		SpecPath:     pkgCopy.Name + ".spec",
@@ -117,12 +116,11 @@ func buildRunNodeHelper(pkg *pkgjson.PackageVer) (node *PkgNode) {
 
 // buildBuildNode creates a new 'Build' PkgNode based on a PackageVer struct
 func buildBuildNodeHelper(pkg *pkgjson.PackageVer) (node *PkgNode) {
-	var pkgCopy pkgjson.PackageVer
-	pkgCopy = *pkg
+	pkgCopy := *pkg
 	node = &PkgNode{
 		VersionedPkg: &pkgCopy,
 		State:        StateBuild,
-		Type:         TypeBuild,
+		Type:         TypeLocalBuild,
 		SrpmPath:     pkgCopy.Name + ".src.rpm",
 		RpmPath:      pkgCopy.Name + ".rpm",
 		SpecPath:     pkgCopy.Name + ".spec",
@@ -136,12 +134,11 @@ func buildBuildNodeHelper(pkg *pkgjson.PackageVer) (node *PkgNode) {
 
 // buildBuildNode creates a new 'Unresolved' PkgNode based on a PackageVer struct
 func buildUnresolvedNodeHelper(pkg *pkgjson.PackageVer) (node *PkgNode) {
-	var pkgCopy pkgjson.PackageVer
-	pkgCopy = *pkg
+	pkgCopy := *pkg
 	node = &PkgNode{
 		VersionedPkg: &pkgCopy,
 		State:        StateUnresolved,
-		Type:         TypeRemote,
+		Type:         TypeRemoteRun,
 		SrpmPath:     "url://" + pkgCopy.Name + ".src.rpm",
 		RpmPath:      "url://" + pkgCopy.Name + ".rpm",
 		SpecPath:     "url://" + pkgCopy.Name + ".spec",
@@ -197,13 +194,13 @@ func addEdgeHelper(g *PkgGraph, pkg1 PkgNode, pkg2 PkgNode) (err error) {
 		return fmt.Errorf("couldn't find %s (%v)", pkg2.String(), lu2)
 	}
 
-	if pkg1.Type == TypeBuild {
+	if pkg1.Type == TypeLocalBuild {
 		n1 = lu1.BuildNode
 	} else {
 		n1 = lu1.RunNode
 	}
 
-	if pkg2.Type == TypeBuild {
+	if pkg2.Type == TypeLocalBuild {
 		n2 = lu2.BuildNode
 	} else {
 		n2 = lu2.RunNode
@@ -297,23 +294,24 @@ func TestNodeStateString(t *testing.T) {
 	var s NodeState
 	s = -1
 	assert.Panics(t, func() { _ = s.String() })
-	for s = StateUnknown + 1; s <= StateMAX; s++ {
+	for s = StateUnknown + 1; s < StateMAX; s++ {
 		assert.NotPanics(t, func() { _ = s.String() })
 	}
 }
 
 // TestNodeTypeString checks the NodeType -> string functionality
 func TestNodeTypeString(t *testing.T) {
-	assert.Equal(t, "Build", TypeBuild.String())
-	assert.Equal(t, "Run", TypeRun.String())
+	assert.Equal(t, "Build", TypeLocalBuild.String())
+	assert.Equal(t, "Run", TypeLocalRun.String())
 	assert.Equal(t, "Goal", TypeGoal.String())
-	assert.Equal(t, "Remote", TypeRemote.String())
+	assert.Equal(t, "Remote", TypeRemoteRun.String())
 	assert.Equal(t, "PureMeta", TypePureMeta.String())
 	assert.Equal(t, "PreBuilt", TypePreBuilt.String())
+	assert.Equal(t, "Test", TypeTest.String())
 	var tp NodeType
 	tp = -1
 	assert.Panics(t, func() { _ = tp.String() })
-	for tp = TypeUnknown + 1; tp <= TypeMAX; tp++ {
+	for tp = TypeUnknown + 1; tp < TypeMAX; tp++ {
 		assert.NotPanics(t, func() { _ = tp.String() })
 	}
 }
@@ -324,8 +322,8 @@ func TestDOTColor(t *testing.T) {
 		st NodeState
 		tp NodeType
 	)
-	for st = StateUnknown + 1; st <= StateMAX; st++ {
-		for tp = TypeUnknown + 1; tp <= TypeMAX; tp++ {
+	for st = StateUnknown + 1; st < StateMAX; st++ {
+		for tp = TypeUnknown + 1; tp < TypeMAX; tp++ {
 			n := PkgNode{State: st, Type: tp}
 			assert.NotPanics(t, func() { n.DOTColor() })
 			assert.True(t, len(n.DOTColor()) > 0)
@@ -344,7 +342,7 @@ func TestDOTID(t *testing.T) {
 	assert.Equal(t, "D--REMOTE<Unresolved> (ID=0,TYPE=Remote,STATE=Unresolved)", pkgD1Unresolved.DOTID())
 
 	g := NewPkgGraph()
-	goal, err := g.AddGoalNode("test", nil, false)
+	goal, err := g.AddGoalNode("test", nil, nil, false)
 	assert.NoError(t, err)
 	assert.Equal(t, "test (ID=0,TYPE=Goal,STATE=Meta)", goal.DOTID())
 
@@ -399,7 +397,7 @@ func TestAddMultipleNodes(t *testing.T) {
 	assert.NoError(t, err)
 
 	assert.Equal(t, len(runNodes)+len(buildNodes), len(g.AllNodes()))
-	assert.Equal(t, len(runNodes), len(g.AllRunNodes()))
+	assert.Equal(t, len(runNodes), len(g.AllPreferredRunNodes()))
 	assert.Equal(t, len(buildNodes), len(g.AllBuildNodes()))
 }
 
@@ -684,12 +682,12 @@ func TestLookupWithoutRunNodes(t *testing.T) {
 // Add a goal node
 func TestAddGoalToEmptyGraph(t *testing.T) {
 	g := NewPkgGraph()
-	goal, err := g.AddGoalNode("test", nil, false)
+	goal, err := g.AddGoalNode("test", nil, nil, false)
 	assert.NoError(t, err)
 	assert.NotNil(t, goal)
 	assert.Equal(t, "test", goal.GoalName)
 
-	goal, err = g.AddGoalNode("test2", nil, true)
+	goal, err = g.AddGoalNode("test2", nil, nil, true)
 	assert.NoError(t, err)
 	assert.NotNil(t, goal)
 	assert.Equal(t, "test2", goal.GoalName)
@@ -698,12 +696,12 @@ func TestAddGoalToEmptyGraph(t *testing.T) {
 // Make sure we can't add duplicate goal nodes
 func TestDuplicateGoal(t *testing.T) {
 	g := NewPkgGraph()
-	goal, err := g.AddGoalNode("test", nil, false)
+	goal, err := g.AddGoalNode("test", nil, nil, false)
 	assert.NoError(t, err)
 	assert.NotNil(t, goal)
 	assert.Equal(t, "test", goal.GoalName)
 
-	_, err = g.AddGoalNode("test", nil, false)
+	_, err = g.AddGoalNode("test", nil, nil, false)
 	assert.Error(t, err)
 }
 
@@ -714,7 +712,7 @@ func TestGoalWithPackages(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotNil(t, g)
 
-	goal, err := g.AddGoalNode("test", pkgVersions, false)
+	goal, err := g.AddGoalNode("test", pkgVersions, nil, false)
 	assert.NoError(t, err)
 	assert.NotNil(t, goal)
 	assert.Equal(t, len(allNodes)+1, len(g.AllNodes()))
@@ -722,9 +720,9 @@ func TestGoalWithPackages(t *testing.T) {
 	assert.Equal(t, len(runNodes)+len(unresolvedNodes), len(goalNodes))
 
 	goal, err = g.AddGoalNode("test2", []*pkgjson.PackageVer{
-		&pkgjson.PackageVer{Name: "A"},
-		&pkgjson.PackageVer{Name: "B"},
-	}, false)
+		{Name: "A"},
+		{Name: "B"},
+	}, nil, false)
 	assert.NoError(t, err)
 	assert.NotNil(t, goal)
 	assert.Equal(t, len(allNodes)+2, len(g.AllNodes()))
@@ -739,7 +737,7 @@ func TestStrictGoalNodes(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotNil(t, g)
 
-	_, err = g.AddGoalNode("test", []*pkgjson.PackageVer{&pkgjson.PackageVer{Name: "Not a package"}}, true)
+	_, err = g.AddGoalNode("test", []*pkgjson.PackageVer{{Name: "Not a package"}}, nil, true)
 	assert.Error(t, err)
 }
 
@@ -866,6 +864,7 @@ func TestDeepCopy(t *testing.T) {
 	assert.NotNil(t, gOut)
 
 	gCopy, err := gOut.DeepCopy()
+	assert.NoError(t, err)
 
 	checkTestGraph(t, gCopy)
 }
@@ -889,6 +888,7 @@ func TestEncodeDecodeMultiDOT(t *testing.T) {
 
 	gFinal := NewPkgGraph()
 	err = ReadDOTGraph(gFinal, &buf2)
+	assert.NoError(t, err)
 
 	checkTestGraph(t, gFinal)
 }
@@ -903,23 +903,20 @@ func TestReadWriteGraph(t *testing.T) {
 	err = WriteDOTGraphFile(gOut, "test_graph.dot")
 	assert.NoError(t, err)
 
-	gIn := NewPkgGraph()
-	err = ReadDOTGraphFile(gIn, "test_graph.dot")
+	gIn, err := ReadDOTGraphFile("test_graph.dot")
 	assert.NoError(t, err)
 	err = os.Remove("test_graph.dot")
 	assert.NoError(t, err)
 
 	checkTestGraph(t, gIn)
 
-	noGraph := NewPkgGraph()
-	err = ReadDOTGraphFile(noGraph, "no_such_file.dot")
+	_, err = ReadDOTGraphFile("no_such_file.dot")
 	assert.Error(t, err)
 }
 
 // Validate the reference graph is valid, and that it matches the output of the test graph.
 func TestReferenceDOTFile(t *testing.T) {
-	gIn := NewPkgGraph()
-	err := ReadDOTGraphFile(gIn, "test_graph_reference.dot")
+	gIn, err := ReadDOTGraphFile("test_graph_reference.dot")
 	assert.NoError(t, err)
 
 	checkTestGraph(t, gIn)
@@ -933,13 +930,15 @@ func TestReferenceDOTFile(t *testing.T) {
 	assert.NoError(t, err)
 
 	f, err := os.Open("test_graph_reference.dot")
-	defer f.Close()
+	if err == nil {
+		defer f.Close()
+	}
 	assert.NoError(t, err)
 
 	// Compare the bytes from the reference file against a fresh encoding
-	bytesFromCode, err := ioutil.ReadAll(&buf)
+	bytesFromCode, err := io.ReadAll(&buf)
 	assert.NoError(t, err)
-	bytesFromFile, err := ioutil.ReadAll(f)
+	bytesFromFile, err := io.ReadAll(f)
 	assert.NoError(t, err)
 	assert.True(t, len(bytesFromCode) > 0)
 	assert.True(t, len(bytesFromFile) > 0)
@@ -991,6 +990,7 @@ func TestEncodingSubGraph(t *testing.T) {
 
 	// Copy uses the encode/decode flow
 	gCopy, err := subGraph.DeepCopy()
+	assert.NoError(t, err)
 
 	component := []*PkgNode{
 		pkgCRun,
@@ -1013,7 +1013,7 @@ func TestShouldSucceedMakeDAGWithGoalNode(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotNil(t, gOut)
 
-	goalNode, err := gOut.AddGoalNode("test", nil, true)
+	goalNode, err := gOut.AddGoalNode("test", nil, nil, true)
 	assert.NotNil(t, goalNode)
 	assert.NoError(t, err)
 

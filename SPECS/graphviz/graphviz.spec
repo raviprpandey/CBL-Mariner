@@ -42,10 +42,10 @@
 %else
 %global PHP 0
 %endif
+Summary:        Graph Visualization Tools
 Name:           graphviz
 Version:        2.42.4
-Release:        6%{?dist}
-Summary:        Graph Visualization Tools
+Release:        9%{?dist}
 License:        EPL-1.0
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -61,6 +61,7 @@ BuildRequires:  bison
 BuildRequires:  expat-devel
 BuildRequires:  flex
 BuildRequires:  fontconfig-devel
+BuildRequires:  freefont
 BuildRequires:  freetype-devel >= 2
 BuildRequires:  gd-devel
 BuildRequires:  gmp-devel
@@ -76,8 +77,9 @@ BuildRequires:  pango-devel
 BuildRequires:  perl
 # Temporary workaound for perl(Carp) not pulled
 BuildRequires:  perl-Carp
+BuildRequires:  perl-ExtUtils-Embed
 BuildRequires:  perl-devel
-BuildRequires:  pkgconfig
+BuildRequires:  pkg-config
 BuildRequires:  python3-devel
 BuildRequires:  sed
 BuildRequires:  swig >= 1.3.33
@@ -119,7 +121,7 @@ and edges, not as in barcharts).
 Summary:        Development package for graphviz
 Requires:       %{name} = %{version}-%{release}
 Requires:       %{name}-gd = %{version}-%{release}
-Requires:       pkgconfig
+Requires:       pkg-config
 
 %description devel
 A collection of tools for the manipulation and layout of graphs (as in nodes
@@ -146,6 +148,7 @@ Provides some additional PDF and HTML documentation for graphviz.
 %package gd
 Summary:        Graphviz plugin for renderers based on gd
 Requires:       %{name} = %{version}-%{release}
+Requires:       freefont
 Requires(post): %{_bindir}/dot
 Requires(post): /sbin/ldconfig
 Requires(postun): %{_bindir}/dot
@@ -265,7 +268,8 @@ sed -i 's|_MY_JAVA_INCLUDES_|-I%{java_home}/include/ -I%{java_home}/include/linu
 %configure --with-x --disable-static --disable-dependency-tracking \
 	--without-mylibgd --with-ipsepcola --with-pangocairo \
 	--without-gdk-pixbuf --with-visio --disable-silent-rules \
-  --without-ruby --without-python2 \
+    --without-ruby --without-python2 \
+    --with-freetypeincludedir=%{_includedir}/freetype2 --with-freetypelibdir=%{_libdir}/lib \
 %if ! %{LASI}
 	--without-lasi \
 %endif
@@ -514,6 +518,17 @@ php --no-php-ini \
 %{_mandir}/man3/*.3tcl*
 
 %changelog
+* Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 2.42.4-9
+- Recompile with stack-protection fixed gcc version (CVE-2023-4039)
+
+* Thu Jun 22 2023 Osama Esmail <osamaesmail@microsoft.com> - 2.42.4-8
+- Trying some more `freefont` fixes (added Requires to gd)
+- Added freetype option to build
+- `dot` complains about not having URW1 fonts, but works anyway
+
+* Wed Mar 08 2023 Osama Esmail <osamaesmail@microsoft.com> - 2.42.4-7
+- Add `freefont` to BuildRequires to provide default font for graphviz
+
 * Thu Apr 21 2022 Minghe Ren <mingheren@microsoft.com> - 2.42.4-6
 - Add patch for CVE-2020-18032
 
@@ -1222,12 +1237,16 @@ php --no-php-ini \
 
 * Wed Aug 15 2007 John Ellson <ellson@research.att.com>
 - release 2.14.1 - see ChangeLog for details
+
 * Thu Aug 2 2007 John Ellson <ellson@research.att.com>
 - release 2.14 - see ChangeLog for details
+
 * Fri Mar 16 2007 Stephen North <north@research.att.com>
 - remove xorg-X11-devel from rhel >= 5
+
 * Mon Dec 11 2006 John Ellson <john.ellson@comcast.net>
 - fix graphviz-lua description (Fedora BZ#218191)
+
 * Tue Sep 13 2005 John Ellson <ellson@research.att.com>
 - split out language bindings into their own rpms so that 
   main rpm doesn't depend on (e.g.) ocaml

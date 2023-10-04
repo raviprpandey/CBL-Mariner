@@ -1,28 +1,13 @@
 Summary:        TIFF libraries and associated utilities.
 Name:           libtiff
-Version:        4.4.0
-Release:        8%{?dist}
+Version:        4.5.1
+Release:        1%{?dist}
 License:        libtiff
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
 Group:          System Environment/Libraries
 URL:            https://gitlab.com/libtiff/libtiff
 Source0:        https://gitlab.com/libtiff/libtiff/-/archive/v%{version}/libtiff-v%{version}.tar.gz
-# Also fixes CVE-2022-2057 and CVE-2022-2058.
-Patch0:         CVE-2022-2056.patch
-Patch1:         CVE-2022-34526.patch
-Patch2:         CVE-2022-2953.patch
-# Also fixes CVE-2022-3598
-Patch3:         CVE-2022-3570.patch
-# Also fixes CVE-2022-3626 and CVE-2022-3627
-Patch4:         CVE-2022-3597.patch
-Patch5:         CVE-2022-3599.patch
-Patch6:         CVE-2022-3970.patch
-Patch7:         CVE-2022-48281.patch
-# Also fixes CVE-2023-0796/0797/0798/0799
-Patch8:         CVE-2023-0795.patch
-#Also fixes CVE-2023-0801/0802/0803/0804
-Patch9:         CVE-2023-0800.patch
 BuildRequires:  autoconf
 BuildRequires:  automake
 BuildRequires:  libjpeg-turbo-devel
@@ -63,10 +48,9 @@ make %{?_smp_mflags} -k check
 
 %files
 %defattr(-,root,root)
-%license COPYRIGHT
+%license LICENSE.md
 %{_bindir}/*
-%{_libdir}/*.so.*
-%{_mandir}/man1/*
+%{_libdir}/*.so.6*
 
 %files devel
 %defattr(-,root,root)
@@ -74,9 +58,21 @@ make %{?_smp_mflags} -k check
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/*.pc
 %{_docdir}/*
-%{_mandir}/man3/*
 
 %changelog
+* Sat Jul 08 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 4.5.1-1
+- Auto-upgrade to 4.5.1 - patch CVE-2023-26966
+
+* Fri May 26 2023 Rachel Menge <rachelmenge@microsoft.com> - 4.5.0-3
+- Patch CVE-2023-2731
+
+* Mon May 15 2023 Andrew Phelps <anphel@microsoft.com> - 4.5.0-2
+- Patch CVE-2023-0795 CVE-2023-0796 CVE-2023-0797 CVE-2023-0798 CVE-2023-0799
+- Patch CVE-2023-0800 CVE-2023-0801 CVE-2023-0802 CVE-2023-0803 CVE-2023-0804
+
+* Mon Mar 27 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 4.5.0-1
+- Auto-upgrade to 4.5.0 - to fix CVE-2022-4645
+
 * Wed Feb 22 2023 Sumedh Sharma <sumsharma@microsoft.com> - 4.4.0-8
 - Add patch for CVE-2023-0795,CVE-2023-0796,CVE-2023-0797,CVE-2023-0798 & CVE-2023-0799
 - Add fix for: tiffcrop correctly update buffersize after rotateImage(). fix#520

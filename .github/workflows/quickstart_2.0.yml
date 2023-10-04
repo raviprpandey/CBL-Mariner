@@ -12,18 +12,18 @@ on:
 
 jobs:
   get_input-srpms:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v2.3.2
+      uses: actions/checkout@v4
       with:
         ref: '2.0-stable'
 
-    - name: Set up Go 1.17
+    - name: Set up Go 1.19
       uses: actions/setup-go@v2
       with:
-        go-version: 1.17
+        go-version: 1.19
       id: go
 
     - name: Install Remaining Prerequisites
@@ -41,18 +41,18 @@ jobs:
         popd
 
   iso_quickstart:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v2.3.2
+      uses: actions/checkout@v4
       with:
         ref: '2.0-stable'
 
-    - name: Set up Go 1.17
+    - name: Set up Go 1.19
       uses: actions/setup-go@v2
       with:
-        go-version: 1.17
+        go-version: 1.19
       id: go
 
     - name: Install Remaining Prerequisites
@@ -65,22 +65,22 @@ jobs:
     - name: ISO Quick Start
       run: |
         pushd toolkit
-        sudo make iso REBUILD_TOOLS=y REBUILD_PACKAGES=n
+        sudo make iso REBUILD_TOOLS=y REBUILD_PACKAGES=n CONFIG_FILE=./imageconfigs/full.json
         popd
 
   vhdx_quickstart:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v2.3.2
+      uses: actions/checkout@v4
       with:
         ref: '2.0-stable'
 
-    - name: Set up Go 1.17
+    - name: Set up Go 1.19
       uses: actions/setup-go@v2
       with:
-        go-version: 1.17
+        go-version: 1.19
       id: go
 
     - name: Install Remaining Prerequisites
@@ -93,5 +93,5 @@ jobs:
     - name: VHDX Quick Start
       run: |
         pushd toolkit
-        sudo make image REBUILD_TOOLS=y REBUILD_PACKAGES=n
+        sudo make image REBUILD_TOOLS=y REBUILD_PACKAGES=n CONFIG_FILE=./imageconfigs/core-efi.json
         popd

@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/logger"
+	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/pkgjson"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -16,28 +17,97 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
-func TestShouldCreateEmptySliceFromNil(t *testing.T) {
-	outputSlice := StringsSetToSlice(nil)
+func TestPackageVersSetToSliceShouldCreateEmptySliceFromNil(t *testing.T) {
+	outputSlice := SetToSlice[*pkgjson.PackageVer](nil)
 
 	assert.NotNil(t, outputSlice)
 	assert.Empty(t, outputSlice)
 }
 
-func TestShouldCreateEmptySliceFromEmptySet(t *testing.T) {
-	outputSlice := StringsSetToSlice(map[string]bool{})
+func TestPackageVersSetToSliceShouldCreateEmptySliceFromEmptySet(t *testing.T) {
+	outputSlice := SetToSlice(map[*pkgjson.PackageVer]bool{})
 
 	assert.NotNil(t, outputSlice)
 	assert.Empty(t, outputSlice)
 }
 
-func TestShouldReturnValuesForAllTrueElementsInSet(t *testing.T) {
+func TestPackageVersSetToSliceShouldReturnValuesForAllTrueElementsInSet(t *testing.T) {
+	existingPackageVer := &pkgjson.PackageVer{Name: "A"}
+	missingPackageVer := &pkgjson.PackageVer{Name: "X"}
+	inputSet := map[*pkgjson.PackageVer]bool{
+		existingPackageVer: true,
+		missingPackageVer:  false,
+	}
+	outputSlice := SetToSlice(inputSet)
+
+	assert.NotNil(t, outputSlice)
+	assert.Len(t, outputSlice, 1)
+	assert.Contains(t, outputSlice, existingPackageVer)
+	assert.NotContains(t, outputSlice, missingPackageVer)
+}
+
+func TestPackageVersShouldMatch(t *testing.T) {
+	packageVer1 := &pkgjson.PackageVer{Name: "A"}
+	packageVer2 := &pkgjson.PackageVer{Name: "A"}
+
+	assert.True(t, PackageVerMatch(packageVer1, packageVer2))
+}
+
+func TestPackageVersShouldNotMatch(t *testing.T) {
+	packageVer1 := &pkgjson.PackageVer{Name: "A"}
+	packageVer2 := &pkgjson.PackageVer{Name: "B"}
+
+	assert.False(t, PackageVerMatch(packageVer1, packageVer2))
+}
+
+func TestPackageVerShouldNotMatchNil(t *testing.T) {
+	packageVer1 := &pkgjson.PackageVer{Name: "A"}
+
+	assert.False(t, PackageVerMatch(packageVer1, nil))
+}
+
+func TestStringShouldMatch(t *testing.T) {
+	assert.True(t, StringMatch("A", "A"))
+}
+
+func TestStringShouldNotMatch(t *testing.T) {
+	assert.False(t, StringMatch("A", "B"))
+}
+
+func TestStringShouldNotMatchForNilFirst(t *testing.T) {
+	assert.False(t, StringMatch(nil, "A"))
+}
+
+func TestStringShouldNotMatchNilSecond(t *testing.T) {
+	assert.False(t, StringMatch("A", nil))
+}
+
+func TestStringShouldMatchForNilInBoth(t *testing.T) {
+	assert.True(t, StringMatch(nil, nil))
+}
+
+func TestStringsSetToSliceShouldCreateEmptySliceFromNil(t *testing.T) {
+	outputSlice := SetToSlice[string](nil)
+
+	assert.NotNil(t, outputSlice)
+	assert.Empty(t, outputSlice)
+}
+
+func TestStringsSetToSliceShouldCreateEmptySliceFromEmptySet(t *testing.T) {
+	outputSlice := SetToSlice(map[string]bool{})
+
+	assert.NotNil(t, outputSlice)
+	assert.Empty(t, outputSlice)
+}
+
+func TestSetToSliceShouldReturnValuesForAllTrueElementsInSet(t *testing.T) {
 	inputSet := map[string]bool{
 		"A": true,
 		"B": true,
 		"X": false,
 		"Y": false,
 	}
-	outputSlice := StringsSetToSlice(inputSet)
+	outputSlice := SetToSlice(inputSet)
 
 	assert.NotNil(t, outputSlice)
 	assert.Len(t, outputSlice, 2)
@@ -45,4 +115,42 @@ func TestShouldReturnValuesForAllTrueElementsInSet(t *testing.T) {
 	assert.Contains(t, outputSlice, "B")
 	assert.NotContains(t, outputSlice, "X")
 	assert.NotContains(t, outputSlice, "Y")
+}
+
+func TestSliceToSetShouldCreateEmptySetFromNil(t *testing.T) {
+	outputSet := SliceToSet[string](nil)
+
+	assert.NotNil(t, outputSet)
+	assert.Empty(t, outputSet)
+}
+
+func TestSliceToSetShouldCreateEmptySetFromEmptySlice(t *testing.T) {
+	outputSet := SliceToSet([]string{})
+
+	assert.NotNil(t, outputSet)
+	assert.Empty(t, outputSet)
+}
+
+func TestSliceToSetShouldReturnValuesForAllElementsInSlice(t *testing.T) {
+	inputSlice := []string{"A", "B", "C"}
+	outputSet := SliceToSet(inputSlice)
+
+	assert.NotNil(t, outputSet)
+	assert.Len(t, outputSet, 3)
+	assert.Contains(t, outputSet, "A")
+	assert.Contains(t, outputSet, "B")
+	assert.Contains(t, outputSet, "C")
+	assert.NotContains(t, outputSet, "X")
+}
+
+func TestShouldRemoveDuplicates(t *testing.T) {
+	inputSlice := []string{"A", "B", "C", "A", "B", "C"}
+	outputSlice := RemoveDuplicatesFromSlice(inputSlice)
+
+	assert.NotNil(t, outputSlice)
+	assert.Len(t, outputSlice, 3)
+	assert.Contains(t, outputSlice, "A")
+	assert.Contains(t, outputSlice, "B")
+	assert.Contains(t, outputSlice, "C")
+	assert.NotContains(t, outputSlice, "X")
 }

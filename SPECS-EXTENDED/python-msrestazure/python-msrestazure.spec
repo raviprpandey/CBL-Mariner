@@ -8,13 +8,12 @@ Vendor:         Microsoft Corporation
 Distribution:   Mariner
 Version:        0.6.4
 Name:           python-%{srcname}
-Release:        9%{?dist}
+Release:        11%{?dist}
 
 License:        MIT
 %global         tag         v%{version}
-%forgemeta
 URL:            %forgeurl
-Source0:        %forgesource
+Source0:        https://github.com/Azure/msrestazure-for-python/archive/v%{version}/msrestazure-for-python-%{version}.tar.gz#/%{name}-%{version}.tar.gz
 
 BuildArch:      noarch
 
@@ -27,8 +26,10 @@ BuildRequires:  python3-wheel
 
 
 %if %{with_check}
-BuildRequires:  python3dist(httpretty)
 BuildRequires:  python3dist(pytest)
+
+# Missing test dependencies:
+# BuildRequires:  python3dist(httpretty)
 %endif
 
 %global _description %{expand:
@@ -45,7 +46,7 @@ Summary:        %{summary}
 
 
 %prep
-%forgeautosetup -p1
+%autosetup -p1 -n msrestazure-for-python-%{version}
 
 
 %generate_buildrequires
@@ -71,6 +72,12 @@ Summary:        %{summary}
 
 
 %changelog
+* Thu Aug 31 2023 Pawel Winogrodzki <pawelwi@microsoft.com> - 0.6.4-11
+- Disabling missing test dependency.
+
+* Wed Mar 15 2023 Muhammad Falak <mwani@microsoft.com> - 0.6.4-10
+- Rename Source0 to `%{name}-%{version}.extension
+
 * Fri Mar 03 2023 Muhammad Falak <mwani@microsoft.com> - 0.6.4-9
 - Convert 'Release' tag to '[number].[distribution]' format
 - Initial CBL-Mariner import from Fedora 36 (license: MIT).

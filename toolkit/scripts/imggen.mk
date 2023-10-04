@@ -43,6 +43,7 @@ validate-config                      = $(STATUS_FLAGS_DIR)/validate-image-config
 meta_user_data_tmp_dir               = $(IMAGEGEN_DIR)/meta-user-data_tmp
 image_package_cache_summary          = $(imggen_config_dir)/image_deps.json
 image_external_package_cache_summary = $(imggen_config_dir)/image_external_deps.json
+image_package_manifest               = $(imggen_config_dir)/image_pkg_manifest.json
 
 # Outputs
 artifact_dir             = $(IMAGES_DIR)/$(config_name)
@@ -60,7 +61,7 @@ $(call create_folder,$(imager_disk_output_dir))
 $(call create_folder,$(artifact_dir))
 $(call create_folder,$(meta_user_data_tmp_dir))
 
-.PHONY: fetch-image-packages fetch-external-image-packages make-raw-image image iso validate-image-config clean-imagegen
+.PHONY: fetch-image-packages fetch-external-image-packages make-raw-image image iso installer-initrd validate-image-config clean-imagegen
 
 clean: clean-imagegen
 clean-imagegen:
@@ -73,9 +74,13 @@ clean-imagegen:
 	$(SCRIPTS_DIR)/safeunmount.sh "$(IMAGEGEN_DIR)" && \
 	rm -rf $(IMAGEGEN_DIR)
 
+##help:target:fetch-image-packages=Locate and download all packages required for an image build.
 fetch-image-packages: $(image_package_cache_summary)
+
+##help:target:fetch-external-image-packages=Download all external packages required for an image build.
 fetch-external-image-packages: $(image_external_package_cache_summary)
 
+##help:target:validate-image-config=Validate the selected image config.
 # Validate the selected config file if any changes occur in the image config base directory.
 # Changes to files located outside the base directory will not be detected.
 validate-image-config: $(validate-config)
@@ -83,13 +88,24 @@ $(STATUS_FLAGS_DIR)/validate-image-config%.flag: $(go-imageconfigvalidator) $(de
 	$(if $(CONFIG_FILE),,$(error Must set CONFIG_FILE=))
 	$(go-imageconfigvalidator) \
 		--input=$(CONFIG_FILE) \
-		--dir=$(CONFIG_BASE_DIR) && \
+		--dir=$(CONFIG_BASE_DIR) \
+		--cpu-prof-file=$(PROFILE_DIR)/imageconfigvalidator.cpu.pprof \
+		--mem-prof-file=$(PROFILE_DIR)/imageconfigvalidator.mem.pprof \
+		--trace-file=$(PROFILE_DIR)/imageconfigvalidator.trace \
+		$(if $(filter y,$(ENABLE_CPU_PROFILE)),--enable-cpu-prof) \
+		$(if $(filter y,$(ENABLE_MEM_PROFILE)),--enable-mem-prof) \
+		$(if $(filter y,$(ENABLE_TRACE)),--enable-trace) \
+		--timestamp-file=$(TIMESTAMP_DIR)/imageconfigvalidator.jsonl && \
 	touch $@
 
 
 imagepkgfetcher_extra_flags :=
 ifeq ($(DISABLE_UPSTREAM_REPOS),y)
 imagepkgfetcher_extra_flags += --disable-upstream-repos
+endif
+
+ifeq ($(DISABLE_DEFAULT_REPOS),y)
+imagepkgfetcher_extra_flags += --disable-default-repos
 endif
 
 ifeq ($(USE_PREVIEW_REPO),y)
@@ -105,6 +121,7 @@ $(image_package_cache_summary): $(go-imagepkgfetcher) $(chroot_worker) $(imggen_
 		--log-file=$(LOGS_DIR)/imggen/imagepkgfetcher.log \
 		--rpm-dir=$(RPMS_DIR) \
 		--tmp-dir=$(image_fetcher_tmp_dir) \
+		--toolchain-rpms-dir="$(TOOLCHAIN_RPMS_DIR)" \
 		--tdnf-worker=$(chroot_worker) \
 		--tls-cert=$(TLS_CERT) \
 		--tls-key=$(TLS_KEY) \
@@ -112,8 +129,16 @@ $(image_package_cache_summary): $(go-imagepkgfetcher) $(chroot_worker) $(imggen_
 		$(imagepkgfetcher_extra_flags) \
 		--input-summary-file=$(IMAGE_CACHE_SUMMARY) \
 		--output-summary-file=$@ \
-		--output-dir=$(local_and_external_rpm_cache)
+		--output-dir=$(local_and_external_rpm_cache) \
+		--cpu-prof-file=$(PROFILE_DIR)/imagepkgfetcher.cpu.pprof \
+		--mem-prof-file=$(PROFILE_DIR)/imagepkgfetcher.mem.pprof \
+		--trace-file=$(PROFILE_DIR)/imagepkgfetcher.trace \
+		$(if $(filter y,$(ENABLE_CPU_PROFILE)),--enable-cpu-prof) \
+		$(if $(filter y,$(ENABLE_MEM_PROFILE)),--enable-mem-prof) \
+		$(if $(filter y,$(ENABLE_TRACE)),--enable-trace) \
+		--timestamp-file=$(TIMESTAMP_DIR)/imagepkgfetcher.jsonl
 
+##help:target:make-raw-image=Create the raw base image.
 make-raw-image: $(imager_disk_output_dir)
 $(imager_disk_output_dir): $(STATUS_FLAGS_DIR)/imager_disk_output.flag
 	@touch $@
@@ -132,13 +157,22 @@ $(STATUS_FLAGS_DIR)/imager_disk_output.flag: $(go-imager) $(image_package_cache_
 		--local-repo $(local_and_external_rpm_cache) \
 		--tdnf-worker $(chroot_worker) \
 		--repo-file=$(imggen_local_repo) \
+		--output-image-contents=$(image_package_manifest) \
 		--assets $(assets_dir) \
-		--output-dir $(imager_disk_output_dir) && \
+		--output-dir $(imager_disk_output_dir) \
+		--cpu-prof-file=$(PROFILE_DIR)/imager.cpu.pprof \
+		--mem-prof-file=$(PROFILE_DIR)/imager.mem.pprof \
+		--trace-file=$(PROFILE_DIR)/imager.trace \
+		$(if $(filter y,$(ENABLE_CPU_PROFILE)),--enable-cpu-prof) \
+		$(if $(filter y,$(ENABLE_MEM_PROFILE)),--enable-mem-prof) \
+		$(if $(filter y,$(ENABLE_TRACE)),--enable-trace) \
+		--timestamp-file=$(TIMESTAMP_DIR)/imager.jsonl && \
 	touch $@
 
 # Sometimes files will have been deleted, that is fine so long as we were able to detect the change
 $(imager_disk_output_dir)/%: ;
 
+##help:target:image=Generate an image.
 image: $(imager_disk_output_dir) $(imager_disk_output_files) $(go-roast) $(depend_CONFIG_FILE) $(CONFIG_FILE) $(validate-config)
 	$(if $(CONFIG_FILE),,$(error Must set CONFIG_FILE=))
 	VMXTEMPLATE=$(ova_vmxtemplate) OVFINFO=$(ova_ovfinfo) \
@@ -150,7 +184,14 @@ image: $(imager_disk_output_dir) $(imager_disk_output_files) $(go-roast) $(depen
 		--release-version $(RELEASE_VERSION) \
 		--log-level=$(LOG_LEVEL) \
 		--log-file=$(LOGS_DIR)/imggen/roast.log \
-		--image-tag=$(IMAGE_TAG)
+		--image-tag=$(IMAGE_TAG) \
+		--cpu-prof-file=$(PROFILE_DIR)/roast.cpu.pprof \
+		--mem-prof-file=$(PROFILE_DIR)/roast.mem.pprof \
+		--trace-file=$(PROFILE_DIR)/roast.trace \
+		$(if $(filter y,$(ENABLE_CPU_PROFILE)),--enable-cpu-prof) \
+		$(if $(filter y,$(ENABLE_MEM_PROFILE)),--enable-mem-prof) \
+		$(if $(filter y,$(ENABLE_TRACE)),--enable-trace) \
+		--timestamp-file=$(TIMESTAMP_DIR)/roast.jsonl
 
 $(image_external_package_cache_summary): $(cached_file) $(go-imagepkgfetcher) $(chroot_worker) $(graph_file) $(depend_CONFIG_FILE) $(CONFIG_FILE) $(validate-config)
 	$(if $(CONFIG_FILE),,$(error Must set CONFIG_FILE=))
@@ -161,6 +202,7 @@ $(image_external_package_cache_summary): $(cached_file) $(go-imagepkgfetcher) $(
 		--log-file=$(LOGS_DIR)/imggen/externalimagepkgfetcher.log \
 		--rpm-dir=$(RPMS_DIR) \
 		--tmp-dir=$(image_fetcher_tmp_dir) \
+		--toolchain-rpms-dir="$(TOOLCHAIN_RPMS_DIR)" \
 		--tdnf-worker=$(chroot_worker) \
 		--external-only \
 		--package-graph=$(graph_file) \
@@ -170,9 +212,16 @@ $(image_external_package_cache_summary): $(cached_file) $(go-imagepkgfetcher) $(
 		$(imagepkgfetcher_extra_flags) \
 		--input-summary-file=$(IMAGE_CACHE_SUMMARY) \
 		--output-summary-file=$@ \
-		--output-dir=$(external_rpm_cache)
+		--output-dir=$(external_rpm_cache) \
+		--cpu-prof-file=$(PROFILE_DIR)/imagepkgfetcher.cpu.pprof \
+		--mem-prof-file=$(PROFILE_DIR)/imagepkgfetcher.mem.pprof \
+		--trace-file=$(PROFILE_DIR)/imagepkgfetcher.trace \
+		$(if $(filter y,$(ENABLE_CPU_PROFILE)),--enable-cpu-prof) \
+		$(if $(filter y,$(ENABLE_MEM_PROFILE)),--enable-mem-prof) \
+		$(if $(filter y,$(ENABLE_TRACE)),--enable-trace) \
+		--timestamp-file=$(TIMESTAMP_DIR)/imagepkgfetcher.jsonl
 
-# We need to ensure that initrd_img recursive build will never run concurrently with another build component, so add all ISO prereqs as 
+# We need to ensure that initrd_img recursive build will never run concurrently with another build component, so add all ISO prereqs as
 # order-only-prerequisites to initrd_img
 iso_deps = $(go-isomaker) $(go-imager) $(depend_CONFIG_FILE) $(CONFIG_FILE) $(validate-config) $(image_package_cache_summary)
 # The initrd bundles these files into the image, we should rebuild it if they change
@@ -180,8 +229,12 @@ initrd_bundled_files = $(go-liveinstaller) $(go-imager) $(assets_files) $(initrd
 
 $(initrd_img): $(initrd_bundled_files) $(initrd_config_json) $(INITRD_CACHE_SUMMARY) | $(iso_deps)
 	# Recursive make call to build the initrd image $(artifact_dir)/iso-initrd.img
-	$(MAKE) image MAKEOVERRIDES= CONFIG_FILE=$(initrd_config_json) IMAGE_CACHE_SUMMARY=$(INITRD_CACHE_SUMMARY) IMAGE_TAG=
+	$(MAKE) image MAKEOVERRIDES= CONFIG_FILE=$(initrd_config_json) IMAGE_CACHE_SUMMARY=$(INITRD_CACHE_SUMMARY) IMAGE_TAG= RELEASE_VERSION=$(RELEASE_VERSION) BUILD_NUMBER=$(BUILD_NUMBER)
 
+##help:target:installer-initrd=Create the initrd for the ISO installer.
+installer-initrd: $(initrd_img)
+
+##help:target:iso=Create an installable ISO.
 iso: $(initrd_img) $(iso_deps)
 	$(if $(CONFIG_FILE),,$(error Must set CONFIG_FILE=))
 	$(go-isomaker) \
@@ -194,9 +247,11 @@ iso: $(initrd_img) $(iso_deps)
 		--iso-repo $(local_and_external_rpm_cache) \
 		--log-level=$(LOG_LEVEL) \
 		--log-file=$(LOGS_DIR)/imggen/isomaker.log \
-		$(if $(UNATTENDED_INSTALLER),--unattended-install) \
+		$(if $(filter y,$(UNATTENDED_INSTALLER)),--unattended-install) \
 		--output-dir $(artifact_dir) \
 		--image-tag=$(IMAGE_TAG)
+
+##help:target:meta-user-data=Create a `meta-user-data.iso` file under `IMAGES_DIR` using `meta-data` and `user-data` from `META_USER_DATA_DIR`.
 meta-user-data: $(meta_user_data_files)
 	cp -t $(meta_user_data_tmp_dir) $(meta_user_data_files)
 	if [ -n "$(SSH_KEY_FILE)" ]; then \

@@ -11,6 +11,7 @@ import (
 	"testing"
 
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/logger"
+	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/ptrutils"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -413,9 +414,13 @@ var expectedConfiguration Config = Config{
 			KernelOptions: map[string]string{
 				"default": "kernel",
 			},
-			AdditionalFiles: map[string]string{
-				"local/path/file1": "/final/system/path",
-				"local/path/file2": "/final/system/path/renamedfile2",
+			AdditionalFiles: map[string]FileConfigList{
+				"local/path/file1": {{Path: "/final/system/path"}},
+				"local/path/file2": {{Path: "/final/system/path/renamedfile2"}},
+				"local/path/file3": {{Path: "/final/system/path/file3"}},
+				"local/path/file4": {{Path: "/final/system/path/file4", Permissions: ptrutils.PtrTo(FilePermissions(0o664))}},
+				"local/path/file5": {{Path: "/final/system/path/file5"}},
+				"local/path/file6": {{Path: "/final/system/path/file6"}, {Path: "/final/system/path/file6_copy"}},
 			},
 			Hostname: "Mariner-Test",
 			BootType: "efi",
@@ -456,14 +461,20 @@ var expectedConfiguration Config = Config{
 			},
 			PackageRepos: []PackageRepo{
 				{
-					Name:    "repo1",
-					BaseUrl: "https://repo1.com",
-					Install: false,
+					Name:         "repo1",
+					BaseUrl:      "https://repo1.com",
+					Install:      true,
+					GPGCheck:     true,
+					RepoGPGCheck: true,
+					GPGKeys:      "file:///etc/pki/rpm-gpg/MY-CUSTOM-KEY",
 				},
 				{
-					Name:    "repo2",
-					BaseUrl: "https://repo2.com",
-					Install: false,
+					Name:         "repo2",
+					BaseUrl:      "https://repo2.com",
+					Install:      false,
+					GPGCheck:     false,
+					RepoGPGCheck: false,
+					GPGKeys:      "file:///etc/pki/rpm-gpg/MICROSOFT-RPM-GPG-KEY file:///etc/pki/rpm-gpg/MICROSOFT-METADATA-GPG-KEY",
 				},
 			},
 			PreInstallScripts: []InstallScript{

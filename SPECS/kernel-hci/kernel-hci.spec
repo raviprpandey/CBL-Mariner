@@ -2,13 +2,22 @@
 %global sha512hmac bash %{_sourcedir}/sha512hmac-openssl.sh
 %define uname_r %{version}-%{release}
 
+# find_debuginfo.sh arguments are set by default in rpm's macros.
+# The default arguments regenerate the build-id for vmlinux in the
+# debuginfo package causing a mismatch with the build-id for vmlinuz in
+# the kernel package. Therefore, explicilty set the relevant default
+# settings to prevent this behavior.
+%undefine _unique_build_ids
+%undefine _unique_debug_names
+%global _missing_build_ids_terminate_build 1
+%global _no_recompute_build_ids 1
+
 %define arch x86_64
 %define archdir x86
 %define config_source %{SOURCE1}
-
 Summary:        Linux Kernel for HCI
 Name:           kernel-hci
-Version:        5.15.95.1
+Version:        5.15.133.1
 Release:        1%{?dist}
 License:        GPLv2
 Vendor:         Microsoft Corporation
@@ -44,6 +53,8 @@ Patch22:        0023-net-mlx5-Bridge-rename-filter-fg-to-vlan_filter.patch
 Patch23:        0024-net-mlx5-Bridge-extract-VLAN-push-pop-actions-creati.patch
 Patch24:        0025-net-mlx5-Bridge-implement-infrastructure-for-VLAN-pr.patch
 Patch25:        0026-net-mlx5-Bridge-implement-QinQ-support.patch
+Patch26:        0027-mstflint-This-driver-enables-under-the-secure-boot.patch
+Patch27:        0028-net-mlx5-Bridge-use-debug-not-warn-if-entry-not-found.patch
 BuildRequires:  audit-devel
 BuildRequires:  bash
 BuildRequires:  bc
@@ -51,6 +62,7 @@ BuildRequires:  diffutils
 BuildRequires:  dwarves
 BuildRequires:  elfutils-libelf-devel
 BuildRequires:  glib-devel
+BuildRequires:  grub2-rpm-macros
 BuildRequires:  kbd
 BuildRequires:  kmod-devel
 BuildRequires:  libdnet-devel
@@ -58,10 +70,10 @@ BuildRequires:  libmspack-devel
 BuildRequires:  openssl
 BuildRequires:  openssl-devel
 BuildRequires:  pam-devel
+BuildRequires:  pciutils-devel
 BuildRequires:  procps-ng-devel
 BuildRequires:  python3-devel
 BuildRequires:  sed
-BuildRequires:  pciutils-devel
 Requires:       filesystem
 Requires:       kmod
 Requires(post): coreutils
@@ -185,6 +197,8 @@ manipulation of eBPF programs and maps.
 %patch23 -p1
 %patch24 -p1
 %patch25 -p1
+%patch26 -p1
+%patch27 -p1
 
 make mrproper
 
@@ -333,10 +347,12 @@ then
           test -n "$list" && ln -sf "$list" /boot/mariner.cfg
      fi
 fi
+%grub2_postun
 
 %post
 /sbin/depmod -a %{uname_r}
 ln -sf linux-%{uname_r}.cfg /boot/mariner.cfg
+%grub2_post
 
 %post drivers-accessibility
 /sbin/depmod -a %{uname_r}
@@ -350,7 +366,7 @@ ln -sf linux-%{uname_r}.cfg /boot/mariner.cfg
 %files
 %defattr(-,root,root)
 %license COPYING
-%exclude %dir /usr/lib/debug
+%exclude %dir %{_libdir}/debug
 /boot/System.map-%{uname_r}
 /boot/config-%{uname_r}
 /boot/vmlinuz-%{uname_r}
@@ -418,6 +434,75 @@ ln -sf linux-%{uname_r}.cfg /boot/mariner.cfg
 %{_sysconfdir}/bash_completion.d/bpftool
 
 %changelog
+* Tue Sep 26 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 5.15.133.1-1
+- Auto-upgrade to 5.15.133.1
+
+* Tue Sep 22 2023 Cameron Baird <cameronbaird@microsoft.com> - 5.15.131.1-3
+- Call grub2-mkconfig to regenerate configs only if the user has 
+    previously used grub2-mkconfig for boot configuration. 
+
+* Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 5.15.131.1-2
+- Recompile with stack-protection fixed gcc version (CVE-2023-4039)
+
+* Fri Sep 08 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 5.15.131.1-1
+- Auto-upgrade to 5.15.131.1
+
+* Mon Aug 14 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 5.15.126.1-1
+- Auto-upgrade to 5.15.126.1
+
+* Wed Aug 09 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 5.15.125.1-1
+- Auto-upgrade to 5.15.125.1
+
+* Mon Aug 07 2023 Lanze Liu <lanzeliu@microsoft.com> - 5.15.123.1-2
+- Add patch (0028) to enable DM multipath Kernel configurations
+-   Changed CONFIG options:
+-       Enabled DM multipath QLogic support (`CONFIG_DM_MULTIPATH_QL=m`)
+-       Enabled DM multipath SCSI device handler (`CONFIG_DM_MULTIPATH_ST=m`)
+-       Enabled DM multipath hardware-specific module (`CONFIG_DM_MULTIPATH_HST=m`)
+-       Enabled DM multipath I/O ASCII storage (`CONFIG_DM_MULTIPATH_IOA=m`)
+
+* Tue Aug 01 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 5.15.123.1-1
+- Auto-upgrade to 5.15.123.1
+
+* Fri Jul 28 2023 Vince Perri <viperri@microsoft.com> - 5.15.122.1-2
+- Add net/mlx5 patch (27) switching warn message to debug
+
+* Wed Jul 26 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 5.15.122.1-1
+- Auto-upgrade to 5.15.122.1
+
+* Wed Jun 28 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 5.15.118.1-1
+- Auto-upgrade to 5.15.118.1
+
+* Tue Jun 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 5.15.116.1-1
+- Auto-upgrade to 5.15.116.1
+
+* Tue May 23 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 5.15.112.1-1
+- Auto-upgrade to 5.15.112.1
+
+* Mon May 15 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 5.15.111.1-1
+- Auto-upgrade to 5.15.111.1
+
+* Thu May 11 2023 Elaheh Dehghani <edehghani@microsoft.com> - 5.15.110.1-2
+- Enable mstflint driver for secure boot.
+
+* Mon May 01 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 5.15.110.1-1
+- Auto-upgrade to 5.15.110.1
+
+* Wed Apr 19 2023 Rachel Menge <rachelmenge@microsoft.com> - 5.15.107.1-2
+- Disable rpm's debuginfo defaults which regenerate build-ids
+
+* Tue Apr 18 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 5.15.107.1-1
+- Auto-upgrade to 5.15.107.1
+
+* Tue Apr 11 2023 Kanika Nema <kanikanema@microsoft.com> - 5.15.102.1-2
+- Enable nvme-tcp and nvme-rdma modules
+
+* Tue Mar 14 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 5.15.102.1-1
+- Auto-upgrade to 5.15.102.1
+
+* Mon Mar 06 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 5.15.98.1-1
+- Auto-upgrade to 5.15.98.1
+
 * Sat Feb 25 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 5.15.95.1-1
 - Auto-upgrade to 5.15.95.1
 

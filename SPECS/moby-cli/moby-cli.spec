@@ -1,10 +1,10 @@
 %define upstream_name cli
-%define commit_hash e91ed5707e038b02af3b5120fa0835c5bedfd42e
+%define commit_hash b82b9f3a0e763304a250531cb9350aa6d93723c9
 
 Summary: The open-source application container engine client.
 Name: moby-%{upstream_name}
-Version: 20.10.12
-Release: 7%{?dist}
+Version: 20.10.25
+Release: 1%{?dist}
 License: ASL 2.0
 Group: Tools/Container
 URL: https://github.com/docker/cli
@@ -80,6 +80,30 @@ install -p -m 644 contrib/completion/fish/docker.fish %{buildroot}%{_datadir}/fi
 %{_datadir}/fish/vendor_completions.d/docker.fish
 
 %changelog
+* Thu Aug 17 2023 Muhammad Falak <mwani@microsoft.com> - 20.10.25-1
+- Bump version to 20.10.25
+
+* Mon Aug 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 20.10.24-4
+- Bump release to rebuild with go 1.19.12
+
+* Thu Jul 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 20.10.24-3
+- Bump release to rebuild with go 1.19.11
+
+* Thu Jun 15 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 20.10.24-2
+- Bump release to rebuild with go 1.19.10
+
+* Fri Apr 21 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 20.10.24-1
+- Auto-upgrade to 20.10.24 - none
+
+* Wed Apr 05 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 20.10.12-10
+- Bump release to rebuild with go 1.19.8
+
+* Tue Mar 28 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 20.10.12-9
+- Bump release to rebuild with go 1.19.7
+
+* Wed Mar 15 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 20.10.12-8
+- Bump release to rebuild with go 1.19.6
+
 * Fri Feb 03 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 20.10.12-7
 - Bump release to rebuild with go 1.19.5
 

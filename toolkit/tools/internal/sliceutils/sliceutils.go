@@ -3,7 +3,11 @@
 
 package sliceutils
 
-import "reflect"
+import (
+	"reflect"
+
+	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/pkgjson"
+)
 
 // NotFound value is returned by Find(), if a given value is not present in the slice.
 const NotFound = -1
@@ -27,8 +31,8 @@ func Find(slice interface{}, searched interface{}, cond func(interface{}, interf
 }
 
 // FindMatches returns a new slice keeping only these elements from slice that matcher returned true for.
-func FindMatches(slice []string, isMatch func(string) bool) []string {
-	result := []string{}
+func FindMatches[T comparable](slice []T, isMatch func(T) bool) []T {
+	result := []T{}
 	for _, v := range slice {
 		if isMatch(v) {
 			result = append(result, v)
@@ -37,21 +41,51 @@ func FindMatches(slice []string, isMatch func(string) bool) []string {
 	return result
 }
 
-// StringMatch is intended to be used with "Find" for slices of strings.
+// StringMatch is intended to be used with "Contains" and "Find" for slices of strings.
 func StringMatch(expected, given interface{}) bool {
+	if checkValid, checkResult := nilCheck(expected, given); checkValid {
+		return checkResult
+	}
+
 	return expected.(string) == given.(string)
 }
 
-func StringsSetToSlice(inputSet map[string]bool) []string {
-	index := 0
-	outputSlice := make([]string, len(inputSet))
+// PackageVerMatch is intended to be used with "Contains" and "Find" for slices of *pkgjson.PackageVers.
+func PackageVerMatch(expected, given interface{}) bool {
+	if checkValid, checkResult := nilCheck(expected, given); checkValid {
+		return checkResult
+	}
 
+	return reflect.DeepEqual(expected.(*pkgjson.PackageVer), given.(*pkgjson.PackageVer))
+}
+
+// SetToSlice converts a map[T]bool to a slice containing the map's keys.
+func SetToSlice[T comparable](inputSet map[T]bool) []T {
+	index := 0
+	outputSlice := make([]T, len(inputSet))
 	for element, elementInSet := range inputSet {
 		if elementInSet {
 			outputSlice[index] = element
 			index++
 		}
 	}
-
 	return outputSlice[:index]
+}
+
+// SliceToSet converts a slice of K to a map[K]bool.
+func SliceToSet[K comparable](inputSlice []K) (outputSet map[K]bool) {
+	outputSet = make(map[K]bool, len(inputSlice))
+	for _, element := range inputSlice {
+		outputSet[element] = true
+	}
+	return outputSet
+}
+
+// RemoveDuplicatesFromSlice removes duplicate elements from a slice.
+func RemoveDuplicatesFromSlice[K comparable](inputSlice []K) (outputSlice []K) {
+	return SetToSlice(SliceToSet(inputSlice))
+}
+
+func nilCheck(expected interface{}, given interface{}) (checkValid, checkResult bool) {
+	return (expected == nil || given == nil), (expected == nil && given == nil)
 }

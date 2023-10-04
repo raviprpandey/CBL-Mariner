@@ -1,7 +1,7 @@
 Summary:        CBL-Mariner release files
 Name:           mariner-release
 Version:        2.0
-Release:        35%{?dist}
+Release:        52%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -62,6 +62,57 @@ EOF
 %config(noreplace) %{_sysconfdir}/issue.net
 
 %changelog
+* Wed Sep 27 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.0-52
+- Bump release for October 2023 Release
+
+* Wed Sep 20 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.0-51
+- Bump release for September 2023 Update 2
+
+* Mon Sep 04 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.0-50
+- Bump release for September 2023 Update
+
+* Mon Aug 21 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.0-49
+- Bump release for August 2023 Release 3
+
+* Thu Aug 10 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.0-48
+- Bump release for August 2023 Release 2
+
+* Thu Aug 10 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.0-47
+- Bump release for August 2023 Update 2
+
+* Fri Aug 04 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.0-46
+- Bump release for August 2023 Release
+
+* Mon Jul 10 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.0-45
+- Bump release for July 2023 Update
+
+* Thu Jun 29 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.0-44
+- Bump release for June 2023 Update 3
+
+* Sun Jun 18 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.0-43
+- Bump release for June 2023 Update 2
+
+* Sat Jun 03 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.0-42
+- Bump release for June 2023 Update
+
+* Fri May 26 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.0-41
+- Bump release for May 2023 Update 2
+
+* Tue May 16 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.0-40
+- Bump release for May 2023 Update
+
+* Tue May 16 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.0-39
+- Bump release for May 2023 Update
+
+* Sat Apr 22 2023 Jon Slobodzian <joslobo@microsoft.com> - 2.0-38
+- Updating version for April update 2
+
+* Thu Apr 06 2023 Jon Slobodzian <joslobo@microsoft.com> - 2.0-37
+- Updating version for April update.
+
+* Fri Mar 17 2023 Pawel Winogrodzki <pawelwi@microsoft.com> - 2.0-36
+- Updating version for March 2023 update 2.
+
 * Thu Mar 02 2023 Andrew Phelps <anphel@microsoft.com> - 2.0-35
 - Updating version for March 2023 update 1.
 

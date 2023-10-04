@@ -333,6 +333,7 @@ case $(uname -m) in
 esac
 # disable no-pie for gcc binaries
 sed -i '/^NO_PIE_CFLAGS = /s/@NO_PIE_CFLAGS@//' gcc/Makefile.in
+patch -Np1 -i /tools/CVE-2023-4039.patch
 # LFS 7.4:  Workaround a bug so that GCC doesn't install libiberty.a, which is already provided by Binutils:
 # sed -i 's/install_to_$(INSTALL_DEST) //' libiberty/Makefile.in
 # Need to remove this link to /tools/lib/gcc as the final gcc includes will be installed here.
@@ -1057,12 +1058,12 @@ popd
 rm -rf libarchive-3.6.1
 touch /logs/status_libarchive_complete
 
-echo lua-5.4.3
-tar xf lua-5.4.3.tar.gz
-pushd lua-5.4.3
+echo lua-5.4.4
+tar xf lua-5.4.4.tar.gz
+pushd lua-5.4.4
 cat > lua.pc << "EOF"
 V=5.4
-R=5.4.3
+R=5.4.4
 prefix=/usr
 INSTALL_BIN=${prefix}/bin
 INSTALL_INC=${prefix}/include
@@ -1080,19 +1081,19 @@ Requires:
 Libs: -L${libdir} -llua -lm -ldl
 Cflags: -I${includedir}
 EOF
-patch -Np1 -i ../lua-5.4.3-shared_library-1.patch
+patch -Np1 -i ../lua-5.4.4-shared_library-2.patch
 sed -i '/#define LUA_ROOT/s:/usr/local/:/usr/:' src/luaconf.h
 make MYCFLAGS="-DLUA_COMPAT_5_2 -DLUA_COMPAT_5_1" linux
 make INSTALL_TOP=/usr                \
      INSTALL_DATA="cp -d"            \
      INSTALL_MAN=/usr/share/man/man1 \
-     TO_LIB="liblua.so liblua.so.5.4 liblua.so.5.4.3" \
+     TO_LIB="liblua.so liblua.so.5.4 liblua.so.5.4.4" \
      install
-mkdir -pv                      /usr/share/doc/lua-5.4.3
-cp -v doc/*.{html,css,gif,png} /usr/share/doc/lua-5.4.3
+mkdir -pv                      /usr/share/doc/lua-5.4.4
+cp -v doc/*.{html,css,gif,png} /usr/share/doc/lua-5.4.4
 install -v -m644 -D lua.pc /usr/lib/pkgconfig/lua.pc
 popd
-rm -rf lua-5.4.3
+rm -rf lua-5.4.4
 touch /logs/status_lua_complete
 
 DEBUGEDIT_WITH_VERSION=debugedit-5.0

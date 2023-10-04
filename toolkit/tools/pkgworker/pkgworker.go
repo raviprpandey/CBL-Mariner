@@ -27,8 +27,8 @@ import (
 )
 
 const (
-	chrootRpmBuildRoot      = "/usr/src/mariner"
 	chrootLocalRpmsDir      = "/localrpms"
+	chrootLocalToolchainDir = "/toolchainrpms"
 	chrootLocalRpmsCacheDir = "/upstream-cached-rpms"
 	chrootCcacheDir         = "/ccache-dir"
 )
@@ -41,6 +41,7 @@ var (
 	repoFile             = app.Flag("repo-file", "Full path to local.repo").Required().ExistingFile()
 	rpmsDirPath          = app.Flag("rpm-dir", "The directory to use as the local repo and to submit RPM packages to").Required().ExistingDir()
 	srpmsDirPath         = app.Flag("srpm-dir", "The output directory for source RPM packages").Required().String()
+	toolchainDirPath     = app.Flag("toolchain-rpms-dir", "Directory that contains already built toolchain RPMs. Should contain a top level directory for each architecture.").Required().ExistingDir()
 	cacheDir             = app.Flag("cache-dir", "The cache directory containing downloaded dependency RPMS from CBL-Mariner Base").Required().ExistingDir()
 	ccacheDir            = app.Flag("ccache-dir", "The directory used to store ccache outputs").Required().ExistingDir()
 	noCleanup            = app.Flag("no-cleanup", "Whether or not to delete the chroot folder after the build is done").Bool()
@@ -52,18 +53,14 @@ var (
 	packagesToInstall    = app.Flag("install-package", "Filepaths to RPM packages that should be installed before building.").Strings()
 	outArch              = app.Flag("out-arch", "Architecture of resulting package").String()
 	useCcache            = app.Flag("use-ccache", "Automatically install and use ccache during package builds").Bool()
+	maxCPU               = app.Flag("max-cpu", "Max number of CPUs used for package building").Default("").String()
 
 	logFile  = exe.LogFileFlag(app)
 	logLevel = exe.LogLevelFlag(app)
 )
 
 var (
-	brPackageNameRegex        = regexp.MustCompile(`^[^\s]+`)
-	equalToRegex              = regexp.MustCompile(` '?='? `)
-	greaterThanOrEqualRegex   = regexp.MustCompile(` '?>='? [^ ]*`)
-	installedPackageNameRegex = regexp.MustCompile(`^(.+)(-[^-]+-[^-]+)`)
-	lessThanOrEqualToRegex    = regexp.MustCompile(` '?<='? `)
-	packageUnavailableRegex   = regexp.MustCompile(`^No package \\x1b\[1m\\x1b\[30m(.+) \\x1b\[0mavailable`)
+	packageUnavailableRegex = regexp.MustCompile(`^No package \\x1b\[1m\\x1b\[30m(.+) \\x1b\[0mavailable`)
 )
 
 func main() {
@@ -74,22 +71,26 @@ func main() {
 	rpmsDirAbsPath, err := filepath.Abs(*rpmsDirPath)
 	logger.PanicOnError(err, "Unable to find absolute path for RPMs directory '%s'", *rpmsDirPath)
 
+	toolchainDirAbsPath, err := filepath.Abs(*toolchainDirPath)
+	logger.PanicOnError(err, "Unable to find absolute path for toolchain RPMs directory '%s'", *toolchainDirPath)
+
 	srpmsDirAbsPath, err := filepath.Abs(*srpmsDirPath)
 	logger.PanicOnError(err, "Unable to find absolute path for SRPMs directory '%s'", *srpmsDirPath)
 
-	srpmName := strings.TrimSuffix(filepath.Base(*srpmFile), ".src.rpm")
-	chrootDir := filepath.Join(*workDir, srpmName)
+	chrootDir := buildChrootDirPath(*workDir, *srpmFile, *runCheck)
 
-	defines := rpm.DefaultDefines(*runCheck)
-	defines[rpm.DistTagDefine] = *distTag
+	defines := rpm.DefaultDefinesWithDist(*runCheck, *distTag)
 	defines[rpm.DistroReleaseVersionDefine] = *distroReleaseVersion
 	defines[rpm.DistroBuildNumberDefine] = *distroBuildNumber
 	defines[rpm.MarinerModuleLdflagsDefine] = "-Wl,-dT,%{_topdir}/BUILD/module_info.ld"
 	if *useCcache {
 		defines[rpm.MarinerCCacheDefine] = "true"
 	}
+	if *maxCPU != "" {
+		defines[rpm.MaxCPUDefine] = *maxCPU
+	}
 
-	builtRPMs, err := buildSRPMInChroot(chrootDir, rpmsDirAbsPath, *workerTar, *srpmFile, *repoFile, *rpmmacrosFile, *outArch, defines, *noCleanup, *runCheck, *packagesToInstall, *useCcache)
+	builtRPMs, err := buildSRPMInChroot(chrootDir, rpmsDirAbsPath, toolchainDirAbsPath, *workerTar, *srpmFile, *repoFile, *rpmmacrosFile, *outArch, defines, *noCleanup, *runCheck, *packagesToInstall, *useCcache)
 	logger.PanicOnError(err, "Failed to build SRPM '%s'. For details see log file: %s .", *srpmFile, *logFile)
 
 	err = copySRPMToOutput(*srpmFile, srpmsDirAbsPath)
@@ -97,12 +98,12 @@ func main() {
 
 	// On success write a comma-seperated list of RPMs built to stdout that can be parsed by the invoker.
 	// Any output from logger will be on stderr so stdout will only contain this output.
-	fmt.Printf(strings.Join(builtRPMs, ","))
+	if !*runCheck {
+		fmt.Print(strings.Join(builtRPMs, ","))
+	}
 }
 
 func copySRPMToOutput(srpmFilePath, srpmOutputDirPath string) (err error) {
-	const srpmsDirName = "SRPMS"
-
 	srpmFileName := filepath.Base(srpmFilePath)
 	srpmOutputFilePath := filepath.Join(srpmOutputDirPath, srpmFileName)
 
@@ -111,16 +112,24 @@ func copySRPMToOutput(srpmFilePath, srpmOutputDirPath string) (err error) {
 	return
 }
 
-func buildSRPMInChroot(chrootDir, rpmDirPath, workerTar, srpmFile, repoFile, rpmmacrosFile, outArch string, defines map[string]string, noCleanup, runCheck bool, packagesToInstall []string, useCcache bool) (builtRPMs []string, err error) {
+func buildChrootDirPath(workDir, srpmFilePath string, runCheck bool) (chrootDirPath string) {
+	buildDirName := strings.TrimSuffix(filepath.Base(*srpmFile), ".src.rpm")
+	if runCheck {
+		buildDirName += "_TEST_BUILD"
+	}
+
+	return filepath.Join(workDir, buildDirName)
+}
+
+func buildSRPMInChroot(chrootDir, rpmDirPath, toolchainDirPath, workerTar, srpmFile, repoFile, rpmmacrosFile, outArch string, defines map[string]string, noCleanup, runCheck bool, packagesToInstall []string, useCcache bool) (builtRPMs []string, err error) {
 	const (
 		buildHeartbeatTimeout = 30 * time.Minute
 
 		existingChrootDir = false
-		squashErrors      = false
 
-		overlaySource  = ""
-		overlayWorkDir = "/overlaywork"
-		rpmDirName     = "RPMS"
+		overlaySource           = ""
+		overlayWorkDirRpms      = "/overlaywork_rpms"
+		overlayWorkDirToolchain = "/overlaywork_toolchain"
 	)
 
 	srpmBaseName := filepath.Base(srpmFile)
@@ -148,11 +157,13 @@ func buildSRPMInChroot(chrootDir, rpmDirPath, workerTar, srpmFile, repoFile, rpm
 	// Create the chroot used to build the SRPM
 	chroot := safechroot.NewChroot(chrootDir, existingChrootDir)
 
-	overlayMount, overlayExtraDirs := safechroot.NewOverlayMountPoint(chroot.RootDir(), overlaySource, chrootLocalRpmsDir, rpmDirPath, chrootLocalRpmsDir, overlayWorkDir)
+	outRpmsOverlayMount, outRpmsOverlayExtraDirs := safechroot.NewOverlayMountPoint(chroot.RootDir(), overlaySource, chrootLocalRpmsDir, rpmDirPath, chrootLocalRpmsDir, overlayWorkDirRpms)
+	toolchainRpmsOverlayMount, toolchainRpmsOverlayExtraDirs := safechroot.NewOverlayMountPoint(chroot.RootDir(), overlaySource, chrootLocalToolchainDir, toolchainDirPath, chrootLocalToolchainDir, overlayWorkDirToolchain)
 	rpmCacheMount := safechroot.NewMountPoint(*cacheDir, chrootLocalRpmsCacheDir, "", safechroot.BindMountPointFlags, "")
 	ccacheMount := safechroot.NewMountPoint(*ccacheDir, chrootCcacheDir, "", safechroot.BindMountPointFlags, "")
-	mountPoints := []*safechroot.MountPoint{overlayMount, rpmCacheMount, ccacheMount}
-	extraDirs := append(overlayExtraDirs, chrootLocalRpmsCacheDir, chrootCcacheDir)
+	mountPoints := []*safechroot.MountPoint{outRpmsOverlayMount, toolchainRpmsOverlayMount, rpmCacheMount, ccacheMount}
+	extraDirs := append(outRpmsOverlayExtraDirs, chrootLocalRpmsCacheDir, chrootCcacheDir)
+	extraDirs = append(extraDirs, toolchainRpmsOverlayExtraDirs...)
 
 	err = chroot.Initialize(workerTar, extraDirs, mountPoints)
 	if err != nil {
@@ -173,8 +184,9 @@ func buildSRPMInChroot(chrootDir, rpmDirPath, workerTar, srpmFile, repoFile, rpm
 		return
 	}
 
-	rpmBuildOutputDir := filepath.Join(chroot.RootDir(), chrootRpmBuildRoot, rpmDirName)
-	builtRPMs, err = moveBuiltRPMs(rpmBuildOutputDir, rpmDirPath)
+	if !runCheck {
+		builtRPMs, err = moveBuiltRPMs(chroot.RootDir(), rpmDirPath)
+	}
 
 	return
 }
@@ -182,6 +194,12 @@ func buildSRPMInChroot(chrootDir, rpmDirPath, workerTar, srpmFile, repoFile, rpm
 func buildRPMFromSRPMInChroot(srpmFile, outArch string, runCheck bool, defines map[string]string, packagesToInstall []string, useCcache bool) (err error) {
 	// Convert /localrpms into a repository that a package manager can use.
 	err = rpmrepomanager.CreateRepo(chrootLocalRpmsDir)
+	if err != nil {
+		return
+	}
+
+	// Convert /toolchainrpms into a repository that a package manager can use.
+	err = rpmrepomanager.CreateRepo(chrootLocalToolchainDir)
 	if err != nil {
 		return
 	}
@@ -212,16 +230,21 @@ func buildRPMFromSRPMInChroot(srpmFile, outArch string, runCheck bool, defines m
 
 	// Build the SRPM
 	if runCheck {
-		err = rpm.BuildRPMFromSRPM(srpmFile, outArch, defines)
+		err = rpm.TestRPMFromSRPM(srpmFile, outArch, defines)
 	} else {
-		err = rpm.BuildRPMFromSRPM(srpmFile, outArch, defines, "--nocheck")
+		err = rpm.BuildRPMFromSRPM(srpmFile, outArch, defines)
 	}
 
 	return
 }
 
-func moveBuiltRPMs(rpmOutDir, dstDir string) (builtRPMs []string, err error) {
-	const rpmExtension = ".rpm"
+func moveBuiltRPMs(chrootRootDir, dstDir string) (builtRPMs []string, err error) {
+	const (
+		chrootRpmBuildDir = "/usr/src/mariner/RPMS"
+		rpmExtension      = ".rpm"
+	)
+
+	rpmOutDir := filepath.Join(chrootRootDir, chrootRpmBuildDir)
 	err = filepath.Walk(rpmOutDir, func(path string, info os.FileInfo, fileErr error) (err error) {
 		if fileErr != nil {
 			return fileErr
@@ -345,7 +368,7 @@ func tdnfInstall(packages []string) (err error) {
 // the build environment has libtool archive files present, gnu configure could
 // detect it and create more libtool archive files which can cause build failures.
 func removeLibArchivesFromSystem() (err error) {
-	dirsToExclude := []string{"/proc", "/dev", "/sys", "/run"}
+	dirsToExclude := []string{"/proc", "/dev", "/sys", "/run", "/ccache-dir"}
 
 	err = filepath.Walk("/", func(path string, info os.FileInfo, err error) error {
 		if err != nil {
@@ -354,6 +377,7 @@ func removeLibArchivesFromSystem() (err error) {
 
 		// Skip directories that are meant for device files and kernel virtual filesystems.
 		// These will not contain .la files and are mounted into the safechroot from the host.
+		// Also skip /ccache-dir, which is shared between chroots
 		if info.IsDir() && sliceutils.Contains(dirsToExclude, path, sliceutils.StringMatch) {
 			return filepath.SkipDir
 		}

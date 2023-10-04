@@ -54,8 +54,7 @@ func main() {
 
 // analyzeGraph analyzes and prints various attributes of a graph file.
 func analyzeGraph(inputFile string, maxResults int) (err error) {
-	pkgGraph := pkggraph.NewPkgGraph()
-	err = pkggraph.ReadDOTGraphFile(pkgGraph, inputFile)
+	pkgGraph, err := pkggraph.ReadDOTGraphFile(inputFile)
 	if err != nil {
 		return
 	}
@@ -74,7 +73,9 @@ func printIndirectlyMostUnresolved(pkgGraph *pkggraph.PkgGraph, maxResults int) 
 	unresolvedPackageDependents := make(map[string][]string)
 
 	for _, node := range pkgGraph.AllNodes() {
-		if node.Type != pkggraph.TypeRun && node.Type != pkggraph.TypeBuild {
+		if node.Type != pkggraph.TypeLocalRun &&
+			node.Type != pkggraph.TypeLocalBuild &&
+			node.Type != pkggraph.TypeTest {
 			continue
 		}
 
@@ -136,7 +137,7 @@ func printDirectlyClosestToBeingUnblocked(pkgGraph *pkggraph.PkgGraph, maxResult
 	srpmsBlockedBy := make(map[string][]string)
 
 	for _, node := range pkgGraph.AllNodes() {
-		if node.Type != pkggraph.TypeBuild {
+		if node.Type != pkggraph.TypeLocalBuild {
 			continue
 		}
 
@@ -177,7 +178,7 @@ func printIndirectlyClosestToBeingUnblocked(pkgGraph *pkggraph.PkgGraph, maxResu
 	srpmsBlockedByPaths := make(map[string][][]graph.Node)
 
 	for _, node := range pkgGraph.AllNodes() {
-		if node.Type != pkggraph.TypeBuild {
+		if node.Type != pkggraph.TypeLocalBuild {
 			continue
 		}
 
@@ -231,7 +232,7 @@ func printIndirectlyClosestToBeingUnblocked(pkgGraph *pkggraph.PkgGraph, maxResu
 func nodeDependencyName(node *pkggraph.PkgNode) (name string) {
 	// Prefer the SRPM name if possible, otherwise use the unversioned package name
 	name = node.SRPMFileName()
-	if name == "" || name == "<NO_SRPM_PATH>" {
+	if name == "" || name == pkggraph.NoSRPMPath {
 		name = node.VersionedPkg.Name
 	}
 
@@ -242,7 +243,7 @@ func nodeDependencyName(node *pkggraph.PkgNode) (name string) {
 func nodeRPMName(node *pkggraph.PkgNode) (name string) {
 	// Prefer the SRPM name if possible, otherwise use the unversioned package name
 	name = filepath.Base(node.RpmPath)
-	if name == "" || name == "<NO_RPM_PATH>" {
+	if name == "" || name == pkggraph.NoRPMPath {
 		name = node.VersionedPkg.Name
 	}
 
@@ -344,6 +345,7 @@ func finalPathNodeSRPMMatch(expected, given interface{}) bool {
 }
 
 // convertNodePathToStringPath converts the graph node slice into a string in the following format:
+//
 //	<last_node>: <first_node> [<optional_node_SRPM_name>] -> <second_node> [<optional_node_SRPM_name>] -> (...) -> <last_node> [<optional_node_SRPM_name>]
 func convertNodePathToStringPath(nodePath []graph.Node) string {
 	var pathStrings []string

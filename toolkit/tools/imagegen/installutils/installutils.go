@@ -20,15 +20,19 @@ import (
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/file"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/jsonutils"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/logger"
+	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/packagerepo/repocloner"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/pkgjson"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/randomization"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/retry"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/safechroot"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/shell"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/tdnf"
+	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/timestamp"
 )
 
 const (
+	PackageManifestRelativePath = "image_pkg_manifest_installroot.json"
+
 	// NullDevice represents the /dev/null device used as a mount device for overlay images.
 	NullDevice     = "/dev/null"
 	overlay        = "overlay"
@@ -76,13 +80,13 @@ func GetRequiredPackagesForInstall() []*pkgjson.PackageVer {
 // - mountPointToFsTypeMap is a map of mountpoint to filesystem type
 // - mountPointToMountArgsMap is a map of mountpoint to mount arguments to be passed on a call to mount
 // - diffDiskBuild is a flag that denotes whether this is a diffdisk build or not
-func CreateMountPointPartitionMap(partDevPathMap, partIDToFsTypeMap map[string]string, config configuration.SystemConfig) (mountPointDevPathMap, mountPointToFsTypeMap, mountPointToMountArgsMap map[string]string, diffDiskBuild bool) {
+func CreateMountPointPartitionMap(partDevPathMap, partIDToFsTypeMap map[string]string, partitionSettings []configuration.PartitionSetting) (mountPointDevPathMap, mountPointToFsTypeMap, mountPointToMountArgsMap map[string]string, diffDiskBuild bool) {
 	mountPointDevPathMap = make(map[string]string)
 	mountPointToFsTypeMap = make(map[string]string)
 	mountPointToMountArgsMap = make(map[string]string)
 
 	// Go through each PartitionSetting
-	for _, partitionSetting := range config.PartitionSettings {
+	for _, partitionSetting := range partitionSettings {
 		logger.Log.Tracef("%v[%v]", partitionSetting.ID, partitionSetting.MountPoint)
 		partDevPath, ok := partDevPathMap[partitionSetting.ID]
 		if ok {
@@ -292,7 +296,9 @@ func umount(path string) (err error) {
 // PackageNamesFromSingleSystemConfig goes through the "PackageLists" and "Packages" fields in the "SystemConfig" object, extracting
 // from packageList JSONs and packages listed in config itself to create one comprehensive package list.
 // NOTE: the package list contains the versions restrictions for the packages, if present, in the form "[package][condition][version]".
-//       Example: gcc=9.1.0
+//
+//	Example: gcc=9.1.0
+//
 // - systemConfig is the systemconfig field from the config file
 // Since kernel is not part of the packagelist, it is added separately from KernelOptions.
 func PackageNamesFromSingleSystemConfig(systemConfig configuration.SystemConfig) (finalPkgList []string, err error) {
@@ -349,7 +355,7 @@ func PackageNamesFromConfig(config configuration.Config) (packageList []*pkgjson
 		for _, pkg := range packagesToInstall {
 			var packageVer *pkgjson.PackageVer
 
-			packageVer, err = pkgjson.PackagesListEntryToPackageVer(pkg)
+			packageVer, err = pkgjson.PackageStringToPackageVer(pkg)
 			if err != nil {
 				logger.Log.Errorf("Failed to parse packages list from system config \"%s\".", systemCfg.Name)
 				return
@@ -360,6 +366,7 @@ func PackageNamesFromConfig(config configuration.Config) (packageList []*pkgjson
 
 		packageList = append(packageList, packages...)
 	}
+
 	return
 }
 
@@ -377,6 +384,9 @@ func PackageNamesFromConfig(config configuration.Config) (packageList []*pkgjson
 // - diffDiskBuild is a flag that denotes whether this is a diffdisk build or not
 // - hidepidEnabled is a flag that denotes whether /proc will be mounted with the hidepid option
 func PopulateInstallRoot(installChroot *safechroot.Chroot, packagesToInstall []string, config configuration.SystemConfig, installMap, mountPointToFsTypeMap, mountPointToMountArgsMap, partIDToDevPathMap, partIDToFsTypeMap map[string]string, isRootFS bool, encryptedRoot diskutils.EncryptedRootDevice, diffDiskBuild, hidepidEnabled bool) (err error) {
+	timestamp.StartEvent("populating install root", nil)
+	defer timestamp.StopEvent(nil)
+
 	const (
 		filesystemPkg = "filesystem"
 	)
@@ -408,7 +418,15 @@ func PopulateInstallRoot(installChroot *safechroot.Chroot, packagesToInstall []s
 	}
 
 	// Calculate how many packages need to be installed so an accurate percent complete can be reported
-	totalPackages, err := calculateTotalPackages(packagesToInstall, installRoot)
+	installedPackages, err := calculateTotalPackages(packagesToInstall, installRoot)
+	if err != nil {
+		return
+	}
+	totalPackages := len(installedPackages.Repo)
+
+	// Write out JSON file with list of packages included in the image
+	packageManifestPath := filepath.Join("/", PackageManifestRelativePath)
+	err = jsonutils.WriteJSONFile(packageManifestPath, installedPackages)
 	if err != nil {
 		return
 	}
@@ -416,6 +434,7 @@ func PopulateInstallRoot(installChroot *safechroot.Chroot, packagesToInstall []s
 	// Keep a running total of how many packages have been installed through all the `TdnfInstallWithProgress` invocations
 	packagesInstalled := 0
 
+	timestamp.StartEvent("installing packages", nil)
 	// Install filesystem package first
 	packagesInstalled, err = TdnfInstallWithProgress(filesystemPkg, installRoot, packagesInstalled, totalPackages, true)
 	if err != nil {
@@ -439,6 +458,9 @@ func PopulateInstallRoot(installChroot *safechroot.Chroot, packagesToInstall []s
 			return
 		}
 	}
+
+	timestamp.StopEvent(nil) // installing packages
+	timestamp.StartEvent("final image configuration", nil)
 
 	// Copy additional files
 	err = copyAdditionalFiles(installChroot, config)
@@ -493,6 +515,8 @@ func PopulateInstallRoot(installChroot *safechroot.Chroot, packagesToInstall []s
 		}
 	}
 
+	timestamp.StopEvent(nil) // final image configuration
+
 	// Run post-install scripts from within the installroot chroot
 	err = runPostInstallScripts(installChroot, config)
 	return
@@ -530,7 +554,6 @@ func initializeRpmDatabase(installRoot string, diffDiskBuild bool) (err error) {
 			return err
 		}
 	}
-	err = initializeTdnfConfiguration(installRoot)
 	return
 }
 
@@ -542,6 +565,8 @@ func TdnfInstall(packageName, installRoot string) (packagesInstalled int, err er
 
 // TdnfInstallWithProgress installs a package in the current environment while optionally reporting progress
 func TdnfInstallWithProgress(packageName, installRoot string, currentPackagesInstalled, totalPackages int, reportProgress bool) (packagesInstalled int, err error) {
+	timestamp.StartEvent("installing"+packageName, nil)
+	defer timestamp.StopEvent(nil)
 	var (
 		releaseverCliArg string
 	)
@@ -595,63 +620,6 @@ func TdnfInstallWithProgress(packageName, installRoot string, currentPackagesIns
 	return
 }
 
-// initializeTdnfConfiguration installs the 'mariner-release' package
-// into the clean RPM root. The package is used by tdnf to properly set
-// the default values for its variables and internal configuration.
-func initializeTdnfConfiguration(installRoot string) (err error) {
-	const (
-		squashErrors   = false
-		releasePackage = "mariner-release"
-	)
-
-	var (
-		releaseverCliArg string
-	)
-
-	logger.Log.Debugf("Downloading '%s' package to a clean RPM root under '%s'.", releasePackage, installRoot)
-
-	releaseverCliArg, err = tdnf.GetReleaseverCliArg()
-	if err != nil {
-		return
-	}
-
-	err = shell.ExecuteLive(squashErrors, "tdnf", "download", releaseverCliArg, "--alldeps", "--destdir", installRoot, releasePackage)
-	if err != nil {
-		logger.Log.Errorf("Failed to prepare the RPM database on downloading the 'mariner-release' package: %v", err)
-		return
-	}
-
-	rpmSearch := filepath.Join(installRoot, "*.rpm")
-	rpmFiles, err := filepath.Glob(rpmSearch)
-	if err != nil {
-		logger.Log.Errorf("Failed to prepare the RPM database while searching for RPM files: %v", err)
-		return
-	}
-
-	defer func() {
-		logger.Log.Tracef("Cleaning up leftover RPM files after installing 'mariner-release' package under '%s'.", installRoot)
-		for _, file := range rpmFiles {
-			err = os.Remove(file)
-			if err != nil {
-				logger.Log.Errorf("Failed to prepare the RPM database on removing leftover file (%s): %v", file, err)
-				return
-			}
-		}
-	}()
-
-	logger.Log.Debugf("Installing 'mariner-release' package to a clean RPM root under '%s'.", installRoot)
-
-	rpmArgs := []string{"-i", "--root", installRoot}
-	rpmArgs = append(rpmArgs, rpmFiles...)
-	err = shell.ExecuteLive(squashErrors, "rpm", rpmArgs...)
-	if err != nil {
-		logger.Log.Errorf("Failed to prepare the RPM database on installing the 'mariner-release' package: %v", err)
-		return
-	}
-
-	return
-}
-
 func configureSystemFiles(installChroot *safechroot.Chroot, hostname string, config configuration.SystemConfig, installMap, mountPointToFsTypeMap, mountPointToMountArgsMap, partIDToDevPathMap, partIDToFsTypeMap map[string]string, encryptedRoot diskutils.EncryptedRootDevice, hidepidEnabled bool) (err error) {
 	// Update hosts file
 	err = updateHosts(installChroot.RootDir(), hostname)
@@ -660,7 +628,7 @@ func configureSystemFiles(installChroot *safechroot.Chroot, hostname string, con
 	}
 
 	// Update fstab
-	err = updateFstab(installChroot.RootDir(), config, installMap, mountPointToFsTypeMap, mountPointToMountArgsMap, partIDToDevPathMap, partIDToFsTypeMap, hidepidEnabled)
+	err = UpdateFstab(installChroot.RootDir(), config.PartitionSettings, installMap, mountPointToFsTypeMap, mountPointToMountArgsMap, partIDToDevPathMap, partIDToFsTypeMap, hidepidEnabled)
 	if err != nil {
 		return
 	}
@@ -674,11 +642,14 @@ func configureSystemFiles(installChroot *safechroot.Chroot, hostname string, con
 	return
 }
 
-func calculateTotalPackages(packages []string, installRoot string) (totalPackages int, err error) {
+// calculateTotalPackages will simulate installing the provided list of packages in the installRoot.
+// all packages that will be installed are returned in installedPackages, and a manifest with these packages
+// is generated under build/imagegen/$config_name/image_pkg_manifest.json
+func calculateTotalPackages(packages []string, installRoot string) (installedPackages *repocloner.RepoContents, err error) {
 	var (
 		releaseverCliArg string
 	)
-	allPackageNames := make(map[string]bool)
+	installedPackages = &repocloner.RepoContents{}
 	const tdnfAssumeNoStdErr = "Error(1032) : Operation aborted.\n"
 
 	releaseverCliArg, err = tdnf.GetReleaseverCliArg()
@@ -687,6 +658,8 @@ func calculateTotalPackages(packages []string, installRoot string) (totalPackage
 	}
 
 	// For every package calculate what dependencies would also be installed from it.
+	// checkedPackageSet contains a mapping of all package IDs (name, version, etc) to avoid calculating duplicates
+	checkedPackageSet := make(map[string]bool)
 	for _, pkg := range packages {
 		var (
 			stdout string
@@ -710,39 +683,35 @@ func calculateTotalPackages(packages []string, installRoot string) (totalPackage
 		// Search for the list of packages to be installed,
 		// it will be prefixed with a line "Installing:" and will
 		// end with an empty line.
-		inPackageList := false
 		for _, line := range splitStdout {
-			const (
-				packageListPrefix    = "Installing:"
-				packageNameDelimiter = " "
-			)
-
-			const (
-				packageNameIndex      = iota
-				extraInformationIndex = iota
-				totalPackageNameParts = iota
-			)
-
-			if !inPackageList {
-				inPackageList = strings.HasPrefix(line, packageListPrefix)
+			matches := tdnf.InstallPackageRegex.FindStringSubmatch(line)
+			if len(matches) != tdnf.InstallMaxMatchLen {
+				// This line contains output other than a package information; skip it
 				continue
-			} else if strings.TrimSpace(line) == "" {
-				break
 			}
 
-			// Each package to be installed will list its name, followed by a space and then various extra information
-			pkgSplit := strings.SplitN(line, packageNameDelimiter, totalPackageNameParts)
-			if len(pkgSplit) != totalPackageNameParts {
-				err = fmt.Errorf("unexpected TDNF package name output: %s", line)
-				return
+			pkg := &repocloner.RepoPackage{
+				Name:         matches[tdnf.InstallPackageName],
+				Version:      matches[tdnf.InstallPackageVersion],
+				Architecture: matches[tdnf.InstallPackageArch],
+				Distribution: matches[tdnf.InstallPackageDist],
 			}
 
-			allPackageNames[pkgSplit[packageNameIndex]] = true
+			pkgID := pkg.ID()
+			if checkedPackageSet[pkgID] {
+				logger.Log.Tracef("Skipping duplicate package: %s", line)
+				continue
+			}
+			checkedPackageSet[pkgID] = true
+
+			logger.Log.Debugf("Added installedPackages entry for: %v", pkgID)
+
+			installedPackages.Repo = append(installedPackages.Repo, pkg)
 		}
 	}
 
-	totalPackages = len(allPackageNames)
-	logger.Log.Debugf("All packages to be installed (%d): %v", totalPackages, allPackageNames)
+	logger.Log.Debugf("Total number of packages to be installed: %d", len(installedPackages.Repo))
+
 	return
 }
 
@@ -822,7 +791,7 @@ func updateInitramfsForEncrypt(installChroot *safechroot.Chroot) (err error) {
 	return
 }
 
-func updateFstab(installRoot string, config configuration.SystemConfig, installMap, mountPointToFsTypeMap, mountPointToMountArgsMap, partIDToDevPathMap, partIDToFsTypeMap map[string]string, hidepidEnabled bool) (err error) {
+func UpdateFstab(installRoot string, partitionSettings []configuration.PartitionSetting, installMap, mountPointToFsTypeMap, mountPointToMountArgsMap, partIDToDevPathMap, partIDToFsTypeMap map[string]string, hidepidEnabled bool) (err error) {
 	const (
 		doPseudoFsMount = true
 	)
@@ -830,7 +799,7 @@ func updateFstab(installRoot string, config configuration.SystemConfig, installM
 
 	for mountPoint, devicePath := range installMap {
 		if mountPoint != "" && devicePath != NullDevice {
-			partSetting := config.GetMountpointPartitionSetting(mountPoint)
+			partSetting := configuration.FindMountpointPartitionSetting(partitionSettings, mountPoint)
 			if partSetting == nil {
 				err = fmt.Errorf("unable to find PartitionSetting for '%s", mountPoint)
 				return
@@ -966,14 +935,15 @@ func addEntryToCrypttab(installRoot string, devicePath string, encryptedRoot dis
 	return
 }
 
-//InstallGrubEnv installs an empty grubenv f
-func InstallGrubEnv(installRoot string) (err error) {
+// InstallGrubEnv installs an empty grubenv f
+func InstallGrubEnv(installRoot, assetsDir string) (err error) {
 	const (
-		assetGrubEnvFile = "/installer/grub2/grubenv"
+		assetGrubEnvFile = "grub2/grubenv"
 		grubEnvFile      = "boot/grub2/grubenv"
 	)
+	assetGrubEnvFileFullPath := filepath.Join(assetsDir, assetGrubEnvFile)
 	installGrubEnvFile := filepath.Join(installRoot, grubEnvFile)
-	err = file.CopyAndChangeMode(assetGrubEnvFile, installGrubEnvFile, bootDirectoryDirMode, bootDirectoryFileMode)
+	err = file.CopyAndChangeMode(assetGrubEnvFileFullPath, installGrubEnvFile, bootDirectoryDirMode, bootDirectoryFileMode)
 	if err != nil {
 		logger.Log.Warnf("Failed to copy and change mode of grubenv: %v", err)
 		return
@@ -986,88 +956,111 @@ func InstallGrubEnv(installRoot string) (err error) {
 // - installRoot is the base install directory
 // - rootDevice holds the root partition
 // - bootUUID is the UUID for the boot partition
+// - bootPrefix is the path to the /boot grub configs based on the mountpoints (i.e., if /boot is a separate partition from the rootfs partition, bootPrefix="").
 // - encryptedRoot holds the encrypted root information if encrypted root is enabled
 // - kernelCommandLine contains additional kernel parameters which may be optionally set
+// - readOnlyRoot holds the dm-verity read-only root partition information if dm-verity is enabled.
+// - isBootPartitionSeparate is a boolean value which is true if the /boot partition is separate from the root partition
 // Note: this boot partition could be different than the boot partition specified in the bootloader.
 // This boot partition specifically indicates where to find the kernel, config files, and initrd
-func InstallGrubCfg(installRoot, rootDevice, bootUUID, bootPrefix string, encryptedRoot diskutils.EncryptedRootDevice, kernelCommandLine configuration.KernelCommandLine, readOnlyRoot diskutils.VerityDevice) (err error) {
+func InstallGrubCfg(installRoot, rootDevice, bootUUID, bootPrefix, assetsDir string, encryptedRoot diskutils.EncryptedRootDevice, kernelCommandLine configuration.KernelCommandLine, readOnlyRoot diskutils.VerityDevice, isBootPartitionSeparate bool) (err error) {
 	const (
-		assetGrubcfgFile = "/installer/grub2/grub.cfg"
+		assetGrubcfgFile = "grub2/grub.cfg"
 		grubCfgFile      = "boot/grub2/grub.cfg"
+		assetGrubDefFile = "grub2/grub"
+		grubDefFile      = "etc/default/grub"
 	)
 
 	// Copy the bootloader's grub.cfg and set the file permission
+	assetGrubcfgFileFullPath := filepath.Join(assetsDir, assetGrubcfgFile)
 	installGrubCfgFile := filepath.Join(installRoot, grubCfgFile)
-	err = file.CopyAndChangeMode(assetGrubcfgFile, installGrubCfgFile, bootDirectoryDirMode, bootDirectoryFileMode)
+
+	assetGrubDefFileFullPath := filepath.Join(assetsDir, assetGrubDefFile)
+	installGrubDefFile := filepath.Join(installRoot, grubDefFile)
+
+	err = file.CopyAndChangeMode(assetGrubcfgFileFullPath, installGrubCfgFile, bootDirectoryDirMode, bootDirectoryFileMode)
+	if err != nil {
+		return
+	}
+	err = file.CopyAndChangeMode(assetGrubDefFileFullPath, installGrubDefFile, bootDirectoryDirMode, bootDirectoryFileMode)
 	if err != nil {
 		return
 	}
 
-	// Add in bootUUID
-	err = setGrubCfgBootUUID(bootUUID, installGrubCfgFile)
-	if err != nil {
-		logger.Log.Warnf("Failed to set bootUUID in grub.cfg: %v", err)
-		return
-	}
+	for _, installedFile := range []string{installGrubCfgFile, installGrubDefFile} {
+		// Add in bootUUID
+		err = setGrubCfgBootUUID(bootUUID, installedFile)
+		if err != nil {
+			logger.Log.Warnf("Failed to set bootUUID in grub.cfg: %v", err)
+			return
+		}
 
-	// Add in bootPrefix
-	err = setGrubCfgBootPrefix(bootPrefix, installGrubCfgFile)
-	if err != nil {
-		logger.Log.Warnf("Failed to set bootPrefix in grub.cfg: %v", err)
-		return
-	}
+		// Add in bootPrefix
+		err = setGrubCfgBootPrefix(bootPrefix, installedFile)
+		if err != nil {
+			logger.Log.Warnf("Failed to set bootPrefix in grub.cfg: %v", err)
+			return
+		}
 
-	// Add in rootDevice
-	err = setGrubCfgRootDevice(rootDevice, installGrubCfgFile, encryptedRoot.LuksUUID)
-	if err != nil {
-		logger.Log.Warnf("Failed to set rootDevice in grub.cfg: %v", err)
-		return
-	}
+		// Add in rootDevice
+		err = setGrubCfgRootDevice(rootDevice, installedFile, encryptedRoot.LuksUUID)
+		if err != nil {
+			logger.Log.Warnf("Failed to set rootDevice in grub.cfg: %v", err)
+			return
+		}
 
-	// Add in rootLuksUUID
-	err = setGrubCfgLuksUUID(installGrubCfgFile, encryptedRoot.LuksUUID)
-	if err != nil {
-		logger.Log.Warnf("Failed to set luksUUID in grub.cfg: %v", err)
-		return
-	}
+		// Add in rootLuksUUID
+		err = setGrubCfgLuksUUID(installedFile, encryptedRoot.LuksUUID)
+		if err != nil {
+			logger.Log.Warnf("Failed to set luksUUID in grub.cfg: %v", err)
+			return
+		}
 
-	// Add in logical volumes to active
-	err = setGrubCfgLVM(installGrubCfgFile, encryptedRoot.LuksUUID)
-	if err != nil {
-		logger.Log.Warnf("Failed to set lvm.lv in grub.cfg: %v", err)
-		return
-	}
+		// Add in logical volumes to active
+		err = setGrubCfgLVM(installedFile, encryptedRoot.LuksUUID)
+		if err != nil {
+			logger.Log.Warnf("Failed to set lvm.lv in grub.cfg: %v", err)
+			return
+		}
 
-	// Configure IMA policy
-	err = setGrubCfgIMA(installGrubCfgFile, kernelCommandLine)
-	if err != nil {
-		logger.Log.Warnf("Failed to set ima_policy in grub.cfg: %v", err)
-		return
-	}
+		// Configure IMA policy
+		err = setGrubCfgIMA(installedFile, kernelCommandLine)
+		if err != nil {
+			logger.Log.Warnf("Failed to set ima_policy in grub.cfg: %v", err)
+			return
+		}
 
-	err = setGrubCfgReadOnlyVerityRoot(installGrubCfgFile, readOnlyRoot)
-	if err != nil {
-		logger.Log.Warnf("Failed to set verity root in grub.cfg: %v", err)
-		return
-	}
+		err = setGrubCfgReadOnlyVerityRoot(installedFile, readOnlyRoot)
+		if err != nil {
+			logger.Log.Warnf("Failed to set verity root in grub.cfg: %v", err)
+			return
+		}
 
-	err = setGrubCfgSELinux(installGrubCfgFile, kernelCommandLine)
-	if err != nil {
-		logger.Log.Warnf("Failed to set SELinux in grub.cfg: %v", err)
-		return
-	}
+		err = setGrubCfgSELinux(installedFile, kernelCommandLine)
+		if err != nil {
+			logger.Log.Warnf("Failed to set SELinux in grub.cfg: %v", err)
+			return
+		}
 
-	err = setGrubCfgCGroup(installGrubCfgFile, kernelCommandLine)
-	if err != nil {
-		logger.Log.Warnf("Failed to set CGroup configuration in grub.cfg: %v", err)
-		return
-	}
+		// Configure FIPS
+		err = setGrubCfgFIPS(isBootPartitionSeparate, bootUUID, installedFile, kernelCommandLine)
+		if err != nil {
+			logger.Log.Warnf("Failed to set FIPS in grub.cfg: %v", err)
+			return
+		}
 
-	// Append any additional command line parameters
-	err = setGrubCfgAdditionalCmdLine(installGrubCfgFile, kernelCommandLine)
-	if err != nil {
-		logger.Log.Warnf("Failed to append extra command line parameterse in grub.cfg: %v", err)
-		return
+		err = setGrubCfgCGroup(installedFile, kernelCommandLine)
+		if err != nil {
+			logger.Log.Warnf("Failed to set CGroup configuration in grub.cfg: %v", err)
+			return
+		}
+
+		// Append any additional command line parameters
+		err = setGrubCfgAdditionalCmdLine(installedFile, kernelCommandLine)
+		if err != nil {
+			logger.Log.Warnf("Failed to append extra command line parameters in grub.cfg: %v", err)
+			return
+		}
 	}
 
 	return
@@ -1193,7 +1186,6 @@ func createUserWithPassword(installChroot *safechroot.Chroot, user configuration
 		rootHomeDir       = "/root"
 		userHomeDirPrefix = "/home"
 		postfixLength     = 12
-		alphaNumeric      = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 	)
 
 	var (
@@ -1208,7 +1200,7 @@ func createUserWithPassword(installChroot *safechroot.Chroot, user configuration
 	if user.PasswordHashed {
 		hashedPassword = user.Password
 	} else {
-		salt, err = randomization.RandomString(postfixLength, alphaNumeric)
+		salt, err = randomization.RandomString(postfixLength, randomization.LegalCharactersAlphaNum)
 		if err != nil {
 			return
 		}
@@ -1554,6 +1546,8 @@ func updateUserPassword(installRoot, username, password string) (err error) {
 
 // SELinuxConfigure pre-configures SELinux file labels and configuration files
 func SELinuxConfigure(systemConfig configuration.SystemConfig, installChroot *safechroot.Chroot, mountPointToFsTypeMap map[string]string) (err error) {
+	timestamp.StartEvent("SELinux", nil)
+	defer timestamp.StopEvent(nil)
 	logger.Log.Infof("Preconfiguring SELinux policy in %s mode", systemConfig.KernelCommandLine.SELinux)
 
 	err = selinuxUpdateConfig(systemConfig, installChroot)
@@ -1602,12 +1596,12 @@ func selinuxRelabelFiles(systemConfig configuration.SystemConfig, installChroot 
 	//     only supports the below cases:
 	for mount, fsType := range mountPointToFsTypeMap {
 		switch fsType {
-		case "ext2", "ext3", "ext4":
+		case "ext2", "ext3", "ext4", "xfs":
 			listOfMountsToLabel = append(listOfMountsToLabel, mount)
 		case "fat32", "fat16", "vfat":
 			logger.Log.Debugf("SELinux will not label mount at (%s) of type (%s), skipping", mount, fsType)
 		default:
-			err = fmt.Errorf("Unknown fsType (%s) for mount (%s), cannot configure SELinux", fsType, mount)
+			err = fmt.Errorf("unknown fsType (%s) for mount (%s), cannot configure SELinux", fsType, mount)
 			return
 		}
 	}
@@ -1679,7 +1673,7 @@ func getPackagesFromJSON(file string) (pkgList PackageList, err error) {
 // - bootUUID is the UUID of the boot partition
 // Note: this boot partition could be different than the boot partition specified in the main grub config.
 // This boot partition specifically indicates where to find the main grub cfg
-func InstallBootloader(installChroot *safechroot.Chroot, encryptEnabled bool, bootType, bootUUID, bootPrefix, bootDevPath string) (err error) {
+func InstallBootloader(installChroot *safechroot.Chroot, encryptEnabled bool, bootType, bootUUID, bootPrefix, bootDevPath, assetsDir string) (err error) {
 	const (
 		efiMountPoint  = "/boot/efi"
 		efiBootType    = "efi"
@@ -1697,7 +1691,7 @@ func InstallBootloader(installChroot *safechroot.Chroot, encryptEnabled bool, bo
 		}
 	case efiBootType:
 		efiPath := filepath.Join(installChroot.RootDir(), efiMountPoint)
-		err = installEfiBootloader(encryptEnabled, efiPath, bootUUID, bootPrefix)
+		err = installEfiBootloader(encryptEnabled, efiPath, bootUUID, bootPrefix, assetsDir)
 		if err != nil {
 			return
 		}
@@ -1775,7 +1769,8 @@ func GetPartLabel(device string) (stdout string, err error) {
 }
 
 // FormatMountIdentifier finds the requested identifier type for the given device, and formats it for use
-//  ie "UUID=12345678-abcd..."
+//
+//	ie "UUID=12345678-abcd..."
 func FormatMountIdentifier(identifier configuration.MountIdentifier, device string) (identifierString string, err error) {
 	var id string
 	switch identifier {
@@ -1831,18 +1826,18 @@ func enableCryptoDisk() (err error) {
 // installRoot/boot/efi folder
 // It is expected that shim (bootx64.efi) and grub2 (grub2.efi) are installed
 // into the EFI directory via the package list installation mechanism.
-func installEfiBootloader(encryptEnabled bool, installRoot, bootUUID, bootPrefix string) (err error) {
+func installEfiBootloader(encryptEnabled bool, installRoot, bootUUID, bootPrefix, assetsDir string) (err error) {
 	const (
 		defaultCfgFilename = "grub.cfg"
 		encryptCfgFilename = "grubEncrypt.cfg"
-		grubAssetDir       = "/installer/efi/grub"
+		grubAssetDir       = "efi/grub"
 		grubFinalDir       = "boot/grub2"
 	)
 
 	// Copy the bootloader's grub.cfg
-	grubAssetPath := filepath.Join(grubAssetDir, defaultCfgFilename)
+	grubAssetPath := filepath.Join(assetsDir, grubAssetDir, defaultCfgFilename)
 	if encryptEnabled {
-		grubAssetPath = filepath.Join(grubAssetDir, encryptCfgFilename)
+		grubAssetPath = filepath.Join(assetsDir, grubAssetDir, encryptCfgFilename)
 	}
 	grubFinalPath := filepath.Join(installRoot, grubFinalDir, defaultCfgFilename)
 	err = file.CopyAndChangeMode(grubAssetPath, grubFinalPath, bootDirectoryDirMode, bootDirectoryFileMode)
@@ -1878,17 +1873,26 @@ func installEfiBootloader(encryptEnabled bool, installRoot, bootUUID, bootPrefix
 }
 
 func copyAdditionalFiles(installChroot *safechroot.Chroot, config configuration.SystemConfig) (err error) {
+	return copyAdditionalFilesHelper(installChroot, config.AdditionalFiles)
+}
+
+func copyAdditionalFilesHelper(installChroot *safechroot.Chroot, additionalFiles map[string]configuration.FileConfigList) (err error) {
 	ReportAction("Copying additional files")
+	timestamp.StartEvent("Copying additional files", nil)
+	defer timestamp.StopEvent(nil)
 
-	for srcFile, dstFile := range config.AdditionalFiles {
-		fileToCopy := safechroot.FileToCopy{
-			Src:  srcFile,
-			Dest: dstFile,
-		}
+	for srcFile, dstFileConfigs := range additionalFiles {
+		for _, dstFileConfig := range dstFileConfigs {
+			fileToCopy := safechroot.FileToCopy{
+				Src:         srcFile,
+				Dest:        dstFileConfig.Path,
+				Permissions: (*os.FileMode)(dstFileConfig.Permissions),
+			}
 
-		err = installChroot.AddFiles(fileToCopy)
-		if err != nil {
-			return
+			err = installChroot.AddFiles(fileToCopy)
+			if err != nil {
+				return
+			}
 		}
 	}
 
@@ -1926,6 +1930,8 @@ func RunPreInstallScripts(config configuration.SystemConfig) (err error) {
 }
 
 func runPostInstallScripts(installChroot *safechroot.Chroot, config configuration.SystemConfig) (err error) {
+	timestamp.StartEvent("post install scripts", nil)
+	defer timestamp.StopEvent(nil)
 	const squashErrors = false
 
 	for _, script := range config.PostInstallScripts {
@@ -2065,6 +2071,33 @@ func setGrubCfgSELinux(grubPath string, kernelCommandline configuration.KernelCo
 		logger.Log.Warnf("Failed to set grub.cfg's SELinux setting: %v", err)
 	}
 
+	return
+}
+
+func setGrubCfgFIPS(isBootPartitionSeparate bool, bootUUID, grubPath string, kernelCommandline configuration.KernelCommandLine) (err error) {
+	const (
+		enableFIPSPattern = "{{.FIPS}}"
+		enableFIPS        = "fips=1"
+		bootPrefix        = "boot="
+		uuidPrefix        = "UUID="
+	)
+
+	// If EnableFIPS is set, always add "fips=1" to the kernel cmdline.
+	// If /boot is a dedicated partition from the root partition, add "boot=UUID=<bootUUID value>" as well to the kernel cmdline in grub.cfg.
+	// This second step is required for fips boot-time self tests to find the kernel's .hmac file in the /boot partition.
+	fipsKernelArgument := ""
+	if kernelCommandline.EnableFIPS {
+		fipsKernelArgument = fmt.Sprintf("%s", enableFIPS)
+		if isBootPartitionSeparate {
+			fipsKernelArgument = fmt.Sprintf("%s %s%s%s", fipsKernelArgument, bootPrefix, uuidPrefix, bootUUID)
+		}
+	}
+
+	logger.Log.Debugf("Adding EnableFIPS('%s') to '%s'", fipsKernelArgument, grubPath)
+	err = sed(enableFIPSPattern, fipsKernelArgument, kernelCommandline.GetSedDelimeter(), grubPath)
+	if err != nil {
+		logger.Log.Warnf("Failed to set grub.cfg's EnableFIPS setting: %v", err)
+	}
 	return
 }
 
@@ -2263,6 +2296,9 @@ func setGrubCfgRootDevice(rootDevice, grubPath, luksUUID string) (err error) {
 // - partIDToDevPathMap is a map of partition IDs to partition device paths
 // - mountPointToOverlayMap is a map of mountpoints to the overlay details for this mount if any
 func ExtractPartitionArtifacts(setupChrootDirPath, workDirPath string, diskIndex int, disk configuration.Disk, systemConfig configuration.SystemConfig, partIDToDevPathMap map[string]string, mountPointToOverlayMap map[string]*Overlay) (err error) {
+	timestamp.StartEvent("create partition artifacts", nil)
+	defer timestamp.StopEvent(nil)
+
 	const (
 		ext4ArtifactType  = "ext4"
 		diffArtifactType  = "diff"
@@ -2378,7 +2414,7 @@ func createRDiffArtifact(workDirPath, devPath, rDiffBaseImage, name string) (err
 	return shell.ExecuteLive(squashErrors, "rdiff", rdiffArgs...)
 }
 
-//KernelPackages returns a list of kernel packages obtained from KernelOptions in the config's SystemConfigs
+// KernelPackages returns a list of kernel packages obtained from KernelOptions in the config's SystemConfigs
 func KernelPackages(config configuration.Config) []*pkgjson.PackageVer {
 	var packageList []*pkgjson.PackageVer
 	// Add all the provided kernels to the package list

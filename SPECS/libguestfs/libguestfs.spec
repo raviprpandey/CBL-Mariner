@@ -25,7 +25,7 @@
 Summary:        Access and modify virtual machine disk images
 Name:           libguestfs
 Version:        1.44.0
-Release:        11%{?dist}
+Release:        16%{?dist}
 License:        LGPLv2+
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -89,7 +89,7 @@ BuildRequires:  gcc-c++
 BuildRequires:  gdisk
 BuildRequires:  genisoimage
 BuildRequires:  gfs2-utils
-BuildRequires:  glibc-static >= 2.35-3%{?dist}
+BuildRequires:  glibc-static >= 2.35-5%{?dist}
 BuildRequires:  gobject-introspection-devel
 BuildRequires:  gperf
 BuildRequires:  grep
@@ -755,9 +755,11 @@ cp %{SOURCE9} %{_sysconfdir}/yum.repos.d/allrepos.repo
 # Must keep in sync with BRs under "Build requirements for the appliance"
 # Download to
 mkdir -pv %{_var}/cache/tdnf
-tdnf download -y --disablerepo=* \
-  --enablerepo=local-repo --enablerepo=upstream-cache-repo \
-  --alldeps --destdir %{_var}/cache/tdnf \
+tdnf install --downloadonly -y --disablerepo=* \
+  --enablerepo=local-repo \
+  --enablerepo=upstream-cache-repo \
+  --enablerepo=toolchain-repo \
+  --alldeps --downloaddir %{_var}/cache/tdnf \
     acl \
     attr \
     augeas-libs \
@@ -1234,6 +1236,21 @@ rm ocaml/html/.gitignore
 %endif
 
 %changelog
+* Tue Oct 03 2023 Mandeep Plaha <mandeepplaha@microsoft.com> - 1.44.0-16
+- Bump release to rebuild against glibc 2.35-5
+
+* Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 1.44.0-15
+- Recompile with stack-protection fixed gcc version (CVE-2023-4039)
+
+* Fri Sep 15 2023 Andrew Phelps <anphel@microsoft.com> - 1.44.0-14
+- Enable toolchain-repo with tdnf download command to fix build break
+
+* Wed Jul 05 2023 Andrew Phelps <anphel@microsoft.com> - 1.44.0-13
+- Bump release to rebuild against glibc 2.35-4
+
+* Wed Apr 12 2023 Sam Meluch <sammeluch@microsoft.com> - 1.44.0-12
+- Update tdnf download to tdnf install --downloadonly
+
 * Fri Dec 16 2022 Daniel McIlvaney <damcilva@microsoft.com> - 1.44.0-11
 - Bump release to rebuild with go 1.18.8 with patch for CVE-2022-41717
 

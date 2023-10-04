@@ -1,14 +1,15 @@
 %define majorver %(echo %{version} | cut -d. -f1-2)
 Summary:        Tool Command Language - the language and library.
 Name:           tcl
-Version:        8.6.12
+Version:        8.6.13
 Release:        2%{?dist}
 License:        TCL
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
 Group:          System Environment/Libraries
-URL:            http://tcl.sourceforge.net/
-Source0:        http://downloads.sourceforge.net/sourceforge/tcl/tcl-core%{version}-src.tar.gz
+URL:            https://tcl.sourceforge.net/
+Source0:        https://downloads.sourceforge.net/sourceforge/tcl/tcl-core%{version}-src.tar.gz
+Patch0:         CVE-2023-36328.patch
 BuildRequires:  cmake
 Provides:       tcl(abi) = %{majorver}
 Provides:       tcl-tcldict = %{version}
@@ -30,7 +31,7 @@ Requires:       %{name} = %{version}-%{release}
 Headers and development libraries for tcl
 
 %prep
-%setup -q -n %{name}%{version}
+%autosetup -n %{name}%{version} -p1
 
 %build
 cd unix
@@ -98,6 +99,12 @@ make test
 %{_mandir}/man3/*
 
 %changelog
+* Thu Sep 07 2023 Brian Fjeldstad <bfjelds@microsoft.com> - 8.6.13-2
+- Fix CVE-2023-36328
+
+* Tue Apr 18 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 8.6.13-1
+- Auto-upgrade to 8.6.13 - Fix CVE-2018-25032
+
 * Wed Sep 07 2022 Mateusz Malisz <mamalisz@microsoft.com> - 8.6.12-2
 - Add provides for tcl(abi)
 - Add provides for tcl-tcldict

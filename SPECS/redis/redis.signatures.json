@@ -1,5 +1,5 @@
 {
- "Signatures": {
-  "redis-6.2.9.tar.gz": "9661b2c6b1cc9bf2999471b37a4d759fa5e747d408142c18af8792ebd8384a2a"
- }
+  "Signatures": {
+    "redis-6.2.13.tar.gz": "89ff27c80d420456a721ccfb3beb7cc628d883c53059803513749e13214a23d1"
+  }
 }

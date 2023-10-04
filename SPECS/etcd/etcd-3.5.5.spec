@@ -1,7 +1,9 @@
+%global _default_patch_fuzz 2
+
 Summary:        A highly-available key value store for shared configuration
 Name:           etcd
 Version:        3.5.5
-Release:        2%{?dist}
+Release:        10%{?dist}
 License:        ASL 2.0
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -42,6 +44,8 @@ Source1:        etcd.service
 #             --pax-option=exthdr.name=%d/PaxHeaders/%f,delete=atime,delete=ctime \
 #             -cJf [tarball name] [folder to tar]
 Source2:        %{name}-%{version}-vendor.tar.gz
+Patch0:         CVE-2021-28235.patch
+Patch1:         CVE-2023-32082.patch
 BuildRequires:  golang >= 1.16
 
 %description
@@ -58,7 +62,7 @@ The etcd-tools package contains the etcd-dump-db and etcd-dump-logs diagnostic
 tools.
 
 %prep
-%setup -q
+%autosetup -p1
 tar --no-same-owner -xf %{SOURCE2}
 
 %build
@@ -143,6 +147,32 @@ install -vdm755 %{buildroot}%{_sharedstatedir}/etcd
 /%{_docdir}/%{name}-%{version}-tools/*
 
 %changelog
+* Wed Aug 23 2023 Rachel Menge <rachelmenge@microsoft.com> - 3.5.5-10
+- Patch CVE-2023-32082
+- Update patch fuzz to 2 for backporting patch
+
+* Mon Aug 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.5.5-9
+- Bump release to rebuild with go 1.19.12
+
+* Thu Jul 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.5.5-8
+- Bump release to rebuild with go 1.19.11
+
+* Thu Jun 15 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.5.5-7
+- Bump release to rebuild with go 1.19.10
+
+* Wed Apr 19 2023 Bala <balakumaran.kannan@microsoft.com> - 3.5.5-6
+- Patch CVE-2021-28235
+- Update patch fuzz to 1 for backporting patch
+
+* Wed Apr 05 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.5.5-5
+- Bump release to rebuild with go 1.19.8
+
+* Tue Mar 28 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.5.5-4
+- Bump release to rebuild with go 1.19.7
+
+* Wed Mar 15 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.5.5-3
+- Bump release to rebuild with go 1.19.6
+
 * Fri Feb 03 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.5.5-2
 - Bump release to rebuild with go 1.19.5
 

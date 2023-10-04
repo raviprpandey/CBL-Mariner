@@ -217,7 +217,7 @@ Obsoletes: %{name}-system-unicore32-core <= %{version}-%{release}
 Summary:        QEMU is a FAST! processor emulator
 Name:           qemu
 Version:        6.2.0
-Release:        14%{?dist}
+Release:        18%{?dist}
 License:        BSD AND CC-BY AND GPLv2+ AND LGPLv2+ AND MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -269,6 +269,11 @@ Patch1010:      CVE-2022-3872.patch
 Patch1011:      CVE-2021-3929.patch
 # CVE-2021-4207 is fixed in 7.0.0 by https://gitlab.com/qemu-project/qemu/-/commit/9569f5cb
 Patch1012:      CVE-2021-4207.patch
+Patch1013:      CVE-2022-3165.patch
+# CVE-2021-3750 fix is not in a release yet
+# https://gitlab.com/qemu-project/qemu/-/issues/541
+Patch1014:      CVE-2021-3750.patch
+Patch1015:      CVE-2022-36648.patch
 
 # alsa audio output
 BuildRequires:  alsa-lib-devel
@@ -2303,6 +2308,18 @@ useradd -r -u 107 -g qemu -G kvm -d / -s %{_sbindir}/nologin \
 
 
 %changelog
+* Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 6.2.0-18
+- Recompile with stack-protection fixed gcc version (CVE-2023-4039)
+
+* Mon Aug 28 2023 Brian Fjeldstad <bfjelds@microsoft.com> - 6.2.0-17
+- Address CVE-2022-36648
+
+* Thu Jun 15 2023 Dylan Garrett <dylang@microsoft.com> - 6.2.0-16
+- Address CVE-2021-3750
+
+* Fri Apr 21 2023 Amrita Kohli <amritakohli@microsoft.com> - 6.2.0-15
+- Patch for CVE-2022-3165
+
 * Wed Feb 15 2023 Vince Perri <viperri@microsoft.com> - 6.2.0-14
 - Move PXE and EFI ROM images from system-x86-core to new ipxe subpackage
 - Require ipxe for both system-x86-core and system-aarch64-core packages
@@ -2319,7 +2336,7 @@ useradd -r -u 107 -g qemu -G kvm -d / -s %{_sbindir}/nologin \
 * Wed Oct 26 2022 Olivia Crain <oliviacrain@microsoft.com> - 6.2.0-10
 - Have virtiofsd subpackage obsolete qemu-common from 6.1.0 releases
 
-* Tue Sep 28 2022 Saul Paredes <saulparedes@microsoft.com> - 6.2.0-9
+* Wed Sep 28 2022 Saul Paredes <saulparedes@microsoft.com> - 6.2.0-9
 - Address CVE-2022-2962
 
 * Fri Sep 09 2022 Muhammad Falak <mwani@microsoft.com> - 6.2.0-8

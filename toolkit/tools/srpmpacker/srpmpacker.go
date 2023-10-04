@@ -4,7 +4,6 @@
 package main
 
 import (
-	"bufio"
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
@@ -25,9 +24,12 @@ import (
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/jsonutils"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/logger"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/network"
+	packagelist "github.com/microsoft/CBL-Mariner/toolkit/tools/internal/packlist"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/retry"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/rpm"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/safechroot"
+	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/timestamp"
+	"github.com/microsoft/CBL-Mariner/toolkit/tools/pkg/profile"
 
 	"gopkg.in/alecthomas/kingpin.v2"
 )
@@ -65,7 +67,8 @@ const (
 
 const (
 	defaultBuildDir    = "./build/SRPMS"
-	defaultWorkerCount = "10"
+	defaultWorkerCount = "80"
+	defaultNetOpsCount = "10"
 )
 
 // sourceRetrievalConfiguration holds information on where to hydrate files from.
@@ -97,17 +100,20 @@ type specState struct {
 var (
 	app = kingpin.New("srpmpacker", "A tool to package a SRPM.")
 
-	specsDir = exe.InputDirFlag(app, "Path to the SPEC directory to create SRPMs from.")
-	outDir   = exe.OutputDirFlag(app, "Directory to place the output SRPM.")
-	logFile  = exe.LogFileFlag(app)
-	logLevel = exe.LogLevelFlag(app)
+	specsDir      = exe.InputDirFlag(app, "Path to the SPEC directory to create SRPMs from.")
+	outDir        = exe.OutputDirFlag(app, "Directory to place the output SRPM.")
+	logFile       = exe.LogFileFlag(app)
+	logLevel      = exe.LogLevelFlag(app)
+	profFlags     = exe.SetupProfileFlags(app)
+	timestampFile = app.Flag("timestamp-file", "File that stores timestamps for this program.").String()
 
 	buildDir     = app.Flag("build-dir", "Directory to store temporary files while building.").Default(defaultBuildDir).String()
 	distTag      = app.Flag("dist-tag", "The distribution tag SRPMs will be built with.").Required().String()
 	packListFile = app.Flag("pack-list", "Path to a list of SPECs to pack. If empty will pack all SPECs.").ExistingFile()
 	runCheck     = app.Flag("run-check", "Whether or not to run the spec file's check section during package build.").Bool()
 
-	workers          = app.Flag("workers", "Number of concurrent goroutines to parse with.").Default(defaultWorkerCount).Int()
+	workers          = app.Flag("workers", "Number of concurrent goroutines to parse with.").Default(defaultWorkerCount).Uint()
+	concurrentNetOps = app.Flag("concurrent-net-ops", "Number of concurrent network operations to perform.").Default(defaultNetOpsCount).Uint()
 	repackAll        = app.Flag("repack", "Rebuild all SRPMs, even if already built.").Bool()
 	nestedSourcesDir = app.Flag("nested-sources", "Set if for a given SPEC, its sources are contained in a SOURCES directory next to the SPEC file.").Bool()
 
@@ -128,9 +134,16 @@ func main() {
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 	logger.InitBestEffort(*logFile, *logLevel)
 
-	if *workers <= 0 {
-		logger.Log.Fatalf("Value in --workers must be greater than zero. Found %d", *workers)
+	prof, err := profile.StartProfiling(profFlags)
+	if err != nil {
+		logger.Log.Warnf("Could not start profiling: %s", err)
 	}
+	defer prof.StopProfiler()
+
+	timestamp.BeginTiming("srpmpacker", *timestampFile)
+	defer timestamp.CompleteTiming()
+
+	timestamp.StartEvent("configuring packer", nil)
 
 	// Create a template configuration that all packed SRPM will be based on.
 	var templateSrcConfig sourceRetrievalConfiguration
@@ -149,7 +162,6 @@ func main() {
 	}
 
 	// Setup remote source configuration
-	var err error
 	templateSrcConfig.sourceURL = *sourceURL
 	templateSrcConfig.caCerts, err = x509.SystemCertPool()
 	logger.PanicOnError(err, "Received error calling x509.SystemCertPool(). Error: %v", err)
@@ -171,66 +183,20 @@ func main() {
 		templateSrcConfig.tlsCerts = append(templateSrcConfig.tlsCerts, cert)
 	}
 
+	timestamp.StopEvent(nil)
+
 	// A pack list may be provided, if so only pack this subset.
 	// If non is provided, pack all srpms.
-	packList, err := parsePackListFile(*packListFile)
+	packList, err := packagelist.ParsePackageListFile(*packListFile)
 	logger.PanicOnError(err)
 
-	err = createAllSRPMsWrapper(*specsDir, *distTag, *buildDir, *outDir, *workerTar, *workers, *nestedSourcesDir, *repackAll, *runCheck, packList, templateSrcConfig)
+	err = createAllSRPMsWrapper(*specsDir, *distTag, *buildDir, *outDir, *workerTar, *workers, *concurrentNetOps, *nestedSourcesDir, *repackAll, *runCheck, packList, templateSrcConfig)
 	logger.PanicOnError(err)
-}
-
-// removeDuplicateStrings will remove duplicate entries from a string slice
-func removeDuplicateStrings(packList []string) (deduplicatedPackList []string) {
-	var (
-		packListSet = make(map[string]struct{})
-		exists      = struct{}{}
-	)
-
-	for _, entry := range packList {
-		packListSet[entry] = exists
-	}
-
-	for entry := range packListSet {
-		deduplicatedPackList = append(deduplicatedPackList, entry)
-	}
-
-	return
-}
-
-// parsePackListFile will parse a list of packages to pack if one is specified.
-// Duplicate list entries in the file will be removed.
-func parsePackListFile(packListFile string) (packList []string, err error) {
-	if packListFile == "" {
-		return
-	}
-
-	file, err := os.Open(packListFile)
-	if err != nil {
-		return
-	}
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		line := strings.TrimSpace(scanner.Text())
-		if line != "" {
-			packList = append(packList, line)
-		}
-	}
-
-	if len(packList) == 0 {
-		err = fmt.Errorf("cannot have empty pack list (%s)", packListFile)
-	}
-
-	packList = removeDuplicateStrings(packList)
-
-	return
 }
 
 // createAllSRPMsWrapper wraps createAllSRPMs to conditionally run it inside a chroot.
 // If workerTar is non-empty, packing will occur inside a chroot, otherwise it will run on the host system.
-func createAllSRPMsWrapper(specsDir, distTag, buildDir, outDir, workerTar string, workers int, nestedSourcesDir, repackAll, runCheck bool, packList []string, templateSrcConfig sourceRetrievalConfiguration) (err error) {
+func createAllSRPMsWrapper(specsDir, distTag, buildDir, outDir, workerTar string, workers, concurrentNetOps uint, nestedSourcesDir, repackAll, runCheck bool, packList map[string]bool, templateSrcConfig sourceRetrievalConfiguration) (err error) {
 	var chroot *safechroot.Chroot
 	originalOutDir := outDir
 	if workerTar != "" {
@@ -243,7 +209,7 @@ func createAllSRPMsWrapper(specsDir, distTag, buildDir, outDir, workerTar string
 	}
 
 	doCreateAll := func() error {
-		return createAllSRPMs(specsDir, distTag, buildDir, outDir, workers, nestedSourcesDir, repackAll, runCheck, packList, templateSrcConfig)
+		return createAllSRPMs(specsDir, distTag, buildDir, outDir, workers, concurrentNetOps, nestedSourcesDir, repackAll, runCheck, packList, templateSrcConfig)
 	}
 
 	if chroot != nil {
@@ -269,9 +235,12 @@ func createAllSRPMsWrapper(specsDir, distTag, buildDir, outDir, workerTar string
 }
 
 // createAllSRPMs will find all SPEC files in specsDir and pack SRPMs for them if needed.
-func createAllSRPMs(specsDir, distTag, buildDir, outDir string, workers int, nestedSourcesDir, repackAll, runCheck bool, packList []string, templateSrcConfig sourceRetrievalConfiguration) (err error) {
+func createAllSRPMs(specsDir, distTag, buildDir, outDir string, workers, concurrentNetOps uint, nestedSourcesDir, repackAll, runCheck bool, packList map[string]bool, templateSrcConfig sourceRetrievalConfiguration) (err error) {
 	logger.Log.Infof("Finding all SPEC files")
+	timestamp.StartEvent("packing SRPMS", nil)
+	defer timestamp.StopEvent(nil)
 
+	timestamp.StartEvent("determining specs to pack", nil)
 	specFiles, err := findSPECFiles(specsDir, packList)
 	if err != nil {
 		return
@@ -281,19 +250,20 @@ func createAllSRPMs(specsDir, distTag, buildDir, outDir string, workers int, nes
 	if err != nil {
 		return
 	}
+	timestamp.StopEvent(nil)
 
-	err = packSRPMs(specStates, distTag, buildDir, templateSrcConfig, workers)
+	err = packSRPMs(specStates, distTag, buildDir, templateSrcConfig, workers, concurrentNetOps)
 	return
 }
 
 // findSPECFiles finds all SPEC files that should be considered for packing.
 // Takes into consideration a packList if provided.
-func findSPECFiles(specsDir string, packList []string) (specFiles []string, err error) {
+func findSPECFiles(specsDir string, packList map[string]bool) (specFiles []string, err error) {
 	if len(packList) == 0 {
 		specSearch := filepath.Join(specsDir, "**/*.spec")
 		specFiles, err = filepath.Glob(specSearch)
 	} else {
-		for _, specName := range packList {
+		for specName := range packList {
 			var specFile []string
 
 			specSearch := filepath.Join(specsDir, fmt.Sprintf("**/%s.spec", specName))
@@ -331,6 +301,8 @@ func createChroot(workerTar, buildDir, outDir, specsDir string) (chroot *safechr
 		specsMountPoint  = "/specs"
 		buildDirInChroot = "/build"
 	)
+	timestamp.StartEvent("create chroot", nil)
+	defer timestamp.StopEvent(nil)
 
 	extraMountPoints := []*safechroot.MountPoint{
 		safechroot.NewMountPoint(outDir, outMountPoint, "", safechroot.BindMountPointFlags, ""),
@@ -391,7 +363,7 @@ func createChroot(workerTar, buildDir, outDir, specsDir string) (chroot *safechr
 // calculateSPECsToRepack will check which SPECs should be packed.
 // If the resulting SRPM does not exist, or is older than a modification to
 // one of the files used by the SPEC then it is repacked.
-func calculateSPECsToRepack(specFiles []string, distTag, outDir string, nestedSourcesDir, repackAll, runCheck bool, workers int) (states []*specState, err error) {
+func calculateSPECsToRepack(specFiles []string, distTag, outDir string, nestedSourcesDir, repackAll, runCheck bool, workers uint) (states []*specState, err error) {
 	var wg sync.WaitGroup
 
 	requests := make(chan string, len(specFiles))
@@ -406,7 +378,7 @@ func calculateSPECsToRepack(specFiles []string, distTag, outDir string, nestedSo
 	}
 
 	// Start the workers now so they begin working as soon as a new job is buffered.
-	for i := 0; i < workers; i++ {
+	for i := uint(0); i < workers; i++ {
 		wg.Add(1)
 		go specsToPackWorker(requests, results, cancel, &wg, distTag, outDir, arch, nestedSourcesDir, repackAll, runCheck)
 	}
@@ -486,8 +458,7 @@ func specsToPackWorker(requests <-chan string, results chan<- *specState, cancel
 		containingDir := filepath.Dir(specFile)
 
 		// Find the SRPM that this SPEC will produce.
-		defines := rpm.DefaultDefines(runCheck)
-		defines[rpm.DistTagDefine] = distTag
+		defines := rpm.DefaultDefinesWithDist(runCheck, distTag)
 
 		// Allow the user to configure if the SPEC sources are in a nested 'SOURCES' directory.
 		// Otherwise assume source files are next to the SPEC file.
@@ -566,17 +537,20 @@ func specsToPackWorker(requests <-chan string, results chan<- *specState, cancel
 }
 
 // packSRPMs will pack any SPEC files that have been marked as `toPack`.
-func packSRPMs(specStates []*specState, distTag, buildDir string, templateSrcConfig sourceRetrievalConfiguration, workers int) (err error) {
+func packSRPMs(specStates []*specState, distTag, buildDir string, templateSrcConfig sourceRetrievalConfiguration, workers, concurrentNetOps uint) (err error) {
+	tsRoot, _ := timestamp.StartEvent("packing SRPMs", nil)
+	defer timestamp.StopEvent(nil)
 	var wg sync.WaitGroup
 
 	allSpecStates := make(chan *specState, len(specStates))
 	results := make(chan *packResult, len(specStates))
 	cancel := make(chan struct{})
+	netOpsSemaphore := make(chan struct{}, concurrentNetOps)
 
 	// Start the workers now so they begin working as soon as a new job is buffered.
-	for i := 0; i < workers; i++ {
+	for i := 0; uint(i) < workers; i++ {
 		wg.Add(1)
-		go packSRPMWorker(allSpecStates, results, cancel, &wg, distTag, buildDir, templateSrcConfig)
+		go packSRPMWorker(allSpecStates, results, cancel, netOpsSemaphore, &wg, distTag, buildDir, templateSrcConfig, tsRoot)
 	}
 
 	for _, state := range specStates {
@@ -590,7 +564,7 @@ func packSRPMs(specStates []*specState, distTag, buildDir string, templateSrcCon
 		result := <-results
 
 		if result.err != nil {
-			logger.Log.Errorf("Failed to pack (%s). Error: %s", result.specFile, result.err)
+			logger.Log.Errorf("Failed to pack (%s). Cancelling outstanding workers. Error: %s", result.specFile, result.err)
 			err = result.err
 			close(cancel)
 			break
@@ -611,7 +585,7 @@ func packSRPMs(specStates []*specState, distTag, buildDir string, templateSrcCon
 }
 
 // packSRPMWorker will process a channel of SPECs and pack any that are marked as toPack.
-func packSRPMWorker(allSpecStates <-chan *specState, results chan<- *packResult, cancel <-chan struct{}, wg *sync.WaitGroup, distTag, buildDir string, templateSrcConfig sourceRetrievalConfiguration) {
+func packSRPMWorker(allSpecStates <-chan *specState, results chan<- *packResult, cancel <-chan struct{}, netOpsSemaphore chan struct{}, wg *sync.WaitGroup, distTag, buildDir string, templateSrcConfig sourceRetrievalConfiguration, tsRoot *timestamp.TimeStamp) {
 	defer wg.Done()
 
 	for specState := range allSpecStates {
@@ -622,6 +596,8 @@ func packSRPMWorker(allSpecStates <-chan *specState, results chan<- *packResult,
 		default:
 		}
 
+		ts, _ := timestamp.StartEvent(filepath.Base(specState.specFile), tsRoot)
+
 		result := &packResult{
 			specFile: specState.specFile,
 		}
@@ -629,6 +605,7 @@ func packSRPMWorker(allSpecStates <-chan *specState, results chan<- *packResult,
 		// Its a no-op if the SPEC does not need to be packed
 		if !specState.toPack {
 			results <- result
+			timestamp.StopEvent(ts)
 			continue
 		}
 
@@ -649,7 +626,7 @@ func packSRPMWorker(allSpecStates <-chan *specState, results chan<- *packResult,
 			continue
 		}
 
-		outputPath, err := packSingleSPEC(specState.specFile, specState.srpmFile, signaturesFilePath, buildDir, fullOutDirPath, distTag, srcConfig)
+		outputPath, err := packSingleSPEC(specState.specFile, specState.srpmFile, signaturesFilePath, buildDir, fullOutDirPath, distTag, srcConfig, cancel, netOpsSemaphore)
 		if err != nil {
 			result.err = err
 			results <- result
@@ -659,6 +636,7 @@ func packSRPMWorker(allSpecStates <-chan *specState, results chan<- *packResult,
 		result.srpmFile = outputPath
 
 		results <- result
+		timestamp.StopEvent(ts)
 	}
 }
 
@@ -706,7 +684,7 @@ func readSignatures(signaturesFilePath string) (readSignatures map[string]string
 }
 
 // packSingleSPEC will pack a given SPEC file into an SRPM.
-func packSingleSPEC(specFile, srpmFile, signaturesFile, buildDir, outDir, distTag string, srcConfig sourceRetrievalConfiguration) (outputPath string, err error) {
+func packSingleSPEC(specFile, srpmFile, signaturesFile, buildDir, outDir, distTag string, srcConfig sourceRetrievalConfiguration, cancel <-chan struct{}, netOpsSemaphore chan struct{}) (outputPath string, err error) {
 	srpmName := filepath.Base(srpmFile)
 	workingDir := filepath.Join(buildDir, srpmName)
 
@@ -741,13 +719,13 @@ func packSingleSPEC(specFile, srpmFile, signaturesFile, buildDir, outDir, distTa
 	}
 
 	// Hydrate all patches. Exclusively using `sourceDir`
-	err = hydrateFiles(fileTypePatch, specFile, workingDir, srcConfig, currentSignatures, defines)
+	err = hydrateFiles(fileTypePatch, specFile, workingDir, srcConfig, currentSignatures, defines, nil, nil)
 	if err != nil {
 		return
 	}
 
 	// Hydrate all sources. Download any missing ones not in `sourceDir`
-	err = hydrateFiles(fileTypeSource, specFile, workingDir, srcConfig, currentSignatures, defines)
+	err = hydrateFiles(fileTypeSource, specFile, workingDir, srcConfig, currentSignatures, defines, cancel, netOpsSemaphore)
 	if err != nil {
 		return
 	}
@@ -809,7 +787,7 @@ func readSPECTagArray(specFile, sourceDir, tag string, arch string, defines map[
 
 // hydrateFiles will attempt to retrieve all sources needed to build an SRPM from a SPEC.
 // Will alter `currentSignatures`,
-func hydrateFiles(fileTypeToHydrate fileType, specFile, workingDir string, srcConfig sourceRetrievalConfiguration, currentSignatures, defines map[string]string) (err error) {
+func hydrateFiles(fileTypeToHydrate fileType, specFile, workingDir string, srcConfig sourceRetrievalConfiguration, currentSignatures, defines map[string]string, cancel <-chan struct{}, netOpsSemaphore chan struct{}) (err error) {
 	const (
 		downloadMissingPatchFiles = false
 		skipPatchSignatures       = true
@@ -870,7 +848,10 @@ func hydrateFiles(fileTypeToHydrate fileType, specFile, workingDir string, srcCo
 	}
 
 	if hydrateRemotely && srcConfig.sourceURL != "" {
-		hydrateFromRemoteSource(fileHydrationState, newSourceDir, srcConfig, skipSignatureHandling, currentSignatures)
+		err = hydrateFromRemoteSource(fileHydrationState, newSourceDir, srcConfig, skipSignatureHandling, currentSignatures, cancel, netOpsSemaphore)
+		if err != nil {
+			return
+		}
 	}
 
 	for fileNeeded, alreadyHydrated := range fileHydrationState {
@@ -929,11 +910,15 @@ func hydrateFromLocalSource(fileHydrationState map[string]bool, newSourceDir str
 
 // hydrateFromRemoteSource will update fileHydrationState.
 // Will alter `currentSignatures`.
-func hydrateFromRemoteSource(fileHydrationState map[string]bool, newSourceDir string, srcConfig sourceRetrievalConfiguration, skipSignatureHandling bool, currentSignatures map[string]string) {
+func hydrateFromRemoteSource(fileHydrationState map[string]bool, newSourceDir string, srcConfig sourceRetrievalConfiguration, skipSignatureHandling bool, currentSignatures map[string]string, cancel <-chan struct{}, netOpsSemaphore chan struct{}) (err error) {
 	const (
-		downloadRetryAttempts = 3
+		// With 5 attempts, initial delay of 1 second, and a backoff factor of 2.0 the total time spent retrying will be
+		// ~30 seconds.
+		downloadRetryAttempts = 5
+		failureBackoffBase    = 2.0
 		downloadRetryDuration = time.Second
 	)
+	var errPackerCancelReceived = fmt.Errorf("packer cancel signal received")
 
 	for fileName, alreadyHydrated := range fileHydrationState {
 		if alreadyHydrated {
@@ -944,16 +929,40 @@ func hydrateFromRemoteSource(fileHydrationState map[string]bool, newSourceDir st
 
 		url := network.JoinURL(srcConfig.sourceURL, fileName)
 
-		err := retry.Run(func() error {
+		// Limit the number of concurrent network operations by pushing a struct{} into the channel. This will block until
+		// another operation completes and removes the struct{} from the channel.
+		if netOpsSemaphore != nil {
+			select {
+			case netOpsSemaphore <- struct{}{}:
+			case <-cancel:
+				logger.Log.Debug("Cancellation signal received at network operation semaphore")
+				err = errPackerCancelReceived
+				return
+			}
+		}
+
+		cancelled := false
+		cancelled, err = retry.RunWithExpBackoff(func() error {
 			err := network.DownloadFile(url, destinationFile, srcConfig.caCerts, srcConfig.tlsCerts)
 			if err != nil {
 				logger.Log.Warnf("Failed to download (%s). Error: %s", url, err)
 			}
 
 			return err
-		}, downloadRetryAttempts, downloadRetryDuration)
+		}, downloadRetryAttempts, downloadRetryDuration, failureBackoffBase, cancel)
+
+		if netOpsSemaphore != nil {
+			// Clear the channel to allow another operation to start
+			<-netOpsSemaphore
+		}
+
+		if cancelled {
+			err = errPackerCancelReceived
+			return
+		}
 
 		if err != nil {
+			// We may intentionally fail early due to a cancellation signal, stop immediately if that is the case.
 			continue
 		}
 
@@ -976,6 +985,8 @@ func hydrateFromRemoteSource(fileHydrationState map[string]bool, newSourceDir st
 		fileHydrationState[fileName] = true
 		logger.Log.Debugf("Hydrated (%s) from (%s)", fileName, url)
 	}
+
+	return nil
 }
 
 // validateSignature will compare the SHA256 of the file at path against the signature for it in srcConfig.signatureLookup

@@ -13,6 +13,7 @@ import (
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/file"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/logger"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/pkggraph"
+	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/sliceutils"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/scheduler/schedulerutils"
 
 	"gonum.org/v1/gonum/graph"
@@ -36,7 +37,7 @@ var (
 	reverseSearch = app.Flag("reverse", "Reverse the search to give a traditional dependency list for the packages instead of dependants.").Bool()
 
 	printTree       = app.Flag("tree", "Print output as a simple tree instead of a list").Bool()
-	verbosity       = app.Flag("verbosity", "Print the full node details (3), RPM (2), or SPEC name (1) for each result").Default("1").Int()
+	verbosity       = app.Flag("verbosity", "Print the full node details (4), limited details (3), RPM (2), or SPEC name (1) for each result").Default("1").Int()
 	maxDepth        = app.Flag("max-depth", "Maximum depth into the tree to scan, -1 for unlimited").Default("-1").Int()
 	printDuplicates = app.Flag("print-duplicates", "In tree mode, if there is a duplicate node in the tree don't replace it with '...'").Bool()
 	filterFile      = app.Flag("rpm-filter-file", "Filter the returned packages based on this list of *.rpm filenames (defaults to the x86_64 toolchain manifest './resources/manifests/package/toolchain_x86_64.txt' if it exists)").ExistingFile()
@@ -56,8 +57,8 @@ func main() {
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 	logger.InitBestEffort(*logFile, *logLevel)
 
-	// only understand verbosity from 1 - 3 (spec, rpm, full node)
-	if verbosity == nil || *verbosity > 3 || *verbosity < 1 {
+	// only understand verbosity from 1 - 4 (spec, rpm, details, full node)
+	if verbosity == nil || *verbosity > 4 || *verbosity < 1 {
 		verbosity = new(int)
 		*verbosity = 1
 	}
@@ -78,8 +79,7 @@ func main() {
 	specSearchList := exe.ParseListArgument(*specsToSearch)
 	goalSearchList := exe.ParseListArgument(*goalsToSearch)
 
-	graph := pkggraph.NewPkgGraph()
-	err := pkggraph.ReadDOTGraphFile(graph, *inputGraphFile)
+	graph, err := pkggraph.ReadDOTGraphFile(*inputGraphFile)
 	if err != nil {
 		logger.Log.Panicf("Failed to read DOT graph with error: %s", err)
 	}
@@ -90,7 +90,7 @@ func main() {
 	nodeListGoal := searchForGoal(graph, goalSearchList)
 
 	nodeLists := append(nodeListPkg, append(nodeListSpec, nodeListGoal...)...)
-	nodeSet := removeDuplicates(nodeLists)
+	nodeSet := sliceutils.RemoveDuplicatesFromSlice(nodeLists)
 
 	if len(nodeSet) == 0 {
 		logger.Log.Panicf("Could not find any nodes matching pkgs:[%s] or specs:[%s] or goals[%s]", *pkgsToSearch, *specsToSearch, *goalsToSearch)
@@ -150,7 +150,7 @@ func searchForGoal(graph *pkggraph.PkgGraph, goals []string) (list []*pkggraph.P
 }
 
 func searchForPkg(graph *pkggraph.PkgGraph, packages []string) (list []*pkggraph.PkgNode) {
-	for _, n := range graph.AllRunNodes() {
+	for _, n := range graph.AllPreferredRunNodes() {
 		nodeName := n.VersionedPkg.Name
 		for _, searchName := range packages {
 			if nodeName == searchName {
@@ -162,25 +162,13 @@ func searchForPkg(graph *pkggraph.PkgGraph, packages []string) (list []*pkggraph
 }
 
 func searchForSpec(graph *pkggraph.PkgGraph, specs []string) (list []*pkggraph.PkgNode) {
-	for _, n := range graph.AllRunNodes() {
+	for _, n := range graph.AllPreferredRunNodes() {
 		nodeSpec := n.SpecName()
 		for _, searchSpec := range specs {
 			if nodeSpec == searchSpec {
 				list = append(list, n)
 			}
 		}
-	}
-	return
-}
-
-func removeDuplicates(nodeList []*pkggraph.PkgNode) (uniqueNodeList []*pkggraph.PkgNode) {
-	nodeMap := make(map[*pkggraph.PkgNode]bool)
-	for _, n := range nodeList {
-		nodeMap[n] = true
-	}
-	uniqueNodeList = make([]*pkggraph.PkgNode, 0, len(nodeMap))
-	for key, _ := range nodeMap {
-		uniqueNodeList = append(uniqueNodeList, key)
 	}
 	return
 }
@@ -242,6 +230,8 @@ func formatNode(n *pkggraph.PkgNode, verbosity int) string {
 		return filepath.Base(n.RpmPath)
 	case 3:
 		return fmt.Sprintf("'%s' from node '%s'", filepath.Base(n.RpmPath), n.FriendlyName())
+	case 4:
+		return fmt.Sprintf("(%v)'%#v'", n.VersionedPkg, *n)
 	default:
 		logger.Log.Fatalf("Invalid verbosity level %v", verbosity)
 	}
@@ -255,10 +245,7 @@ func isFilteredFile(path, filterFile string) bool {
 			if err != nil {
 				logger.Log.Fatalf("Failed to load filter file '%s': %s", filterFile, err)
 			}
-			reservedFiles = make(map[string]bool)
-			for _, f := range reservedFileList {
-				reservedFiles[f] = true
-			}
+			reservedFiles = sliceutils.SliceToSet[string](reservedFileList)
 		}
 		base := filepath.Base(path)
 
@@ -332,11 +319,12 @@ func (t *treeSearch) printProgress() {
 }
 
 // Run a DFS and generate a string representation of the tree. Optionally ignore all branches that only container nodes in
-//  the filter list (ie given the toolchain manifest, only print those branches which container non-toolchain packages)
+//
+//	the filter list (ie given the toolchain manifest, only print those branches which container non-toolchain packages)
 func (t *treeSearch) treeNodeToString(n *pkggraph.PkgNode, depth, maxDepth int, filter bool, filterFile string, verbosity int, generateStrings, printDuplicates bool) (lines []string, hasNonToolchain bool) {
 	t.printProgress()
 	// We only care about run nodes for the purposes of detecting toolchain files
-	hasNonToolchain = n.Type == pkggraph.TypeBuild && !isFilteredFile(n.RpmPath, filterFile)
+	hasNonToolchain = n.Type == pkggraph.TypeLocalBuild && !isFilteredFile(n.RpmPath, filterFile)
 
 	if !printDuplicates && t.alreadyAdded[n] {
 		return []string{}, false
@@ -350,7 +338,7 @@ func (t *treeSearch) treeNodeToString(n *pkggraph.PkgNode, depth, maxDepth int, 
 		if generateStrings {
 			lines = append(lines, "__"+colorRed+thisNode+colorReset)
 		}
-		if n.Type == pkggraph.TypeRun {
+		if n.Type == pkggraph.TypeLocalRun {
 			// We only want to record run nodes for the purposes of listing packages in non-tree mode
 			t.filteredNodes[n] = true
 		}
@@ -359,7 +347,7 @@ func (t *treeSearch) treeNodeToString(n *pkggraph.PkgNode, depth, maxDepth int, 
 		if generateStrings {
 			lines = append(lines, "__"+thisNode)
 		}
-		if n.Type == pkggraph.TypeRun {
+		if n.Type == pkggraph.TypeLocalRun {
 			// We only want to record run nodes for the purposes of listing packages in non-tree mode
 			t.normalNodes[n] = true
 		}
@@ -447,10 +435,7 @@ func printSpecs(graph *pkggraph.PkgGraph, tree, filter bool, filterFile string, 
 		}
 
 		// Contert to list and sort
-		printLines := []string{}
-		for s := range results {
-			printLines = append(printLines, s)
-		}
+		printLines := sliceutils.SetToSlice[string](results)
 		sort.Strings(printLines)
 		for _, l := range printLines {
 			fmt.Println(l)

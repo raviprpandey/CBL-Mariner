@@ -47,6 +47,9 @@
       - [`DISABLE_UPSTREAM_REPOS=...`](#disable_upstream_repos)
         - [`DISABLE_UPSTREAM_REPOS=`**`n`** *(default)*](#disable_upstream_reposn-default)
         - [`DISABLE_UPSTREAM_REPOS=`**`y`**](#disable_upstream_reposy)
+      - [`DISABLE_DEFAULT_REPOS=...`](#disable_default_repos)
+        - [`DISABLE_DEFAULT_REPOS=`**`n`** *(default)*](#disable_default_reposn-default)
+        - [`DISABLE_DEFAULT_REPOS=`**`y`**](#disable_default_reposy)
       - [`REBUILD_PACKAGES=...`](#rebuild_packages)
         - [`REBUILD_PACKAGES=`**`y`** *(default)*](#rebuild_packagesy-default)
         - [`REBUILD_PACKAGES=`**`n`**](#rebuild_packagesn)
@@ -137,7 +140,6 @@ A set of bootstrapped toolchain packages (gcc etc.) are used to build CBL-Marine
 ```bash
 # Populate Toolchain from pre-existing binaries
 sudo make toolchain REBUILD_TOOLS=y
-sudo make copy-toolchain-rpms
 ```
 
 ### **Rebuild Toolchain**
@@ -153,7 +155,7 @@ sudo make toolchain REBUILD_TOOLS=y REBUILD_TOOLCHAIN=y
 
 After the toolchain is built or populated, package building is possible.  The CBL-Mariner ecosystem provides a significant number of packages, but most of those packages are not used in an image.  When rebuilding packages, you can choose to build everything, or you can choose to build just what you need for a specific image.  This can save significant time because only the subset of the CBL-Mariner packages needed for an image are built.
 
-The CONFIG_FILE argument provides a quick way to declare what to build. To manually build **all** packages you can clear the configuration with `CONFIG_FILE=` and invoke the package build target.  To build packages needed for a specific image, you must set the CONFIG_FILE= parameter to an image configuration file of your choice.  The standard image configuration files are in the toolkit/imageconfigs folder.
+The CONFIG_FILE argument provides a quick way to declare what to build. To manually build **all** packages you can use the default configuration (`CONFIG_FILE=""`) and invoke the package build target.  To build packages needed for a specific image, you must set the CONFIG_FILE= parameter to an image configuration file of your choice.  The standard image configuration files are in the toolkit/imageconfigs folder.
 
 Large parts of the package build stage are parallelized. Enable this by setting the `-j` flag for `make` to the number of parallel jobs to allow. (Recommend setting this value to the number of logical cores available on your system, or less)
 
@@ -253,10 +255,10 @@ Build all local packages needed for the default `core-efi.json`:
 sudo make build-packages -j$(nproc)
 ```
 
-Build only two packages along with their prerequisites (note `CONFIG_FILE` is explicitly cleared, not specifying it will use the default `core-efi.json` config):
+Build only two packages along with their prerequisites:
 
 ```bash
-sudo make build-packages PACKAGE_BUILD_LIST="vim nano" CONFIG_FILE= -j$(nproc)
+sudo make build-packages PACKAGE_BUILD_LIST="vim nano" -j$(nproc)
 ```
 
 Build packages from a custom SPECS dir:
@@ -279,11 +281,11 @@ Adding `PACKAGE_REBUILD_LIST="nano"` will tell the build system to always rebuil
 
 #### Ignoring Packages
 
-In the event the ncurses package is currently having issues, `PACKAGE_IGNORE_LIST="ncurses"` will tell the build system to pretend the `ncurses.spec` file was already successfully built regardless of the actual local state. As before, explicitly clear the `CONFIG_FILE` variable to skip adding `core-efi.json`'s packages.
+In the event the ncurses package is currently having issues, `PACKAGE_IGNORE_LIST="ncurses"` will tell the build system to pretend the `ncurses.spec` file was already successfully built regardless of the actual local state.
 
 ```bash
 # Work on the nano package while ignoring the state of the ncurses package
-sudo make build-packages PACKAGE_BUILD_LIST="nano" PACKAGE_REBUILD_LIST="nano" PACKAGE_IGNORE_LIST="ncurses" CONFIG_FILE=
+sudo make build-packages PACKAGE_BUILD_LIST="nano" PACKAGE_REBUILD_LIST="nano" PACKAGE_IGNORE_LIST="ncurses"
 ```
 
 Any build which requires the ignored packages will still attempt to use them during a build, so ensure they are available in the `../out/RPMS` folder.
@@ -356,7 +358,7 @@ If `DISABLE_UPSTREAM_REPOS=y` is set, any repo that is accessed through the netw
 If supplying custom endpoints for source/SRPM/package servers, accessing these resources may require keys and certificates. The keys and certificates can be set using:
 
 ```bash
-sudo make image CA_CERT=/path/to/rootca.crt TLS_CERT=/path/to/user.crt TLS_KEY=/path/to/user.key
+sudo make image CONFIG_FILE="./imageconfigs/core-efi.json" CA_CERT=/path/to/rootca.crt TLS_CERT=/path/to/user.crt TLS_KEY=/path/to/user.key
 ```
 
 ## Building Everything From Scratch
@@ -411,10 +413,44 @@ sudo make toolchain PACKAGE_URL_LIST="" REPO_LIST="" DISABLE_UPSTREAM_REPOS=y RE
 # - DOWNLOAD_SRPMS=y (will download pre-packages sources from SRPM_URL_LIST=...)
 # - manually placing the correct sources in each /SPECS/* package folder
 #     (SRPM_FILE_SIGNATURE_HANDLING=update must be used if the new sources files to not match the existing hashes)
-sudo make image PACKAGE_URL_LIST="" REPO_LIST="" DISABLE_UPSTREAM_REPOS=y REBUILD_TOOLCHAIN=y REBUILD_PACKAGES=y REBUILD_TOOLS=y
+sudo make image CONFIG_FILE="./imageconfigs/core-efi.json" PACKAGE_URL_LIST="" REPO_LIST="" DISABLE_UPSTREAM_REPOS=y REBUILD_TOOLCHAIN=y REBUILD_PACKAGES=y REBUILD_TOOLS=y
 ```
 
 ### Local Build Variables
+
+#### Quickrebuild Defaults
+
+Quickrebuild flags will set some flags to try and optimize builds for speed. This involves using as many packages as possible from the upstream repos for both package building and for toolchain creation. These flags are meant to work on any branch.
+
+#### `QUICK_REBUILD=...`
+
+##### `QUICK_REBUILD=`**`n`** _(default)_
+
+> Do not set any additional quickbuild flags
+
+##### `QUICK_REBUILD=`**`y`**
+
+> If they are not set, set `QUICK_REBUILD_TOOLCHAIN=y` and `QUICK_REBUILD_PACKAGES=y`.
+
+#### `QUICK_REBUILD_TOOLCHAIN=...`
+
+##### `QUICK_REBUILD_TOOLCHAIN=`**`n`** _(default)_
+
+> Do not set toolchain specific quick rebuild flags
+
+##### `QUICK_REBUILD_TOOLCHAIN=`**`y`**
+
+> Set `REBUILD_TOOLCHAIN = y`, `INCREMENTAL_TOOLCHAIN = y`, `ALLOW_TOOLCHAIN_DOWNLOAD_FAIL = y`, `REBUILD_TOOLS ?= y`.
+
+#### `QUICK_REBUILD_PACKAGES=...`
+
+##### `QUICK_REBUILD_PACKAGES=`**`n`** _(default)_
+
+> Do not set toolchain specific quick rebuild flags
+
+##### `QUICK_REBUILD_PACKAGES=`**`y`**
+
+> Set `DELTA_BUILD = y`, `REBUILD_TOOLS ?= y`, `REBUILD_TOOLS ?= y`.
 
 #### URLS and Repos
 
@@ -466,6 +502,36 @@ If that is not desired all remote sources can be disabled by clearing the follow
 
 > Do not clear out the toolchain build chroot before performing a build of the final toolchain packages. RPMs within the toolchain build chroot will be used as a cache to avoid rebuilding already-built SRPMs. These RPMs can be seeded by (a) previous failed builds or (b) upstream package repos.
 
+#### `CLEAN_TOOLCHAIN_CONTAINERS=...`
+
+##### `CLEAN_TOOLCHAIN_CONTAINERS=n`
+
+> Leave the raw toolchain containers in docker when running `make clean`. If they match the configuration of the current build they will be re-used.
+
+##### `CLEAN_TOOLCHAIN_CONTAINERS=`**`y`** *(default)*
+
+> Delete all `marinertoolchain*` containers and images associated with this working directory when running `make clean`.
+
+#### `DELTA_FETCH=...`
+
+##### `DELTA_FETCH=n`
+
+> Don't download pre-built packages to avoid rebuilds..
+
+##### `DELTA_FETCH=`**`y`** *(default)*
+
+> Try to download pre-built packages if the versions match the local spec files.
+
+#### `PRECACHE=...`
+
+##### `PRECACHE=`**`n`** *(default)*
+
+> Don't pre-load the cache from upstream sources
+
+##### `PRECACHE=y`
+
+> Load the cache with RPMs from the upstream repos before starting to build.
+
 #### `ALLOW_TOOLCHAIN_DOWNLOAD_FAIL=...`
 
 ##### `ALLOW_TOOLCHAIN_DOWNLOAD_FAIL=`**`n`** *(default)*
@@ -505,6 +571,16 @@ If that is not desired all remote sources can be disabled by clearing the follow
 ##### `DISABLE_UPSTREAM_REPOS=`**`y`**
 
 > Only pull missing packages from local repositories. This does not affect hydrating the toolchain from `$(PACKAGE_URL_LIST)`.
+
+#### `DISABLE_DEFAULT_REPOS=...`
+
+##### `DISABLE_DEFAULT_REPOS=`**`n`** *(default)*
+
+> Pull packages from all set repositories, including PMC repositories.
+
+##### `DISABLE_DEFAULT_REPOS=`**`y`**
+
+> Only pull missing packages from local and repositories specified in `$(REPO_LIST)` files.
 
 #### `REBUILD_PACKAGES=...`
 
@@ -599,7 +675,7 @@ These are the useful build targets:
 | clean-*                          | Most targets have a `clean-<target>` target which selectively cleans the target's output.
 | compress-rpms                    | Compresses all RPMs in `../out/RPMS` into `../out/rpms.tar.gz`. See `hydrate-rpms` target.
 | compress-srpms                   | Compresses all SRPMs in `../out/SRPMS` into `../out/srpms.tar.gz`.
-| copy-toolchain-rpms              | Copy all toolchain RPMS from `../build/rpm_cache/cache` to  `../out/RPMS`.
+| copy-toolchain-rpms              | **[DEPRECATED]: This should no longer be needed as a work around in core repo builds. Will be removed in future versions.** Copy all toolchain RPMS from `../build/toolchain_rpms` to  `../out/RPMS`.
 | expand-specs                     | Extract working copies of the `*.spec` files from the local `*.src.rpm` files.
 | fetch-image-packages             | Locate and download all packages required for an image build.
 | fetch-external-image-packages    | Download all external packages required for an image build.
@@ -609,6 +685,7 @@ These are the useful build targets:
 | go-test-coverage                 | Run and publish test coverage for all go tools.
 | go-tidy-all                      | Runs `go-fmt-all` and `go-mod-tidy`.
 | go-tools                         | Preps all go tools (ensure `REBUILD_TOOLS=y` to rebuild).
+| help                             | Display basic usage information for most commonly used build targets and variables.
 | hydrate-rpms                     | Hydrates the `../out/RPMS` directory from `rpms.tar.gz`. See `compress-rpms` target.
 | image                            | Generate an image (see [Images](#images)).
 | initrd                           | Create the initrd for the ISO installer.
@@ -682,13 +759,16 @@ To reproduce an ISO build, run the same make invocation as before, but set:
 
 | Variable                      | Default                                                                                                | Description
 |:------------------------------|:-------------------------------------------------------------------------------------------------------|:---
-| CONFIG_FILE                   | `$(RESOURCES_DIR)`/imageconfigs/core-efi/core-efi.json                                                 | [Image config file](https://github.com/microsoft/CBL-MarinerTutorials#image-config-file) to build.
+| CONFIG_FILE                   | `""`                                                                                                   | [Image config file](https://github.com/microsoft/CBL-MarinerTutorials#image-config-file) to build.
 | CONFIG_BASE_DIR               | `$(dir $(CONFIG_FILE))`                                                                                | Base directory on the **build machine** to search for any **relative** file paths mentioned inside the [image config file](https://github.com/microsoft/CBL-MarinerTutorials#image-config-file). This has no effect on **absolute** file paths or file paths on the **built image**.
 | UNATTENDED_INSTALLER          |                                                                                                        | Create unattended ISO installer if set. Overrides all other installer options.
-| PACKAGE_BUILD_LIST            |                                                                                                        | Additional packages to build. The package will be skipped if the build system thinks it is already up-to-date.
-| PACKAGE_REBUILD_LIST          |                                                                                                        | Always rebuild this package, even if it is up-to-date. Base package name, will match all virtual packages produced as well.
-| SRPM_PACK_LIST                |                                                                                                        | List of spec basenames to build into SRPMs. If empty, all specs under `$(SPECS_DIR)` will be packed.
+| PACKAGE_BUILD_LIST            |                                                                                                        | Explicit list of packages to build. The package will be skipped if the build system thinks it is already up-to-date. The argument accepts both spec and package names. Example: for `python-werkzeug.spec`, which builds the `python3-werkzeug` package both `python-werkzeug` and `python3-werkzeug` are correct.
+| PACKAGE_REBUILD_LIST          |                                                                                                        | Always rebuild this package, even if it is up-to-date. Base package name, will match all virtual packages produced as well. The argument accepts both spec and package names. Example: for `python-werkzeug.spec`, which builds the `python3-werkzeug` package both `python-werkzeug` and `python3-werkzeug` are correct.
+| SRPM_PACK_LIST                |                                                                                                        | List of spec basenames to build into SRPMs. If empty, all specs under `$(SPECS_DIR)` will be packed. The argument accepts **ONLY** spec names. Example: for `python-werkzeug.spec`, which builds the `python3-werkzeug` package only `python-werkzeug` is correct. Using `python3-werkzeug` will return an error.
 | SSH_KEY_FILE                  |                                                                                                        | Use with `make meta-user-data` to add the ssh key from this file into `user-data`.
+| TEST_RUN_LIST                 |                                                                                                        | Explicit list of packages to test. The package test will be skipped if the build system thinks it is already up-to-date. The argument accepts both spec and package names. Example: for `python-werkzeug.spec`, which builds the `python3-werkzeug` package both `python-werkzeug` and `python3-werkzeug` are correct.
+| TEST_RERUN_LIST               |                                                                                                        | Always test these package, even if it its corresponding package is up-to-date. The argument accepts both spec and package names. Example: for `python-werkzeug.spec`, which builds the `python3-werkzeug` package both `python-werkzeug` and `python3-werkzeug` are correct.
+| TEST_IGNORE_LIST              |                                                                                                        | Ignore testing these packages. Ignoring and forcing the same test re-run is invalid and will fail the build. The argument accepts both spec and package names. Example: for `python-werkzeug.spec`, which builds the `python3-werkzeug` package both `python-werkzeug` and `python3-werkzeug` are correct.
 
 ---
 
@@ -705,6 +785,8 @@ To reproduce an ISO build, run the same make invocation as before, but set:
 | DOWNLOAD_SRPMS                | n                                                                                                      | Pack SRPMs from local SPECs or download published ones?
 | USE_PREVIEW_REPO              | n                                                                                                      | Pull missing packages from the upstream preview repository in addition to the base repository?
 | DISABLE_UPSTREAM_REPOS        | n                                                                                                      | Only pull missing packages from local repositories? This does not affect hydrating the toolchain from `$(PACKAGE_URL_LIST)`.
+| DISABLE_DEFAULT_REPOS         | n                                                                                                      | Disable pulling packages from PMC. Use this option with `REPO_LIST` if you want to use your own repository exclusively.
+| CACHED_PACKAGES_ARCHIVE       |                                                                                                        | Use with `make hydrate-cached-rpms` to populate the external RPMs cache from an archive.
 
 ---
 
@@ -733,8 +815,10 @@ To reproduce an ISO build, run the same make invocation as before, but set:
 | ARCHIVE_TOOL                  | $(shell if command -v pigz 1>/dev/null 2>&1 ; then echo pigz ; else echo gzip ; fi )                   | Default tool to use in conjunction with `tar` to extract `*.tar.gz` files. Tries to use `pigz` if available, otherwise uses `gzip`
 | INCREMENTAL_TOOLCHAIN         | n                                                                                                      | Only build toolchain RPM packages if they are not already present
 | RUN_CHECK                     | n                                                                                                      | Run the %check sections when compiling packages
-| PACKAGE_BUILD_RETRIES         | 1                                                                                                      | Number of build retries for each package
+| ALLOW_TOOLCHAIN_REBUILDS      | n                                                                                                      | Do not treat rebuilds of toolchain packages during regular package build phase as errors.
+|  PACKAGE_BUILD_RETRIES        | 1                                                                                                      | Number of build retries for each package
 | CHECK_BUILD_RETRIES           | 1                                                                                                      | Minimum number of check section retries for each package if RUN_CHECK=y and tests fail.
+| MAX_CASCADING_REBUILDS        |                                                                                                        | When a package rebuilds, how many additional layers of dependent packages will be forced to rebuild (leave unset for unbounded, i.e., all downstream packages will rebuild)
 | IMAGE_TAG                     | (empty)                                                                                                | Text appended to a resulting image name - empty by default. Does not apply to the initrd. The text will be prepended with a hyphen.
 | CONCURRENT_PACKAGE_BUILDS     | 0                                                                                                      | The maximum number of concurrent package builds that are allowed at once. If set to 0 this defaults to the number of logical CPUs.
 | CLEANUP_PACKAGE_BUILDS        | y                                                                                                      | Cleanup a package build's working directory when it finishes. Note that `build` directory will still be removed on a successful package build even when this is turned off.
@@ -743,6 +827,7 @@ To reproduce an ISO build, run the same make invocation as before, but set:
 | REBUILD_DEP_CHAINS            | y                                                                                                      | Rebuild packages if their dependencies need to be built, even though the package has already been built.
 | TARGET_ARCH                   |                                                                                                        | The architecture of the machine that will run the package binaries.
 | USE_CCACHE                    | n                                                                                                      | Use ccache automatically to speed up repeat package builds.
+| MAX_CPU                       |                                                                                                        | Max number of CPUs used for package building. Use 0 for unlimited. Overrides `%_smp_ncpus_max` macro.
 
 ---
 
@@ -778,6 +863,7 @@ To reproduce an ISO build, run the same make invocation as before, but set:
 | STATUS_FLAGS_DIR              | `$(BUILD_DIR)`/make_status                                                                             | Location of build system status tracking files
 | CHROOT_DIR                    | `$(BUILD_DIR)`/worker/chroot                                                                           | Location of package build chroot environments
 | IMAGEGEN_DIR                  | `$(BUILD_DIR)`/imagegen                                                                                | Location of image generation workspace
+| TIMESTAMP_DIR                 | `S(BUILD_DIR)`/timestamp                                                                               | Location of timestamps generated during the last build
 | PKGGEN_DIR                    | `$(TOOLS_DIR)`/pkggen                                                                                  | Location of package build workspace
 | TOOLKIT_BINS_DIR              | `$(TOOLS_DIR)`/toolkit_bins                                                                            | Location of go tool binary backups, used to restore the toolkit bins if needed.
 | MANIFESTS_DIR                 | `$(RESOURCES_DIR)`/manifests                                                                           | Location of build system static configurations
