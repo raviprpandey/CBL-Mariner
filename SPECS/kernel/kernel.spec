@@ -327,6 +327,9 @@ rm -rf %{_localstatedir}/lib/rpm-state/initramfs/pending/%{uname_r}
 rm -rf /boot/initrd.img-%{uname_r}
 echo "initrd of kernel %{uname_r} removed" >&2
 
+%preun -n kernel-tools
+%systemd_preun cpupower.service
+
 %postun
 if [ ! -e /boot/mariner.cfg ]
 then
@@ -338,6 +341,7 @@ then
      fi
 fi
 %grub2_postun
+%systemd_postun cpupower.service
 
 %post
 /sbin/depmod -a %{uname_r}
@@ -352,6 +356,9 @@ ln -sf linux-%{uname_r}.cfg /boot/mariner.cfg
 
 %post drivers-sound
 /sbin/depmod -a %{uname_r}
+
+%post -n kernel-tools
+%systemd_post cpupower.service
 
 %files
 %defattr(-,root,root)
@@ -438,7 +445,7 @@ ln -sf linux-%{uname_r}.cfg /boot/mariner.cfg
 
 %changelog
 * Wed Oct 11 2023 Andy Zaugg <azaugg@linkedin.com> - 5.15.133.1-2
-- Include a  cpupower systemd unit file, allowing cpupower service to start on boot
+- Include a cpupower systemd unit file, allowing cpupower service to start on boot
 
 * Tue Sep 26 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 5.15.133.1-1
 - Auto-upgrade to 5.15.133.1
