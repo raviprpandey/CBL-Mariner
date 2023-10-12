@@ -3,8 +3,6 @@
 %define uname_r %{version}-%{release}
 %define mariner_version 3
 
-%define debug_package %{nil}
-
 # find_debuginfo.sh arguments are set by default in rpm's macros.
 # The default arguments regenerate the build-id for vmlinux in the 
 # debuginfo package causing a mismatch with the build-id for vmlinuz in
@@ -30,7 +28,7 @@
 
 Summary:        Linux Kernel
 Name:           kernel
-Version:        6.1.29.1
+Version:        6.1.55.1
 Release:        1%{?dist}
 License:        GPLv2
 Vendor:         Microsoft Corporation
@@ -243,9 +241,9 @@ install -D -m 640 arch/arm64/boot/dts/freescale/imx8mq-evk.dtb %{buildroot}/boot
 install -vm 400 System.map %{buildroot}/boot/System.map-%{uname_r}
 install -vm 600 .config %{buildroot}/boot/config-%{uname_r}
 cp -r Documentation/*        %{buildroot}%{_defaultdocdir}/linux-%{uname_r}
-#install -vm 744 vmlinux %{buildroot}%{_libdir}/debug/lib/modules/%{uname_r}/vmlinux-%{uname_r}
+install -vm 744 vmlinux %{buildroot}%{_libdir}/debug/lib/modules/%{uname_r}/vmlinux-%{uname_r}
 # `perf test vmlinux` needs it
-#ln -s vmlinux-%{uname_r} %{buildroot}%{_libdir}/debug/lib/modules/%{uname_r}/vmlinux
+ln -s vmlinux-%{uname_r} %{buildroot}%{_libdir}/debug/lib/modules/%{uname_r}/vmlinux
 
 cat > %{buildroot}/boot/linux-%{uname_r}.cfg << "EOF"
 # GRUB Environment Block
@@ -427,6 +425,9 @@ ln -sf linux-%{uname_r}.cfg /boot/mariner.cfg
 %{_sysconfdir}/bash_completion.d/bpftool
 
 %changelog
+* Thu Oct 12 2023 Rachel Menge <rachelmenge@microsoft.com> - 6.1.55.1-1
+- Upgrade to 6.1.55.1
+
 * Tue Sep 26 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 5.15.133.1-1
 - Auto-upgrade to 5.15.133.1
 - Remove CONFIG_NET_CLS_RSVP and CONFIG_NET_CLS_RSVP6 that don't apply to the new version
