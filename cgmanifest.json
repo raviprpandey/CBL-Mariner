@@ -1307,8 +1307,8 @@
         "type": "other",
         "other": {
           "name": "btrfs-progs",
-          "version": "5.16",
-          "downloadUrl": "https://www.kernel.org/pub/linux/kernel/people/kdave/btrfs-progs/btrfs-progs-v5.16.tar.xz"
+          "version": "6.5",
+          "downloadUrl": "https://www.kernel.org/pub/linux/kernel/people/kdave/btrfs-progs/btrfs-progs-v6.5.tar.xz"
         }
       }
     },
