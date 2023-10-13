@@ -7381,8 +7381,8 @@
         "type": "other",
         "other": {
           "name": "intel-pf-bb-config",
-          "version": "22.03",
-          "downloadUrl": "https://github.com/intel/pf-bb-config/archive/v22.03.tar.gz"
+          "version": "23.7",
+          "downloadUrl": "https://github.com/intel/pf-bb-config/archive/v23.07.tar.gz"
         }
       }
     },
