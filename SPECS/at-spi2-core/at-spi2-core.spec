@@ -1,8 +1,8 @@
 %define majmin %(echo %{version} | cut -d. -f1-2)
 Summary:        Protocol definitions and daemon for D-Bus at-spi
 Name:           at-spi2-core
-Version:        2.36.1
-Release:        3%{?dist}
+Version:        2.38.0
+Release:        1%{?dist}
 License:        LGPLv2+
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -76,6 +76,9 @@ API documentation for libatspi.
 %{_libdir}/pkgconfig/atspi-2.pc
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.38.0-1
+- Auto-upgrade to 2.38.0 - Azure Linux 3.0 - package upgrades
+
 * Wed Dec 08 2021 Thomas Crain <thcrain@microsoft.com> - 2.36.1-3
 - License verified
 - Lint spec

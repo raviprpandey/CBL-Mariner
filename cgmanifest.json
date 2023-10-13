@@ -655,8 +655,8 @@
         "type": "other",
         "other": {
           "name": "at-spi2-core",
-          "version": "2.36.1",
-          "downloadUrl": "http://download.gnome.org/sources/at-spi2-core/2.36/at-spi2-core-2.36.1.tar.xz"
+          "version": "2.38.0",
+          "downloadUrl": "http://download.gnome.org/sources/at-spi2-core/2.38/at-spi2-core-2.38.0.tar.xz"
         }
       }
     },
