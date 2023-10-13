@@ -22154,8 +22154,8 @@
         "type": "other",
         "other": {
           "name": "python-chardet",
-          "version": "4.0.0",
-          "downloadUrl": "https://github.com/chardet/chardet/archive/refs/tags/4.0.0.tar.gz"
+          "version": "2.0.0",
+          "downloadUrl": "https://github.com/chardet/chardet/archive/refs/tags/5.2.0.tar.gz"
         }
       }
     },

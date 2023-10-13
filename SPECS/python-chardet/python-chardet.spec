@@ -1,6 +1,6 @@
 Summary:        A Universal Character Encoding Detector in Python
 Name:           python-chardet
-Version:        4.0.0
+Version:        2.0.0
 Release:        1%{?dist}
 License:        LGPLv2+
 Vendor:         Microsoft Corporation
@@ -48,6 +48,9 @@ chardet is a universal character encoding detector in Python.
 %{_bindir}/chardetect
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.0.0-1
+- Auto-upgrade to 2.0.0 - Azure Linux 3.0 - package upgrades
+
 * Thu Feb 10 2022 Nick Samson <nisamson@microsoft.com> - 4.0.0-1
 - Updated to 4.0.0, updated source URL.
 
