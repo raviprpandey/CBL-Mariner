@@ -1,7 +1,7 @@
 Summary:        Fast compression and decompression library
 Name:           snappy
-Version:        1.1.9
-Release:        2%{?dist}
+Version:        1.1.10
+Release:        1%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -73,6 +73,9 @@ make test
 %{_libdir}/cmake/Snappy/
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.1.10-1
+- Auto-upgrade to 1.1.10 - Azure Linux 3.0 - package upgrades
+
 * Wed Mar 23 2022 Nicolas Guibourge <nicolasg@microsoft.com> - 1.1.9-2
 - Do not provide gtest/gmock headers and binaries.
 
