@@ -9551,8 +9551,8 @@
         "type": "other",
         "other": {
           "name": "libgpg-error",
-          "version": "1.46",
-          "downloadUrl": "https://gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-1.46.tar.bz2"
+          "version": "1.47",
+          "downloadUrl": "https://gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-1.47.tar.bz2"
         }
       }
     },
