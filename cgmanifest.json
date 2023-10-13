@@ -4010,8 +4010,8 @@
         "type": "other",
         "other": {
           "name": "fuse",
-          "version": "2.9.7",
-          "downloadUrl": "https://github.com/libfuse/libfuse/releases/download/fuse-2.9.7/fuse-2.9.7.tar.gz"
+          "version": "3.16.1",
+          "downloadUrl": "https://github.com/libfuse/libfuse/releases/download/fuse-3.16.1/fuse-3.16.1.tar.gz"
         }
       }
     },

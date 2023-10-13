@@ -1,7 +1,7 @@
 Summary:        File System in Userspace (FUSE) utilities
 Name:           fuse
-Version:        2.9.7
-Release:        10%{?dist}
+Version:        3.16.1
+Release:        1%{?dist}
 License:        GPL+
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -76,6 +76,9 @@ find %{buildroot} -type f -name "*.la" -delete -print
 %{_libdir}/pkgconfig/fuse.pc
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.16.1-1
+- Auto-upgrade to 3.16.1 - Azure Linux 3.0 - package upgrades
+
 * Fri Nov 12 2021 Nicolas Guibourge <nicolasg@microsoft.com> - 2.9.7-10
 - Fix gcc 11 build issue
 
