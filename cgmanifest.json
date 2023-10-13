@@ -645,8 +645,8 @@
         "type": "other",
         "other": {
           "name": "at-spi2-atk",
-          "version": "2.34.2",
-          "downloadUrl": "https://download.gnome.org/sources/at-spi2-atk/2.34/at-spi2-atk-2.34.2.tar.xz"
+          "version": "2.38.0",
+          "downloadUrl": "https://download.gnome.org/sources/at-spi2-atk/2.38/at-spi2-atk-2.38.0.tar.xz"
         }
       }
     },

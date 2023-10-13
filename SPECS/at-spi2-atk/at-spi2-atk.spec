@@ -3,8 +3,8 @@
 %define majmin %(echo %{version} | cut -d. -f1-2)
 Summary:        A GTK+ module that bridges ATK to D-Bus at-spi
 Name:           at-spi2-atk
-Version:        2.34.2
-Release:        4%{?dist}
+Version:        2.38.0
+Release:        1%{?dist}
 License:        LGPLv2+
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -68,6 +68,9 @@ The %{name}-devel package includes the header files for the %{name} library.
 %{_libdir}/pkgconfig/atk-bridge-2.0.pc
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.38.0-1
+- Auto-upgrade to 2.38.0 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 2.34.2-4
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
 
