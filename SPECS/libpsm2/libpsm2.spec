@@ -52,8 +52,8 @@
 #
 Summary:        Intel PSM Libraries
 Name:           libpsm2
-Version:        11.2.206
-Release:        2%{?dist}
+Version:        12
+Release:        1%{?dist}
 License:        BSD-3-Clause OR GPLv2
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -128,6 +128,9 @@ rm -f %{buildroot}%{_lib64dir}/*.a
 %{_sysconfdir}/modprobe.d/libpsm2-compat.conf
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 12-1
+- Auto-upgrade to 12 - Azure Linux 3.0 - package upgrades
+
 * Mon Feb 06 2023 Riken Maharjan <rmaharjan@microsoft.com> - 11.2.206-2
 - Move from Extended to Core.
 
