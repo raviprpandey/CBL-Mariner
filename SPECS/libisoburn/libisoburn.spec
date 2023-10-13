@@ -1,7 +1,7 @@
 Summary:        Library to enable creation and expansion of ISO-9660 filesystems
 Name:           libisoburn
-Version:        1.5.4
-Release:        3%{?dist}
+Version:        1.5.6
+Release:        1%{?dist}
 License:        GPLv2+
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -122,6 +122,9 @@ cd releng
 %{_infodir}/xorriso*.info*
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.5.6-1
+- Auto-upgrade to 1.5.6 - Azure Linux 3.0 - package upgrades
+
 * Tue Sep 26 2023 Pawel Winogrodzki <pawelwi@microsoft.com> - 1.5.4-3
 - Removing 'exit' calls from the '%%check' section.
 
