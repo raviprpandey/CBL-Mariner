@@ -695,8 +695,8 @@
         "type": "other",
         "other": {
           "name": "atk",
-          "version": "2.36.0",
-          "downloadUrl": "https://download.gnome.org/sources/atk/2.36/atk-2.36.0.tar.xz"
+          "version": "2.38.0",
+          "downloadUrl": "https://download.gnome.org/sources/atk/2.38/atk-2.38.0.tar.xz"
         }
       }
     },
