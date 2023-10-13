@@ -3,8 +3,8 @@
 
 Summary:        Functions to read/write int16/32/64 from strings, bigarrays
 Name:           ocaml-ocplib-endian
-Version:        1.1
-Release:        8%{?dist}
+Version:        1.2
+Release:        1%{?dist}
 # License is LGPL 2.1 with standard OCaml exceptions
 License:        LGPLv2+ WITH exceptions
 Vendor:         Microsoft Corporation
@@ -95,6 +95,9 @@ find %{buildroot}%{_libdir}/ocaml -name \*.ml -delete
 %{_libdir}/ocaml/%{libname}/opam
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.2-1
+- Auto-upgrade to 1.2 - Azure Linux 3.0 - package upgrades
+
 * Thu Mar 31 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 1.1-8
 - Cleaning-up spec. License verified.
 
