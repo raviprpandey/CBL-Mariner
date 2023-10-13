@@ -27717,8 +27717,8 @@
         "type": "other",
         "other": {
           "name": "shadow-utils",
-          "version": "4.9",
-          "downloadUrl": "https://github.com/shadow-maint/shadow/releases/download/v4.9/shadow-4.9.tar.xz"
+          "version": "4.14.0",
+          "downloadUrl": "https://github.com/shadow-maint/shadow/releases/download/4.14.0/shadow-4.14.0.tar.xz"
         }
       }
     },
