@@ -1,7 +1,7 @@
 Summary:        Client library for accessing NFS shares over a network
 Name:           libnfs
-Version:        4.0.0
-Release:        6%{?dist}
+Version:        5.0.2
+Release:        1%{?dist}
 # The library is licensed as LGPLv2+, the protocol definition is BSD
 License:        LGPLv2+ AND BSD
 Vendor:         Microsoft Corporation
@@ -73,6 +73,9 @@ find %{buildroot} -type f -name "*.la" -delete -print
 %{_mandir}/man1/nfs-*.1*
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 5.0.2-1
+- Auto-upgrade to 5.0.2 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 22 2021 Thomas Crain <thcrain@microsoft.com> - 4.0.0-6
 - Initial CBL-Mariner import from Fedora 35 (license: MIT)
 - License verified
