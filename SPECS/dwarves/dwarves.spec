@@ -2,8 +2,8 @@
 %define libver 1
 Summary:        Debugging Information Manipulation Tools (pahole & friends)
 Name:           dwarves
-Version:        1.21
-Release:        4%{?dist}
+Version:        1.25
+Release:        1%{?dist}
 License:        GPLv2
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -137,6 +137,9 @@ rm -Rf %{buildroot}
 %{_libdir}/%{libname}_reorganize.so
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.25-1
+- Auto-upgrade to 1.25 - Azure Linux 3.0 - package upgrades
+
 * Fri Aug 20 2021 Chris Co <chrco@microsoft.com> - 1.21-4
 - Initial CBL-Mariner import from Fedora 35 (license: MIT).
 
