@@ -9,8 +9,8 @@
 %global gen_version %(b=%{built_tag_strip}; echo ${b/-/"~"})
 
 Name:          netavark
-Version:       1.0.3
-Release:       5%{?dist}
+Version:       1.7.0
+Release:       1%{?dist}
 Summary:       OCI network stack
 License:       ASL 2.0 and BSD and MIT
 Vendor:        Microsoft Corporation
@@ -219,6 +219,9 @@ popd
 %{_mandir}/man1/%{name}.1*
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.7.0-1
+- Auto-upgrade to 1.7.0 - Azure Linux 3.0 - package upgrades
+
 * Thu Sep 07 2023 Daniel McIlvaney <damcilva@microsoft.com> - 1.0.3-5
 - Bump package to rebuild with rust 1.72.0
 
