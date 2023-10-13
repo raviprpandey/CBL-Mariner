@@ -1,8 +1,8 @@
 %global xfceversion 4.14
 Summary:        Utility library for the Xfce4 desktop environment
 Name:           libxfce4util
-Version:        4.14.0
-Release:        5%{?dist}
+Version:        4.19.2
+Release:        1%{?dist}
 License:        LGPLv2+
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -67,6 +67,9 @@ find %{buildroot} -type f -name "*.la" -delete -print
 %doc %{_datadir}/gtk-doc/
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 4.19.2-1
+- Auto-upgrade to 4.19.2 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 4.14.0-5
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
 
