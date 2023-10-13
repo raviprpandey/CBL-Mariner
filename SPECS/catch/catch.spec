@@ -1,7 +1,7 @@
 %global debug_package %{nil}
 
 Name:           catch
-Version:        2.13.8
+Version:        3.4.0
 Release:        1%{?dist}
 Summary:        Modern, C++-native, header-only, framework for unit-tests, TDD and BDD
 Vendor:         Microsoft Corporation
@@ -55,6 +55,9 @@ ctest -V %{?_smp_mflags}
 %{_libdir}/cmake/Catch2/
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.4.0-1
+- Auto-upgrade to 3.4.0 - Azure Linux 3.0 - package upgrades
+
 * Tue Jan 11 2022 Nicolas Guibourge <nicolasg@microsoft.com> - 2.13.8-1
 - Upgrade to 2.13.8
 
