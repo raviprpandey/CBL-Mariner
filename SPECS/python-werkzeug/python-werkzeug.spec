@@ -1,6 +1,6 @@
 Summary:        The Swiss Army knife of Python web development
 Name:           python-werkzeug
-Version:        2.2.3
+Version:        2.3.7
 Release:        1%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
@@ -49,6 +49,9 @@ LANG=en_US.UTF-8 PYTHONPATH=./  python3 setup.py test
 %{python3_sitelib}/*
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.3.7-1
+- Auto-upgrade to 2.3.7 - Azure Linux 3.0 - package upgrades
+
 * Tue Mar 14 2023 Rakshaa Viswanathan <rviswanathan@microsoft.com> - 2.2.3-1
 - Updated to version 2.2.3 for CVE-2023-23934 adn CVE-2023-25577
 - Remove patch for CVE-2023-25577
