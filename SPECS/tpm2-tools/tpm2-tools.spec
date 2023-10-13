@@ -1,6 +1,6 @@
 Summary:        The source repository for the TPM (Trusted Platform Module) 2 tools
 Name:           tpm2-tools
-Version:        4.3.2
+Version:        5.5
 Release:        1%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
@@ -40,6 +40,9 @@ make DESTDIR=%{buildroot} install
 %{_datarootdir}/bash-completion/completions/tss2_*
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 5.5-1
+- Auto-upgrade to 5.5 - Azure Linux 3.0 - package upgrades
+
 * Tue Jan 18 2022 Daniel McIlvaney <damcilva@microsoft.com> - 4.3.2-1
 - Update to 4.3.2.
 - Verified license
