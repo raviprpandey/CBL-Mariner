@@ -1,6 +1,6 @@
 Name:           perl-Devel-CheckLib
-Version:        1.14
-Release:        5%{?dist}
+Version:        1.11
+Release:        1%{?dist}
 Summary:        Check that a library is available
 
 License:        GPL+ or Artistic
@@ -60,6 +60,9 @@ make test
 
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.11-1
+- Auto-upgrade to 1.11 - Azure Linux 3.0 - package upgrades
+
 * Mon Jul 25 2022 Rachel Menge <rachelmenge@microsoft.com> - 1.14-5
 - Move from SPECS-EXTENDED to SPECS
 
