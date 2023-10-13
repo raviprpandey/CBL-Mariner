@@ -1,7 +1,7 @@
 Summary:        TCG Software Stack (TSS)
 Name:           trousers
-Version:        0.3.14
-Release:        7%{?dist}
+Version:        0.3.15
+Release:        1%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -9,7 +9,6 @@ Group:          System Environment/Security
 URL:            https://sourceforge.net/projects/trousers
 Source0:        %{url}/files/%{name}/%{version}/%{name}-%{version}.tar.gz
 # CVE-2020-24330.patch also fixes CVE-2020-24331 and CVE-2020-24332.
-Patch0:         CVE-2020-24330.patch
 Patch1:         CVE-2020-24331.nopatch
 Patch2:         CVE-2020-24332.nopatch
 Requires:       libtspi = %{version}-%{release}
@@ -95,6 +94,9 @@ fi
 %exclude %{_libdir}/libtddl.a
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 0.3.15-1
+- Auto-upgrade to 0.3.15 - Azure Linux 3.0 - package upgrades
+
 * Tue Oct 27 2020 Thomas Crain <thcrain@microsoft.com> - 0.3.14-7
 - Added nopatch file for CVE-2020-24332.
 
