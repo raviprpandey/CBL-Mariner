@@ -1,7 +1,7 @@
 Summary:        Platform-neutral API
 Name:           nspr
-Version:        4.30
-Release:        2%{?dist}
+Version:        4.9.6
+Release:        1%{?dist}
 License:        MPLv2.0
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -57,6 +57,9 @@ cd nspr
 %{_datarootdir}/aclocal/*
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 4.9.6-1
+- Auto-upgrade to 4.9.6 - Azure Linux 3.0 - package upgrades
+
 * Tue Jun 14 2022 Olivia Crain <oliviacrain@microsoft.com> - 4.30-2
 - Add explicit build requirements
 - Lint spec
