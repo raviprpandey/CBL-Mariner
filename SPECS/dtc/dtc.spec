@@ -1,6 +1,6 @@
 Summary:        Device Tree Compiler
 Name:           dtc
-Version:        1.6.1
+Version:        1.7.0
 Release:        1%{?dist}
 License:        BSD OR GPLv2+
 Vendor:         Microsoft Corporation
@@ -62,6 +62,9 @@ make %{?_smp_mflags} V=1 CC="gcc %{optflags} $LDFLAGS -Wno-error=missing-prototy
 %{_includedir}/*
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.7.0-1
+- Auto-upgrade to 1.7.0 - Azure Linux 3.0 - package upgrades
+
 * Tue Nov 09 2021 Andrew Phelps <anphel@microsoft.com> - 1.6.1-1
 - Update to version 1.6.1
 - Remove dtc-disable-warning.patch
