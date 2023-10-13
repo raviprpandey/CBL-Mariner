@@ -2,8 +2,8 @@
 %global libsepol_ver 3.2-1
 Summary:        Policy analysis tools for SELinux
 Name:           setools
-Version:        4.4.0
-Release:        2%{?dist}
+Version:        4.4.3
+Release:        1%{?dist}
 # binaries are GPL and libraries are LGPL.  See COPYING.
 License:        GPLv2 AND LGPLv2+
 Vendor:         Microsoft Corporation
@@ -100,6 +100,9 @@ rm -rf %{buildroot}%{_mandir}/{,ru/}man1/apol*
 %{python3_sitearch}/setools-*
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 4.4.3-1
+- Auto-upgrade to 4.4.3 - Azure Linux 3.0 - package upgrades
+
 * Tue Dec 14 2021 Chris PeBenito <chpebeni@microsoft.com> - 4.4.0-2
 - Make NetworkX optional for setools-console tools.  It is not used
   by them.
