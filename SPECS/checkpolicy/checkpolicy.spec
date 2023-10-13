@@ -2,7 +2,7 @@
 %define libsepolver 3.2-1
 Summary:        SELinux policy compiler
 Name:           checkpolicy
-Version:        3.2
+Version:        3.5
 Release:        1%{?dist}
 License:        GPLv2
 Vendor:         Microsoft Corporation
@@ -59,6 +59,9 @@ install test/dispol %{buildroot}%{_bindir}/sedispol
 %{_mandir}/ru/man8/checkmodule.8.gz
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.5-1
+- Auto-upgrade to 3.5 - Azure Linux 3.0 - package upgrades
+
 * Fri Aug 13 2021 Thomas Crain <thcrain@microsoft.com> - 3.2-1
 - Upgrade to latest upstream version
 - Add -fno-semantic-interposition to CFLAGS as recommended by upstream
