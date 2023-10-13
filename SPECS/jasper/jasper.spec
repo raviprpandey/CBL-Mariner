@@ -1,7 +1,7 @@
 Summary:        Implementation of the JPEG-2000 standard, Part 1
 Name:           jasper
-Version:        2.0.32
-Release:        3%{?dist}
+Version:        4.0.0
+Release:        1%{?dist}
 License:        JasPer
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -113,6 +113,9 @@ make test -C builder
 %{_libdir}/libjasper.so.4*
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 4.0.0-1
+- Auto-upgrade to 4.0.0 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 2.0.32-3
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
 
