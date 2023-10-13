@@ -1,6 +1,6 @@
 Summary:        Google's C++ gtest framework
 Name:           gtest
-Version:        1.12.1
+Version:        1.14.0
 Release:        1%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
@@ -84,6 +84,9 @@ find %{buildroot} -type f -name "*.la" -delete -print
 %{_prefix}/src/gmock/
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.14.0-1
+- Auto-upgrade to 1.14.0 - Azure Linux 3.0 - package upgrades
+
 * Thu Jun 30 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 1.12.1-1
 - Updating to 1.12.1.
 
