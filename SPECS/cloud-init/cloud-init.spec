@@ -1,7 +1,7 @@
 Summary:        Cloud instance init scripts
 Name:           cloud-init
-Version:        23.2
-Release:        4%{?dist}
+Version:        23.3
+Release:        1%{?dist}
 License:        GPLv3
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -144,6 +144,9 @@ make check %{?_smp_mflags}
 %config(noreplace) %{_sysconfdir}/cloud/cloud.cfg.d/10-azure-kvp.cfg
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 23.3-1
+- Auto-upgrade to 23.3 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 13 2023 Minghe Ren <mingheren@microsoft.com> - 23.2-4
 - Add patch overrideDatasourceDetection bug from upstream
 
