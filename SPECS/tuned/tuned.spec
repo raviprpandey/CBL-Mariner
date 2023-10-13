@@ -6,8 +6,8 @@
 
 Summary:      A dynamic adaptive system tuning daemon
 Name:         tuned
-Version:      2.15.0
-Release:      4%{?dist}
+Version:      2.20.0
+Release:      1%{?dist}
 License:      GPLv2+
 Vendor:       Microsoft Corporation
 Distribution: Mariner
@@ -407,6 +407,9 @@ fi
 %{_mandir}/man7/tuned-profiles-postgresql.7*
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.20.0-1
+- Auto-upgrade to 2.20.0 - Azure Linux 3.0 - package upgrades
+
 * Thu Jan 20 2022 Cameron Baird <cameronbaird@microsoft.com> 2.15.0-4
 - Initial CBL-Mariner import from CentOS 8 (license: MIT).
 - License verified
