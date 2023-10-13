@@ -5,8 +5,8 @@
 
 Summary:        A lean and fast WSGI object-dispatching web framework
 Name:           python-%{pkgname}
-Version:        1.4.0
-Release:        2%{?dist}
+Version:        1.2.1
+Release:        1%{?dist}
 License:        BSD
 Url:            https://www.pecanpy.org/
 Vendor:         Microsoft Corporation
@@ -66,6 +66,9 @@ tox
 %{_bindir}/gunicorn_pecan
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.2.1-1
+- Auto-upgrade to 1.2.1 - Azure Linux 3.0 - package upgrades
+
 * Wed Jun 23 2021 Neha Agarwal <nehaagarwal@microsoft.com> 1.4.0-2
 - Pass check section
 
