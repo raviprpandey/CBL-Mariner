@@ -1,7 +1,7 @@
 Summary:        Statically linked binary providing simplified versions of system commands
 Name:           busybox
-Version:        1.35.0
-Release:        7%{?dist}
+Version:        1.36.1
+Release:        1%{?dist}
 License:        GPLv2
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -10,9 +10,7 @@ Source:         https://www.busybox.net/downloads/%{name}-%{version}.tar.bz2
 Source1:        busybox-static.config
 Source2:        busybox-petitboot.config
 Patch0:         busybox-1.31.1-stime-fix.patch
-Patch1:         CVE-2022-28391.patch
 Patch2:         awk-input-numbers-are-never-octal-or-hex-only-progra.patch
-Patch3:         CVE-2022-30065.patch
 Patch4:         ash-fix-use-after-free-in-pattern-substituon-code.patch
 Patch5:         ash-fix-use-after-free-in-bash-pattern-substitution.patch
 BuildRequires:  gcc
@@ -94,6 +92,9 @@ install -m 644 docs/busybox.petitboot.1 %{buildroot}/%{_mandir}/man1/busybox.pet
 %{_mandir}/man1/busybox.petitboot.1.gz
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.36.1-1
+- Auto-upgrade to 1.36.1 - Azure Linux 3.0 - package upgrades
+
 * Tue Oct 03 2023 Mandeep Plaha <mandeepplaha@microsoft.com> - 1.35.0-7
 - Bump release to rebuild against glibc 2.35-5
 
