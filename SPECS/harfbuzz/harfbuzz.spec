@@ -1,14 +1,13 @@
 Summary:        opentype text shaping engine
 Name:           harfbuzz
-Version:        3.4.0
-Release:        3%{?dist}
+Version:        8.1.1
+Release:        1%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
 Group:          System Environment/Libraries
 URL:            https://harfbuzz.github.io/
 Source0:        https://github.com/%{name}/%{name}/releases/download/%{version}/%{name}-%{version}.tar.xz
-Patch0:         CVE-2023-25193.patch
 BuildRequires:  pkgconfig(cairo)
 BuildRequires:  pkgconfig(freetype2)
 BuildRequires:  pkgconfig(glib-2.0)
@@ -77,6 +76,9 @@ find . -type f -name "*.py" -exec sed -i'' -e '1 s|^#!\s*/usr/bin/env\s\+python3
 %{_libdir}/libharfbuzz-icu.so.*
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 8.1.1-1
+- Auto-upgrade to 8.1.1 - Azure Linux 3.0 - package upgrades
+
 * Wed Feb 22 2023 Minghe Ren <mingheren@microsoft.com> - 3.4.0-3
 - Add patch for CVE-2023-25193 
 
