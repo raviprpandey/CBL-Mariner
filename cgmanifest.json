@@ -11881,8 +11881,8 @@
         "type": "other",
         "other": {
           "name": "libXpm",
-          "version": "3.5.13",
-          "downloadUrl": "https://www.x.org/pub/individual/lib/libXpm-3.5.13.tar.bz2"
+          "version": "3.5.12",
+          "downloadUrl": "https://www.x.org/pub/individual/lib/libXpm-3.5.12.tar.bz2"
         }
       }
     },
