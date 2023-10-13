@@ -1,8 +1,8 @@
 %global debug_package %{nil}
 Summary:        First stage UEFI bootloader
 Name:           shim-unsigned-x64
-Version:        15.4
-Release:        2%{?dist}
+Version:        15.7
+Release:        1%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -50,6 +50,9 @@ make VENDOR_CERT_FILE=cert.der test
 %{_datadir}/%{name}/shimx64.efi
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 15.7-1
+- Auto-upgrade to 15.7 - Azure Linux 3.0 - package upgrades
+
 * Wed Jan 05 2022 Chris Co <chrco@microsoft.com> - 15.4-2
 - Update key
 - License verified
