@@ -1,7 +1,7 @@
 %global debug_package %{nil}
 Summary:        nvidia-docker CLI wrapper
 Name:           nvidia-docker2
-Version:        2.10.0
+Version:        2.14.0
 Release:        1%{?dist}
 License:        ASL2.0
 Vendor:         Microsoft Corporation
@@ -33,6 +33,9 @@ install -m 644 -t %{buildroot}%{_sysconfdir}/docker daemon.json
 %config %{_sysconfdir}/docker/daemon.json
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.14.0-1
+- Auto-upgrade to 2.14.0 - Azure Linux 3.0 - package upgrades
+
 * Mon Mar 28 2022 Adithya Jayachandran <adjayach@microsoft.com> - 2.10.0-1
 - Updating package to v2.10.0
 - Replace nvidia-container-runtime dependence with nvidia-container-toolkit
