@@ -19,8 +19,8 @@
 
 Summary:        Parser Generator with Java Extension
 Name:           byaccj
-Version:        1.14
-Release:        26%{?dist}
+Version:        1.15
+Release:        1%{?dist}
 License:        Public Domain
 Group:          Development/Libraries/Java
 Vendor:         Microsoft Corporation
@@ -67,6 +67,9 @@ cp -p src/yacc.linux \
 %attr(755, root, root) %{_bindir}/%{name}
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.15-1
+- Auto-upgrade to 1.15 - Azure Linux 3.0 - package upgrades
+
 * Mon Mar 28 2022 Cameron Baird <cameronbaird@microsoft.com> - 1.14-26
 - Move to SPECS
 - License verified

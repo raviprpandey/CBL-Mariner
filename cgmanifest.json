@@ -1367,8 +1367,8 @@
         "type": "other",
         "other": {
           "name": "byaccj",
-          "version": "1.14",
-          "downloadUrl": "http://downloads.sourceforge.net/byaccj/byaccj1.14_src.tar.gz"
+          "version": "1.15",
+          "downloadUrl": "http://downloads.sourceforge.net/byaccj/byaccj1.15_src.tar.gz"
         }
       }
     },
