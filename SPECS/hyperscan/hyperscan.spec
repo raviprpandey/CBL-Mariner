@@ -1,7 +1,7 @@
 %global __cmake_in_source_build 1
 Name:           hyperscan
-Version:        5.4.0
-Release:        2%{?dist}
+Version:        5.4.2
+Release:        1%{?dist}
 Summary:        High-performance regular expression matching library
 License:        BSD
 Group:          Development/Libraries
@@ -89,6 +89,9 @@ needed for developing Hyperscan applications.
 %{_includedir}/hs/
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 5.4.2-1
+- Auto-upgrade to 5.4.2 - Azure Linux 3.0 - package upgrades
+
 * Fri Jul 02 2021 Suresh Babu Chalamalasetty <schalam@microsoft.com> - 5.4.0-2
 - Initial CBL-Mariner import from Fedora 33 (license: MIT)
 - License verified
