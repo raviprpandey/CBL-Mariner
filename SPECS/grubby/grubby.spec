@@ -1,7 +1,7 @@
 Summary:        Command line tool for updating bootloader configs
 Name:           grubby
-Version:        8.40
-Release:        46%{?dist}
+Version:        8.28.12
+Release:        1%{?dist}
 License:        GPLv2+
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -112,6 +112,9 @@ current boot environment.
 %{_mandir}/man8/*.8*
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 8.28.12-1
+- Auto-upgrade to 8.28.12 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 8.40-46
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
 

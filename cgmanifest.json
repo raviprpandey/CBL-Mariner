@@ -4950,8 +4950,8 @@
         "type": "other",
         "other": {
           "name": "grubby",
-          "version": "8.40",
-          "downloadUrl": "https://github.com/rhboot/grubby/archive/8.40-1.tar.gz"
+          "version": "8.28.12",
+          "downloadUrl": "https://github.com/rhboot/grubby/archive/8.28.12.tar.gz"
         }
       }
     },
