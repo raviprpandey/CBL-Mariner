@@ -1,8 +1,8 @@
 %bcond_without pam
 Summary:        Job spooling tools
 Name:           at
-Version:        3.2.2
-Release:        2%{?dist}
+Version:        3.2.5
+Release:        1%{?dist}
 # http://packages.debian.org/changelogs/pool/main/a/at/current/copyright
 # + install-sh is MIT license with changes under Public Domain
 License:        GPLv3+ AND GPLv2+ AND ISC AND MIT AND Public Domain
@@ -168,6 +168,9 @@ chown root:root %{_localstatedir}/spool/at/.SEQ
 %attr(0644,root,root) /lib/systemd/system/atd.service
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.2.5-1
+- Auto-upgrade to 3.2.5 - Azure Linux 3.0 - package upgrades
+
 * Mon Feb 14 2022 Bala <balakumaran.kannan@microsoft.com> - 3.2.2-2
 - BR perl-Test, perl-Test-More and perl-Test-Harness for ptest
 - Update source0 URL
