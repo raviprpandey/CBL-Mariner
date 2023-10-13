@@ -4,8 +4,8 @@
 
 Summary:        dnf/yum equivalent using C libs
 Name:           tdnf
-Version:        3.5.2
-Release:        2%{?dist}
+Version:        3.5.5
+Release:        1%{?dist}
 License:        LGPLv2.1 AND GPLv2
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -225,6 +225,9 @@ fi
 /%{_lib}/systemd/system/tdnf*
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.5.5-1
+- Auto-upgrade to 3.5.5 - Azure Linux 3.0 - package upgrades
+
 * Thu Jun 15 2023 Sam Meluch <sammeluch@microsoft.com> - 3.5.2-2
 - add patch for SELECTION_DOTARCH in solv/tdnfquery.c
 
