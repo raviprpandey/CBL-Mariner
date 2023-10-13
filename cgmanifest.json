@@ -8341,8 +8341,8 @@
         "type": "other",
         "other": {
           "name": "kf5-ki18n",
-          "version": "5.61.0",
-          "downloadUrl": "https://download.kde.org/stable/frameworks/5.61/ki18n-5.61.0.tar.xz"
+          "version": "5.109.0",
+          "downloadUrl": "https://download.kde.org/stable/frameworks/5.109/ki18n-5.109.0.tar.xz"
         }
       }
     },
