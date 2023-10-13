@@ -21205,7 +21205,7 @@
         "other": {
           "name": "pkgconf",
           "version": "2.0.2",
-          "downloadUrl": "https://distfiles.dereferenced.org/pkgconf/pkgconf-2.0.2.tar.xz"
+          "downloadUrl": "https://distfiles.ariadne.space/pkgconf/pkgconf-2.0.2.tar.xz"
         }
       }
     },

@@ -15,9 +15,8 @@ Release:        1%{?dist}
 License:        ISC
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
-URL:            http://pkgconf.org/
-# Mirror at https://releases.pagure.org/pkgconf/pkgconf/
-Source0:        https://distfiles.dereferenced.org/%{name}/%{name}-%{version}.tar.xz
+URL:            https://github.com/pkgconf/pkgconf
+Source0:        https://distfiles.ariadne.space/%{name}/%{name}-%{version}.tar.xz
 # Simple wrapper script to offer platform versions of pkgconfig
 Source1:        platform-pkg-config.in
 # CVE-2023-24056 is resloved in version 1.9.4
@@ -53,6 +52,14 @@ Requires:       lib%{name}%{?_isa} = %{version}-%{release}
 %description -n lib%{name}-devel
 This package provides files necessary for developing applications
 to use functionality provided by %{name}.
+
+%package -n bomtool
+Summary:        Simple SBOM generator using pc(5) files
+Requires:       lib%{name}%{?_isa} = %{version}-%{release}
+ 
+%description -n bomtool
+bomtool is a program which helps generate a Software Bill of Materials
+manifest using data from installed .pc files.
 
 %if %{with pkgconfig_compat}
 %package m4
@@ -177,6 +184,9 @@ rm -rf %{buildroot}%{_datadir}/aclocal
 %dir %{_libdir}/pkgconfig
 %dir %{_datadir}/pkgconfig
 %endif
+
+%files -n bomtool
+%{_bindir}/bomtool
 
 %changelog
 * Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.0.2-1
