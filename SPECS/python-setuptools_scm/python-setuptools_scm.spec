@@ -3,7 +3,7 @@
 
 Summary:        The blessed package to manage your versions by scm tags.
 Name:           python-setuptools_scm
-Version:        6.4.2
+Version:        5.0.2
 Release:        1%{?dist}
 License:        MIT
 Group:          Development/Languages/Python
@@ -62,6 +62,9 @@ python3 setup.py test
 %{python3_sitelib}/*
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 5.0.2-1
+- Auto-upgrade to 5.0.2 - Azure Linux 3.0 - package upgrades
+
 * Sun Mar 27 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 6.4.2-1
 - Updating to version 6.4.2.
 - Adding a dependency on 'python3-tomli'.
