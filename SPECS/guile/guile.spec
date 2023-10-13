@@ -1,7 +1,7 @@
 Summary:        GNU Ubiquitous Intelligent Language for Extensions
 Name:           guile
-Version:        2.0.14
-Release:        5%{?dist}
+Version:        3.0.9
+Release:        1%{?dist}
 License:        LGPLv3+
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -78,6 +78,9 @@ make  %{?_smp_mflags} check
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.0.9-1
+- Auto-upgrade to 3.0.9 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 2.0.14-5
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
 
