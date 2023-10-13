@@ -6,8 +6,8 @@
 
 Summary:        Non-blocking streaming Unicode codec for OCaml
 Name:           ocaml-%{srcname}
-Version:        1.0.2
-Release:        15%{?dist}
+Version:        1.0.3
+Release:        1%{?dist}
 License:        ISC
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -106,6 +106,9 @@ ocaml pkg/pkg.ml test
 %{_libdir}/ocaml/%{srcname}/%{srcname}*.mli
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.0.3-1
+- Auto-upgrade to 1.0.3 - Azure Linux 3.0 - package upgrades
+
 * Thu Mar 31 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 1.0.2-15
 - Cleaning-up spec. License verified.
 
