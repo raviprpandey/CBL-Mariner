@@ -2,8 +2,8 @@
 
 Summary:        Next generation of nicer testing for Python
 Name:           python-%{srcname}
-Version:        0.10.0
-Release:        2%{?dist}
+Version:        0.13.0
+Release:        1%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -70,6 +70,9 @@ PYTHONPATH=`pwd` python3 -m nose2.__main__ -v
 %{_bindir}/nose2
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 0.13.0-1
+- Auto-upgrade to 0.13.0 - Azure Linux 3.0 - package upgrades
+
 * Wed Mar 30 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 0.10.0-2
 - Updating dependencies.
 
