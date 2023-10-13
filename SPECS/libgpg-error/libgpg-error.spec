@@ -3,7 +3,7 @@ Name:           libgpg-error
 Version:        1.47
 Release:        1%{?dist}
 License:        GPLv2+
-URL:            https://gnupg.org/
+URL:            https://gnupg.org/software/libgpg-error/
 Group:          Development/Libraries
 Source0:        https://gnupg.org/ftp/gcrypt/%{name}/%{name}-%{version}.tar.bz2
 Vendor:         Microsoft Corporation
@@ -58,6 +58,7 @@ make %{?_smp_mflags} check
 %{_bindir}/gpg-error
 %{_bindir}/yat2m
 %{_libdir}/libgpg-error.so.*
+%{_mandir}/man1/*
 
 %files devel
 %defattr(-,root,root)
