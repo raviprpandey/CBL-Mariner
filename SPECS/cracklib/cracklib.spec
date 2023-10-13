@@ -104,9 +104,6 @@ CFLAGS="$RPM_OPT_FLAGS" ./configure \
   --without-python
 
 make
-pushd python
-python3 setup.py build
-popd
 
 %install
 rm -rf $RPM_BUILD_ROOT
