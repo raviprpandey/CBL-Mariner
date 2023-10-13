@@ -15634,8 +15634,8 @@
         "type": "other",
         "other": {
           "name": "orangefs",
-          "version": "2.9.8",
-          "downloadUrl": "https://s3.amazonaws.com/download.orangefs.org/current/source/orangefs-2.9.8.tar.gz"
+          "version": "2.10.0",
+          "downloadUrl": "https://s3.amazonaws.com/download.orangefs.org/current/source/orangefs-2.10.0.tar.gz"
         }
       }
     },

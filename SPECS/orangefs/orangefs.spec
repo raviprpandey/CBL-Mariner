@@ -9,8 +9,8 @@ This package provides the pvfs2-client-core which is required to use \
 the kernel module.
 Summary:        Parallel network file system client
 Name:           orangefs
-Version:        2.9.8
-Release:        3%{?dist}
+Version:        2.10.0
+Release:        1%{?dist}
 # ASL 2.0 src/client/jni
 # BSD (2 clause) maint/config/ssl.m4
 # BSD (3 clause) src/client/usrint/fts.c
@@ -250,6 +250,9 @@ install -p -m 644 %{SOURCE4} %{buildroot}%{_sysconfdir}
 %{_bindir}/pvfs2fuse
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.10.0-1
+- Auto-upgrade to 2.10.0 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 2.9.8-3
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
 
