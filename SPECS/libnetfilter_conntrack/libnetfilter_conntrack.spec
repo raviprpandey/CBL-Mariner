@@ -1,6 +1,6 @@
 Summary:        Netfilter conntrack userspace library
 Name:           libnetfilter_conntrack
-Version:        1.0.8
+Version:        1.0.4
 Release:        1%{?dist}
 License:        GPLv2+
 Vendor:         Microsoft Corporation
@@ -51,6 +51,9 @@ find %{buildroot} -type f -name "*.la" -delete -print
 %{_libdir}/*.so
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.0.4-1
+- Auto-upgrade to 1.0.4 - Azure Linux 3.0 - package upgrades
+
 * Tue Jan 11 2022 Henry Li <lihl@microsoft.com> - 1.0.8-1
 - Upgrade to version 1.0.8
 - Verified License

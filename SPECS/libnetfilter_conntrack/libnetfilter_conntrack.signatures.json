@@ -1,5 +1,5 @@
 {
- "Signatures": {
-  "libnetfilter_conntrack-1.0.8.tar.bz2": "0cd13be008923528687af6c6b860f35392d49251c04ee0648282d36b1faec1cf"
- }
+  "Signatures": {
+    "libnetfilter_conntrack-1.0.4.tar.bz2": "d9ec4a3caf49417f2b0a2d8d44249133e8c3ec78c757b7eb8c273f1cb6929c7d"
+  }
 }
