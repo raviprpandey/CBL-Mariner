@@ -11,8 +11,8 @@
 %define mvn_1_0_pmc_ver 3.5.4-13
 Summary:        Apache Maven alternative package with no jdk bindings
 Name:           maven3
-Version:        3.8.7
-Release:        2%{?dist}
+Version:        3.9.4
+Release:        1%{?dist}
 License:        ASL 2.0
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -152,6 +152,9 @@ echo JAVA_HOME=%{_lib}/jvm/msopenjdk-11 >%{buildroot}%{_sysconfdir}/java/maven.c
 %config /etc/java/maven.conf-openjdk11
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.9.4-1
+- Auto-upgrade to 3.9.4 - Azure Linux 3.0 - package upgrades
+
 * Tue Apr 04 2023 Mykhailo Bykhovtsev <mbykhovtsev@microsoft.com> - 3.8.7-2
 - Added openjdk11 subpackage
 - Added symlink for binaries requires by xmvn package
