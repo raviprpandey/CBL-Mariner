@@ -2,8 +2,8 @@
 %global pcsc_lite_ver 1.8.9
 Summary:        Generic USB CCID smart card reader driver
 Name:           pcsc-lite-ccid
-Version:        1.4.33
-Release:        4%{?dist}
+Version:        1.5.2
+Release:        1%{?dist}
 License:        LGPLv2+
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -56,6 +56,9 @@ cp -p src/openct/LICENSE LICENSE.openct
 %config(noreplace) %{_sysconfdir}/reader.conf.d/libccidtwin
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.5.2-1
+- Auto-upgrade to 1.5.2 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 1.4.33-4
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
 

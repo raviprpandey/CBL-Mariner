@@ -16024,8 +16024,8 @@
         "type": "other",
         "other": {
           "name": "pcsc-lite-ccid",
-          "version": "1.4.33",
-          "downloadUrl": "https://ccid.apdu.fr/files/ccid-1.4.33.tar.bz2"
+          "version": "1.5.2",
+          "downloadUrl": "https://ccid.apdu.fr/files/ccid-1.5.2.tar.bz2"
         }
       }
     },
