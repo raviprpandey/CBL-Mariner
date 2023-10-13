@@ -2,8 +2,8 @@
 
 Summary:        Objective CAML package manager and build helper
 Name:           ocaml-findlib
-Version:        1.8.1
-Release:        16%{?dist}
+Version:        1.9.6
+Release:        1%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -97,6 +97,9 @@ make install \
 %{_libdir}/ocaml/findlib/Makefile.config
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.9.6-1
+- Auto-upgrade to 1.9.6 - Azure Linux 3.0 - package upgrades
+
 * Wed Mar 30 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 1.8.1-16
 - Updating dependencies.
 
