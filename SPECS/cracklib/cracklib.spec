@@ -14,6 +14,9 @@ Distribution:     Mariner
 Source0:          https://github.com/%{name}/%{name}/releases/download/v%{version}/%{name}-%{version}.tar.gz
 Source1:          https://github.com/%{name}/%{name}/releases/download/v%{version}/%{name}-words-%{version}.gz
 
+BuildRequires:  autoconf
+BuildRequires:  automake
+
 Requires:         /bin/ln
 Requires(post):   /bin/ln
 Requires(postun): /bin/rm
@@ -93,6 +96,7 @@ mkdir -p dicts
 install %{SOURCE1} dicts/
 
 %build
+autoreconf -fiv
 
 CFLAGS="$RPM_OPT_FLAGS" ./configure \
   --prefix=%{_prefix} \
@@ -104,6 +108,9 @@ CFLAGS="$RPM_OPT_FLAGS" ./configure \
   --without-python
 
 make
+pushd python
+python3 setup.py build
+popd
 
 %install
 rm -rf $RPM_BUILD_ROOT
