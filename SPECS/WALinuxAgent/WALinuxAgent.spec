@@ -1,7 +1,7 @@
 Summary:        The Windows Azure Linux Agent
 Name:           WALinuxAgent
-Version:        2.3.1.1
-Release:        3%{?dist}
+Version:        2.9.1.1
+Release:        1%{?dist}
 License:        ASL 2.0
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -90,6 +90,9 @@ python3 setup.py check && python3 setup.py test
 %{python3_sitelib}/*
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.9.1.1-1
+- Auto-upgrade to 2.9.1.1 - Azure Linux 3.0 - package upgrades
+
 * Tue Nov 10 2022 Nan Liu <liunan@microsoft.com> - 2.3.1.1-3
 - Add ephemeral-disk-warning.service
 
