@@ -855,8 +855,8 @@
         "type": "other",
         "other": {
           "name": "azcopy",
-          "version": "10.15.0",
-          "downloadUrl": "https://github.com/Azure/azure-storage-azcopy/archive/refs/tags/v10.15.0.tar.gz"
+          "version": "10.21.0",
+          "downloadUrl": "https://github.com/Azure/azure-storage-azcopy/archive/refs/tags/v10.21.0-Preview.tar.gz"
         }
       }
     },
