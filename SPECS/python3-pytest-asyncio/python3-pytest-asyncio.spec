@@ -5,8 +5,8 @@
 %bcond_without  tests
 Summary:        Pytest support for asyncio
 Name:           python3-%{pypi_name}
-Version:        0.14.0
-Release:        3%{?dist}
+Version:        0.21.1
+Release:        1%{?dist}
 License:        ASL 2.0
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -69,6 +69,9 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} \
 %{python3_sitelib}/%{srcname}/
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 0.21.1-1
+- Auto-upgrade to 0.21.1 - Azure Linux 3.0 - package upgrades
+
 * Mon Jun 21 2021 Rachel Menge <rachelmenge@microsoft.com> - 0.14.0-3
 - Initial CBL-Mariner import from Fedora 34 (license: MIT)
 - License verified
