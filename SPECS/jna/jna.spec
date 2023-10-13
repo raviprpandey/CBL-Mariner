@@ -21,7 +21,7 @@
 
 Summary:        Java Native Access
 Name:           jna
-Version:        5.10.0
+Version:        5.13.0
 Release:        1%{?dist}
 # Most of code is dual-licensed under either LGPL 2.1+ only or Apache
 # License 2.0.  WeakIdentityHashMap.java was taken from Apache CXF,
@@ -159,6 +159,9 @@ ant
 %license LICENSE
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 5.13.0-1
+- Auto-upgrade to 5.13.0 - Azure Linux 3.0 - package upgrades
+
 * Thu Feb 24 2022 Cameron Baird <cameronbaird@microsoft.com> - 5.10.0-1
 - Update source to v5.10.0
 - Update jna_remove_clover_and_win32_native_jar.patch
