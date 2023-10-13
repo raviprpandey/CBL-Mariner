@@ -1,7 +1,7 @@
 Summary:        Basic and advanced IPV4-based networking
 Name:           iproute
-Version:        5.15.0
-Release:        3%{?dist}
+Version:        6.4.0
+Release:        1%{?dist}
 License:        GPLv2
 URL:            https://www.kernel.org/pub/linux/utils/net/iproute2
 Group:          Applications/System
@@ -71,6 +71,9 @@ sed -i 's/\"libnetlink.h\"/"..\/include\/libnetlink.h\"/g' ../lib/libnetlink.c
 %{_mandir}/man3/*
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 6.4.0-1
+- Auto-upgrade to 6.4.0 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 5.15.0-3
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
 
