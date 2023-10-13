@@ -17,8 +17,8 @@
 
 Summary:        Open-source legacy BIOS implementation
 Name:           seabios
-Version:        1.14.0
-Release:        7%{?dist}
+Version:        1.16.2
+Release:        1%{?dist}
 License:        GPLv3+ AND LGPLv3+
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -152,6 +152,9 @@ install -m 0644 binaries/vgabios*.bin %{buildroot}%{_datadir}/seavgabios
 %{_datadir}/seavgabios/vgabios*.bin
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.16.2-1
+- Auto-upgrade to 1.16.2 - Azure Linux 3.0 - package upgrades
+
 * Thu Aug 26 2021 Pawel Winogrodzki <pawelwi@microsoft.com> - 1.14.0-7
 - License verified.
 - Updated project's URL.
