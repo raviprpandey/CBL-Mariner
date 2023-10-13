@@ -1,8 +1,8 @@
 %global debug_package %{nil}
 Summary:        Node Managed Identity
 Name:           nmi
-Version:        1.8.7
-Release:        13%{?dist}
+Version:        1.8.17
+Release:        1%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -63,6 +63,9 @@ popd
 %{_bindir}/%{name}
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.8.17-1
+- Auto-upgrade to 1.8.17 - Azure Linux 3.0 - package upgrades
+
 * Mon Aug 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.8.7-13
 - Bump release to rebuild with go 1.19.12
 
