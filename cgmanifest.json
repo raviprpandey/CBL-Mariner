@@ -1167,8 +1167,8 @@
         "type": "other",
         "other": {
           "name": "bluez",
-          "version": "5.63",
-          "downloadUrl": "http://www.kernel.org/pub/linux/bluetooth/bluez-5.63.tar.xz"
+          "version": "5.69",
+          "downloadUrl": "http://www.kernel.org/pub/linux/bluetooth/bluez-5.69.tar.xz"
         }
       }
     },
