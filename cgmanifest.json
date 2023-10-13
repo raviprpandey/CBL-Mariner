@@ -21204,8 +21204,8 @@
         "type": "other",
         "other": {
           "name": "pkgconf",
-          "version": "1.8.0",
-          "downloadUrl": "https://distfiles.dereferenced.org/pkgconf/pkgconf-1.8.0.tar.xz"
+          "version": "2.0.2",
+          "downloadUrl": "https://distfiles.dereferenced.org/pkgconf/pkgconf-2.0.2.tar.xz"
         }
       }
     },
