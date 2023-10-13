@@ -1,7 +1,7 @@
 Summary:        Linux-native asynchronous I/O access library
 Name:           libaio
-Version:        0.3.112
-Release:        4%{?dist}
+Version:        0.3.113
+Release:        1%{?dist}
 License:        LGPLv2+
 Group:          System Environment/Libraries
 Vendor:         Microsoft Corporation
@@ -71,6 +71,9 @@ make -k check
 %attr(0755,root,root) %{_libdir}/libaio.a
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 0.3.113-1
+- Auto-upgrade to 0.3.113 - Azure Linux 3.0 - package upgrades
+
 * Mon Feb 21 2022 Muhammad Falak <mwani@microsoft.com> 0.3-112-4
 - Switch to `%autosetup` instead of `%setup`
 - Introduce patch to fix gcc-11 ptest bug & parity with upstream
