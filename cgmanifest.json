@@ -28317,8 +28317,8 @@
         "type": "other",
         "other": {
           "name": "swupdate",
-          "version": "2021.04",
-          "downloadUrl": "https://github.com/sbabic/swupdate/archive/2021.04.tar.gz"
+          "version": "2023.5",
+          "downloadUrl": "https://github.com/sbabic/swupdate/archive/2023.05.tar.gz"
         }
       }
     },

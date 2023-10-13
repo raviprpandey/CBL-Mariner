@@ -1,6 +1,6 @@
 Summary:        Software Update for Embedded Systems
 Name:           swupdate
-Version:        2021.04
+Version:        2023.5
 Release:        1%{?dist}
 License:        GPLv2+
 Vendor:         Microsoft Corporation
@@ -134,6 +134,9 @@ fi
 %{_libdir}/libswupdate.so.*
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2023.5-1
+- Auto-upgrade to 2023.5 - Azure Linux 3.0 - package upgrades
+
 * Tue Jan 18 2022 Daniel McIlvaney <damcilva@microsoft.com> - 2021.04-1
 - Update to version 2021.04.
 
