@@ -1,7 +1,7 @@
 Summary:        PC/SC Lite smart card framework and applications
 Name:           pcsc-lite
-Version:        1.9.5
-Release:        2%{?dist}
+Version:        2.0.0
+Release:        1%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -149,6 +149,9 @@ fi
 %doc doc/api/ doc/example/pcsc_demo.c
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.0.0-1
+- Auto-upgrade to 2.0.0 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 1.9.5-2
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
 
