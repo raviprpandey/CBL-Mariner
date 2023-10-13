@@ -43,8 +43,8 @@
 
 Summary:        Kata Containers version 2.x repository
 Name:           kata-containers
-Version:        3.1.0
-Release:        7%{?dist}
+Version:        3.1.3
+Release:        1%{?dist}
 License:        ASL 2.0
 Vendor:         Microsoft Corporation
 URL:            https://github.com/%{name}/%{name}
@@ -230,6 +230,9 @@ ln -sf %{_bindir}/kata-runtime %{buildroot}%{_prefix}/local/bin/kata-runtime
 %exclude %{kataosbuilderdir}/rootfs-builder/ubuntu
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.1.3-1
+- Auto-upgrade to 3.1.3 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 27 2023 Dallas Delaney <dadelan@microsoft.com> 3.1.0-7
 - Refactor UVM build script and add -tools subpackage
 
