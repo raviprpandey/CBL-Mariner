@@ -18,8 +18,8 @@
 
 Summary:        CNI plugin providing multiple interfaces in containers
 Name:           multus
-Version:        3.8
-Release:        11%{?dist}
+Version:        4.0.2
+Release:        1%{?dist}
 License:        ASL 2.0
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -70,6 +70,9 @@ install -D -m0644 images/multus-daemonset-crio.yml %{buildroot}%{_datadir}/k8s-y
 %{_datarootdir}/k8s-yaml/multus/multus.yaml
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 4.0.2-1
+- Auto-upgrade to 4.0.2 - Azure Linux 3.0 - package upgrades
+
 * Mon Aug 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.8-11
 - Bump release to rebuild with go 1.19.12
 
