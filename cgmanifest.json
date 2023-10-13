@@ -14083,8 +14083,8 @@
         "type": "other",
         "other": {
           "name": "nbd",
-          "version": "3.20",
-          "downloadUrl": "http://downloads.sourceforge.net/project/nbd/nbd/3.20/nbd-3.20.tar.xz"
+          "version": "3.24",
+          "downloadUrl": "http://downloads.sourceforge.net/project/nbd/nbd/3.24/nbd-3.24.tar.xz"
         }
       }
     },
