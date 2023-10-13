@@ -7,7 +7,7 @@
 %global debug_package %{nil}
 
 Name:         kata-containers-cc
-Version:      0.6.1
+Version:      2.3.0
 Release:      1%{?dist}
 Summary:      Kata Confidential Containers
 License:      ASL 2.0
@@ -290,6 +290,9 @@ install -D -m 0755 %{_builddir}/%{name}-%{version}/tools/osbuilder/image-builder
 %exclude %{osbuilder}/tools/osbuilder/rootfs-builder/ubuntu
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.3.0-1
+- Auto-upgrade to 2.3.0 - Azure Linux 3.0 - package upgrades
+
 *   Mon Sep 18 2023 Dallas Delaney <dadelan@microsoft.com> 0.6.1-1
 -   Update to use cloud-hypervisor-cvm and kernel-uvm-cm
 -   Pull in latest source for genpolicy, utarfs, and overlay changes
