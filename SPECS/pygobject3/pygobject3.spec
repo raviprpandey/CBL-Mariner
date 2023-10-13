@@ -1,7 +1,7 @@
 %define majmin %(echo %{version} | cut -d. -f1-2)
 Summary:        Python bindings for GObject Introspection
 Name:           pygobject3
-Version:        3.42.0
+Version:        3.36.1
 Release:        1%{?dist}
 License:        LGPLv2+
 Vendor:         Microsoft Corporation
@@ -90,6 +90,9 @@ python3 setup.py test
 %{_libdir}/pkgconfig/pygobject-3.0.pc
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.36.1-1
+- Auto-upgrade to 3.36.1 - Azure Linux 3.0 - package upgrades
+
 * Thu Apr 07 2022 Olivia Crain <oliviacrain@microsoft> - 3.42.0-1
 - Upgrade to latest upstream version
 - Lint spec
