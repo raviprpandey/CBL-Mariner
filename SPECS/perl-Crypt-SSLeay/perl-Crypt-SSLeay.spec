@@ -2,8 +2,8 @@
 
 Summary:        Crypt::SSLeay - OpenSSL support for LWP
 Name:           perl-Crypt-SSLeay
-Version:        0.73_06
-Release:        2%{?dist}
+Version:        0.72
+Release:        1%{?dist}
 URL:            https://metacpan.org/release/Crypt-SSLeay
 License:        Artistic 2.0
 Group:          Development/Libraries
@@ -66,6 +66,9 @@ make test
 %{_mandir}/man?/*
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 0.72-1
+- Auto-upgrade to 0.72 - Azure Linux 3.0 - package upgrades
+
 * Wed Jul 27 2022 Muhammad Falak <mwani@micrsofot.com> - 0.73_06-2
 - Add BR on `perl(Test::More)` & `perl(Bytes::Random::Secure)` to enable ptest
 
