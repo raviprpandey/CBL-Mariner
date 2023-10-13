@@ -2,8 +2,8 @@
 
 Summary:        RPM Development Tools
 Name:           rpmdevtools
-Version:        8.10
-Release:        13%{?dist}
+Version:        9.6
+Release:        1%{?dist}
 # rpmdev-setuptree is GPLv2, everything else GPLv2+
 License:        GPLv2+
 Vendor:         Microsoft Corporation
@@ -80,6 +80,9 @@ echo %%{_sysconfdir}/bash_completion.d > %{name}.files
 %{_mandir}/man[18]/*.[18]*
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 9.6-1
+- Auto-upgrade to 9.6 - Azure Linux 3.0 - package upgrades
+
 * Mon Dec 06 2021 Pawel Winogrodzki <pawelwi@microsoft.com> - 8.10-13
 - License verified.
 
