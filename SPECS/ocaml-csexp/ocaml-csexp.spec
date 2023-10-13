@@ -16,8 +16,8 @@
 
 Summary:        Parsing and printing of S-expressions in canonical form
 Name:           ocaml-%{srcname}
-Version:        1.3.2
-Release:        4%{?dist}
+Version:        1.5.2
+Release:        1%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -171,6 +171,9 @@ EOF
 %{_libdir}/ocaml/%{srcname}/*.mli
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.5.2-1
+- Auto-upgrade to 1.5.2 - Azure Linux 3.0 - package upgrades
+
 * Thu Mar 31 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 1.3.2-4
 - Cleaning-up spec. License verified.
 
