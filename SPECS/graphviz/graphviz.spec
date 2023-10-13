@@ -44,8 +44,8 @@
 %endif
 Summary:        Graph Visualization Tools
 Name:           graphviz
-Version:        2.42.4
-Release:        9%{?dist}
+Version:        8.1.0
+Release:        1%{?dist}
 License:        EPL-1.0
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -54,7 +54,6 @@ Source0:        https://gitlab.com/%{name}/%{name}/-/archive/%{version}/%{name}-
 # rhbz#1505230
 Patch0:         graphviz-2.42.2-dotty-menu-fix.patch
 Patch1:         graphviz-2.42.2-coverity-scan-fixes.patch
-Patch2:         CVE-2020-18032.patch
 BuildRequires:  autoconf
 BuildRequires:  automake
 BuildRequires:  bison
@@ -518,6 +517,9 @@ php --no-php-ini \
 %{_mandir}/man3/*.3tcl*
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 8.1.0-1
+- Auto-upgrade to 8.1.0 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 2.42.4-9
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
 
