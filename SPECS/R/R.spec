@@ -1,8 +1,8 @@
 %global debug_package %{nil}
 Summary:        A language for data analysis and graphics
 Name:           R
-Version:        4.1.0
-Release:        4%{?dist}
+Version:        4.3.1
+Release:        1%{?dist}
 License:        GPLv2
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -121,6 +121,9 @@ TZ="Europe/Paris" make check -k -i
 %endif
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 4.3.1-1
+- Auto-upgrade to 4.3.1 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 4.1.0-4
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
 
