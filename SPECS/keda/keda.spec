@@ -1,7 +1,7 @@
 Summary:        Kubernetes-based Event Driven Autoscaling
 Name:           keda
-Version:        2.4.0
-Release:        13%{?dist}
+Version:        2.11.2
+Release:        1%{?dist}
 License:        ASL 2.0
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -55,6 +55,9 @@ cp ./bin/keda-adapter %{buildroot}%{_bindir}
 %{_bindir}/%{name}-adapter
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.11.2-1
+- Auto-upgrade to 2.11.2 - Azure Linux 3.0 - package upgrades
+
 * Mon Aug 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.4.0-13
 - Bump release to rebuild with go 1.19.12
 
