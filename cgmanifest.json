@@ -23964,8 +23964,8 @@
         "type": "other",
         "other": {
           "name": "python-pytest-forked",
-          "version": "1.4.0",
-          "downloadUrl": "https://files.pythonhosted.org/packages/f1/bc/0121a2e386b261b69f4f5aa48e5304c947451dce70d68628cb28d5cd0d28/pytest-forked-1.4.0.tar.gz"
+          "version": "1.3.0",
+          "downloadUrl": "https://files.pythonhosted.org/packages/62/92/2d418d7b0c9d68a2e885b66d7f6805f9678ce56ad2b3a77669437b2d139a/pytest-forked-1.3.0.tar.gz"
         }
       }
     },

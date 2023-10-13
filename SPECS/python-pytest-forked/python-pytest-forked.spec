@@ -6,8 +6,8 @@ C++ libraries that might crash the process. To use the plugin, simply use the
 --forked argument when invoking py.test.}
 Summary:        py.test plugin for running tests in isolated forked subprocesses
 Name:           python-%{pypi_name}
-Version:        1.4.0
-Release:        2%{?dist}
+Version:        1.3.0
+Release:        1%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -57,6 +57,9 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} \
 %{python3_sitelib}/pytest_forked*
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.3.0-1
+- Auto-upgrade to 1.3.0 - Azure Linux 3.0 - package upgrades
+
 * Wed Oct 26 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 1.4.0-2
 - Freezing 'pytest' test dependency to version 7.1.2.
 
