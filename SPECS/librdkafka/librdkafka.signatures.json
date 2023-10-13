@@ -1,5 +1,5 @@
 {
- "Signatures": {
-  "librdkafka-1.8.2.tar.gz": "6a747d293a7a4613bd2897e28e8791476fbe1ae7361f2530a876e0fd483482a6"
- }
+  "Signatures": {
+    "librdkafka-2.2.0.tar.gz": "c3a37cfd3e73b25de5200abbc93aac3a2b3b1ddb742ecc2dbf14ada4066d2558"
+  }
 }
