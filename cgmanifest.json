@@ -14903,8 +14903,8 @@
         "type": "other",
         "other": {
           "name": "ocaml-fileutils",
-          "version": "0.5.2",
-          "downloadUrl": "https://github.com/gildor478/ocaml-fileutils/archive/refs/tags/0.5.2.tar.gz"
+          "version": "0.6.4",
+          "downloadUrl": "https://github.com/gildor478/ocaml-fileutils/archive/refs/tags/v0.6.4.tar.gz"
         }
       }
     },
