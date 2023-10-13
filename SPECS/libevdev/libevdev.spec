@@ -1,7 +1,7 @@
 Summary:        Kernel Evdev Device Wrapper Library
 Name:           libevdev
-Version:        1.9.1
-Release:        7%{?dist}
+Version:        1.13.1
+Release:        1%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -66,6 +66,9 @@ Utilities to handle and/or debug evdev devices.
 %{_bindir}/libevdev-tweak-device
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.13.1-1
+- Auto-upgrade to 1.13.1 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 1.9.1-7
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
 
