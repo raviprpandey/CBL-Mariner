@@ -7,8 +7,8 @@
 
 Summary:        iSCSI client library
 Name:           libiscsi
-Version:        1.18.0
-Release:        11%{?dist}
+Version:        1.19.0
+Release:        1%{?dist}
 License:        GPLv2+ AND LGPLv2+
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -108,6 +108,9 @@ rm %{buildroot}/%{_bindir}/ld_iscsi.so
 %{_mandir}/man1/iscsi-test-cu.1.gz
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.19.0-1
+- Auto-upgrade to 1.19.0 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 1.18.0-11
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
 
