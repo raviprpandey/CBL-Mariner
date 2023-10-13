@@ -1,7 +1,7 @@
 Summary:        Kernel Audit Tool
 Name:           audit
-Version:        3.0.6
-Release:        8%{?dist}
+Version:        3.1.2
+Release:        1%{?dist}
 License:        GPLv2+
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -136,6 +136,9 @@ find %{buildroot} -type f -name "*.la" -delete -print
 %{python3_sitelib}/*
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.1.2-1
+- Auto-upgrade to 3.1.2 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 3.0.6-8
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
 
