@@ -1,7 +1,7 @@
 Summary:        Tools and Utilities for interaction with SCSI devices.
 Name:           sg3_utils
-Version:        1.46
-Release:        2%{?dist}
+Version:        1.48
+Release:        1%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -55,6 +55,9 @@ install -m 755 scripts/rescan-scsi-bus.sh %{buildroot}/%{_bindir}
 %{_includedir}/scsi/*
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.48-1
+- Auto-upgrade to 1.48 - Azure Linux 3.0 - package upgrades
+
 * Mon Apr 11 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 1.46-2
 - Fixing invalid source URL.
 
