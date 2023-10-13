@@ -4,8 +4,8 @@
 
 Summary:        Exporter for machine metrics
 Name:           prometheus-node-exporter
-Version:        1.3.1
-Release:        19%{?dist}
+Version:        1.6.1
+Release:        1%{?dist}
 # Upstream license specification: Apache-2.0
 License:        ASL 2.0 AND MIT
 Vendor:         Microsoft Corporation
@@ -107,6 +107,9 @@ getent passwd 'prometheus' >/dev/null || useradd -r -g 'prometheus' -d '%{_share
 %dir %attr(0755,prometheus,prometheus) %{_sharedstatedir}/prometheus/node-exporter
 
 %changelog
+* Fri Oct 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.6.1-1
+- Auto-upgrade to 1.6.1 - Azure Linux 3.0 - package upgrades
+
 * Mon Aug 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.3.1-19
 - Bump release to rebuild with go 1.19.12
 
