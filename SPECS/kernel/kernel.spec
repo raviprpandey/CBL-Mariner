@@ -41,6 +41,7 @@ Source3:        sha512hmac-openssl.sh
 Source4:        cbl-mariner-ca-20211013.pem
 Source5:        cpupower
 Source6:        cpupower.service
+Source7:        50-kernel-tools.preset
 Patch0:         nvme_multipath_default_false.patch
 BuildRequires:  audit-devel
 BuildRequires:  bash
@@ -234,6 +235,7 @@ install -d -m 755 %{buildroot}%{_sysconfdir}/sysconfig
 install -c -m 644 %{SOURCE5} %{buildroot}/%{_sysconfdir}/sysconfig/cpupower
 install -d -m 755 %{buildroot}%{_unitdir}
 install -c -m 644 %{SOURCE6} %{buildroot}%{_unitdir}/cpupower.service
+install -D -m 644 %{SOURCE7} %{buildroot}%{_libdir}/systemd/system-preset/50-kernel-tools.preset
 
 make INSTALL_MOD_PATH=%{buildroot} modules_install
 
@@ -428,6 +430,7 @@ ln -sf linux-%{uname_r}.cfg /boot/mariner.cfg
 %{_libdir}/perf/examples/bpf/*
 %{_libdir}/perf/include/bpf/*
 %{_includedir}/perf/perf_dlfilter.h
+%{_libdir}/systemd/system-preset/50-kernel-tools.preset
 %{_unitdir}/cpupower.service
 %{_sysconfdir}/sysconfig/cpupower
 
