@@ -23245,7 +23245,7 @@
         "other": {
           "name": "python-lxml",
           "version": "4.9.3",
-          "downloadUrl": "https://github.com/lxml/lxml/archive/refs/tags/lxml-4.9.3.tar.gz"
+          "downloadUrl": "https://github.com/lxml/lxml/releases/download/lxml-4.9.3/lxml-4.9.3.tar.gz"
         }
       }
     },
