@@ -26,7 +26,6 @@ BuildRequires:  xz-devel
 BuildRequires:  zlib
 BuildRequires:  zlib-devel
 Requires:       bzip2
-Requires:       curl
 Requires:       expat
 Requires:       libarchive
 Requires:       ncurses
@@ -49,7 +48,6 @@ operating system and in a compiler-independent manner.
     --system-zlib \
     --system-libarchive \
     --system-bzip2 \
-    --system-curl \
     --parallel=$(nproc)
 %make_build
 
