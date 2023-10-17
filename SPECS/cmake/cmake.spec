@@ -11,10 +11,7 @@ URL:            https://www.cmake.org/
 Source0:        https://github.com/Kitware/CMake/releases/download/v%{version}/%{name}-%{version}.tar.gz
 Source1:        macros.cmake
 Patch0:         disableUnstableUT.patch
-# We could use --system-curl instead of patching, but unfortuately curl isn't currently available in time during the toolchain build.
-Patch2:         CVE-2023-23914-0001-share-add-sharing-of-HSTS-cache-among-handles.patch
-Patch3:         CVE-2023-23914-0002-hsts-handle-adding-the-same-host-name-again.patch
-Patch4:         CVE-2023-28322-lib-unify-the-upload-method-handling.patch
+
 BuildRequires:  bzip2
 BuildRequires:  bzip2-devel
 BuildRequires:  curl
@@ -29,6 +26,7 @@ BuildRequires:  xz-devel
 BuildRequires:  zlib
 BuildRequires:  zlib-devel
 Requires:       bzip2
+Requires:       curl
 Requires:       expat
 Requires:       libarchive
 Requires:       ncurses
@@ -51,6 +49,7 @@ operating system and in a compiler-independent manner.
     --system-zlib \
     --system-libarchive \
     --system-bzip2 \
+    --system-curl \
     --parallel=$(nproc)
 %make_build
 
