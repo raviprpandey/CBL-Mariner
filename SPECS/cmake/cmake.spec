@@ -42,6 +42,7 @@ operating system and in a compiler-independent manner.
 %autosetup -p1
 
 %build
+# We could use --system-curl instead of patching curl submodule, but unfortuately curl isn't currently available in time during the toolchain build.
 ./bootstrap \
     --prefix=%{_prefix} \
     --system-expat \
