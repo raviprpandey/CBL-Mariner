@@ -1,0 +1,402 @@
+From a03a4b3c6b906d33c5ef1a15f3d5ca5fff600c76 Mon Sep 17 00:00:00 2001
+From: Stefan Behnel <stefan_ml@behnel.de>
+Date: Fri, 23 Dec 2022 10:46:32 +0100
+Subject: [PATCH] Use "noexcept" modifiers for callback functions and fix some
+ exception value declaration bugs found by Cython 3.0.
+
+---
+ src/lxml/extensions.pxi         |  6 +++---
+ src/lxml/includes/tree.pxd      | 10 +++++-----
+ src/lxml/includes/xmlerror.pxd  |  4 ++--
+ src/lxml/includes/xmlparser.pxd | 24 ++++++++++++------------
+ src/lxml/parser.pxi             | 10 +++++-----
+ src/lxml/saxparser.pxi          | 26 +++++++++++++-------------
+ src/lxml/serializer.pxi         |  4 ++--
+ src/lxml/xmlerror.pxi           | 14 +++++++-------
+ src/lxml/xpath.pxi              |  2 +-
+ 9 files changed, 50 insertions(+), 50 deletions(-)
+
+diff --git a/src/lxml/extensions.pxi b/src/lxml/extensions.pxi
+index 35a321b7a..80e53d7b5 100644
+--- a/src/lxml/extensions.pxi
++++ b/src/lxml/extensions.pxi
+@@ -393,7 +393,7 @@ cdef tuple LIBXML2_XPATH_ERROR_MESSAGES = (
+     b"?? Unknown error ??\n",
+ )
+ 
+-cdef void _forwardXPathError(void* c_ctxt, xmlerror.xmlError* c_error) with gil:
++cdef void _forwardXPathError(void* c_ctxt, xmlerror.xmlError* c_error) noexcept with gil:
+     cdef xmlerror.xmlError error
+     cdef int xpath_code
+     if c_error.message is not NULL:
+@@ -414,7 +414,7 @@ cdef void _forwardXPathError(void* c_ctxt, xmlerror.xmlError* c_error) with gil:
+ 
+     (<_BaseContext>c_ctxt)._error_log._receive(&error)
+ 
+-cdef void _receiveXPathError(void* c_context, xmlerror.xmlError* error) nogil:
++cdef void _receiveXPathError(void* c_context, xmlerror.xmlError* error) noexcept nogil:
+     if not __DEBUG:
+         return
+     if c_context is NULL:
+@@ -851,7 +851,7 @@ cdef void _extension_function_call(_BaseContext context, function,
+ # lookup the function by name and call it
+ 
+ cdef void _xpath_function_call(xpath.xmlXPathParserContext* ctxt,
+-                               int nargs) with gil:
++                               int nargs) noexcept with gil:
+     cdef _BaseContext context
+     cdef xpath.xmlXPathContext* rctxt = ctxt.context
+     context = <_BaseContext> rctxt.userData
+diff --git a/src/lxml/includes/tree.pxd b/src/lxml/includes/tree.pxd
+index 03d558a33..312537cbd 100644
+--- a/src/lxml/includes/tree.pxd
++++ b/src/lxml/includes/tree.pxd
+@@ -65,7 +65,7 @@ cdef extern from "libxml/chvalid.h" nogil:
+ 
+ cdef extern from "libxml/hash.h":
+     ctypedef struct xmlHashTable
+-    ctypedef void (*xmlHashScanner)(void* payload, void* data, const_xmlChar* name) # may require GIL!
++    ctypedef void (*xmlHashScanner)(void* payload, void* data, const_xmlChar* name) noexcept  # may require GIL!
+     void xmlHashScan(xmlHashTable* table, xmlHashScanner f, void* data) nogil
+     void* xmlHashLookup(xmlHashTable* table, const_xmlChar* name) nogil
+     ctypedef void (*xmlHashDeallocator)(void *payload, xmlChar *name)
+@@ -411,12 +411,12 @@ cdef extern from "libxml/xmlIO.h":
+     cdef int xmlOutputBufferClose(xmlOutputBuffer* out) nogil
+ 
+     ctypedef int (*xmlInputReadCallback)(void* context,
+-                                         char* buffer, int len) nogil
+-    ctypedef int (*xmlInputCloseCallback)(void* context) nogil
++                                         char* buffer, int len) except -1 nogil
++    ctypedef int (*xmlInputCloseCallback)(void* context) except -1 nogil
+ 
+     ctypedef int (*xmlOutputWriteCallback)(void* context,
+-                                           char* buffer, int len)
+-    ctypedef int (*xmlOutputCloseCallback)(void* context)
++                                           char* buffer, int len) except -1
++    ctypedef int (*xmlOutputCloseCallback)(void* context) except -1
+ 
+     cdef xmlOutputBuffer* xmlAllocOutputBuffer(
+         xmlCharEncodingHandler* encoder) nogil
+diff --git a/src/lxml/includes/xmlerror.pxd b/src/lxml/includes/xmlerror.pxd
+index c5ac6a0aa..6967378b7 100644
+--- a/src/lxml/includes/xmlerror.pxd
++++ b/src/lxml/includes/xmlerror.pxd
+@@ -838,9 +838,9 @@ cdef extern from "libxml/xmlerror.h" nogil:
+         int int2
+         void* node
+ 
+-    ctypedef void (*xmlGenericErrorFunc)(void* ctxt, char* msg, ...)
++    ctypedef void (*xmlGenericErrorFunc)(void* ctxt, char* msg, ...) noexcept
+     ctypedef void (*xmlStructuredErrorFunc)(void* userData,
+-                                            xmlError* error)
++                                            xmlError* error) noexcept
+ 
+     cdef void xmlSetGenericErrorFunc(
+         void* ctxt, xmlGenericErrorFunc func)
+diff --git a/src/lxml/includes/xmlparser.pxd b/src/lxml/includes/xmlparser.pxd
+index 9f3056248..c94212cee 100644
+--- a/src/lxml/includes/xmlparser.pxd
++++ b/src/lxml/includes/xmlparser.pxd
+@@ -15,37 +15,37 @@ cdef extern from "libxml/parser.h" nogil:
+                                             const_xmlChar** namespaces,
+                                             int nb_attributes,
+                                             int nb_defaulted,
+-                                            const_xmlChar** attributes)
++                                            const_xmlChar** attributes) noexcept
+ 
+     ctypedef void (*endElementNsSAX2Func)(void* ctx,
+                                           const_xmlChar* localname,
+                                           const_xmlChar* prefix,
+-                                          const_xmlChar* URI)
++                                          const_xmlChar* URI) noexcept
+ 
+-    ctypedef void (*startElementSAXFunc)(void* ctx, const_xmlChar* name, const_xmlChar** atts)
++    ctypedef void (*startElementSAXFunc)(void* ctx, const_xmlChar* name, const_xmlChar** atts) noexcept
+ 
+-    ctypedef void (*endElementSAXFunc)(void* ctx, const_xmlChar* name)
++    ctypedef void (*endElementSAXFunc)(void* ctx, const_xmlChar* name) noexcept
+ 
+-    ctypedef void (*charactersSAXFunc)(void* ctx, const_xmlChar* ch, int len)
++    ctypedef void (*charactersSAXFunc)(void* ctx, const_xmlChar* ch, int len) noexcept
+ 
+-    ctypedef void (*cdataBlockSAXFunc)(void* ctx, const_xmlChar* value, int len)
++    ctypedef void (*cdataBlockSAXFunc)(void* ctx, const_xmlChar* value, int len) noexcept
+ 
+-    ctypedef void (*commentSAXFunc)(void* ctx, const_xmlChar* value)
++    ctypedef void (*commentSAXFunc)(void* ctx, const_xmlChar* value) noexcept
+ 
+     ctypedef void (*processingInstructionSAXFunc)(void* ctx, 
+                                                   const_xmlChar* target,
+-                                                  const_xmlChar* data)
++                                                  const_xmlChar* data) noexcept
+ 
+     ctypedef void (*internalSubsetSAXFunc)(void* ctx, 
+                                             const_xmlChar* name,
+                                             const_xmlChar* externalID,
+-                                            const_xmlChar* systemID)
++                                            const_xmlChar* systemID) noexcept
+ 
+-    ctypedef void (*endDocumentSAXFunc)(void* ctx)
++    ctypedef void (*endDocumentSAXFunc)(void* ctx) noexcept
+ 
+-    ctypedef void (*startDocumentSAXFunc)(void* ctx)
++    ctypedef void (*startDocumentSAXFunc)(void* ctx) noexcept
+ 
+-    ctypedef void (*referenceSAXFunc)(void * ctx, const_xmlChar* name)
++    ctypedef void (*referenceSAXFunc)(void * ctx, const_xmlChar* name) noexcept
+ 
+     cdef int XML_SAX2_MAGIC
+ 
+diff --git a/src/lxml/parser.pxi b/src/lxml/parser.pxi
+index f0c8c6b64..e1e9da9f0 100644
+--- a/src/lxml/parser.pxi
++++ b/src/lxml/parser.pxi
+@@ -402,10 +402,10 @@ cdef class _FileReaderContext:
+         finally:
+             return c_byte_count  # swallow any exceptions
+ 
+-cdef int _readFilelikeParser(void* ctxt, char* c_buffer, int c_size) with gil:
++cdef int _readFilelikeParser(void* ctxt, char* c_buffer, int c_size) except -1 with gil:
+     return (<_FileReaderContext>ctxt).copyToBuffer(c_buffer, c_size)
+ 
+-cdef int _readFileParser(void* ctxt, char* c_buffer, int c_size) nogil:
++cdef int _readFileParser(void* ctxt, char* c_buffer, int c_size) except -1 nogil:
+     return stdio.fread(c_buffer, 1,  c_size, <stdio.FILE*>ctxt)
+ 
+ ############################################################
+@@ -626,10 +626,10 @@ cdef _initParserContext(_ParserContext context,
+     if c_ctxt is not NULL:
+         context._initParserContext(c_ctxt)
+ 
+-cdef void _forwardParserError(xmlparser.xmlParserCtxt* _parser_context, xmlerror.xmlError* error) with gil:
++cdef void _forwardParserError(xmlparser.xmlParserCtxt* _parser_context, xmlerror.xmlError* error) noexcept with gil:
+     (<_ParserContext>_parser_context._private)._error_log._receive(error)
+ 
+-cdef void _receiveParserError(void* c_context, xmlerror.xmlError* error) nogil:
++cdef void _receiveParserError(void* c_context, xmlerror.xmlError* error) noexcept nogil:
+     if __DEBUG:
+         if c_context is NULL or (<xmlparser.xmlParserCtxt*>c_context)._private is NULL:
+             _forwardError(NULL, error)
+@@ -1207,7 +1207,7 @@ cdef class _BaseParser:
+             context.cleanup()
+ 
+ 
+-cdef void _initSaxDocument(void* ctxt) with gil:
++cdef void _initSaxDocument(void* ctxt) noexcept with gil:
+     xmlparser.xmlSAX2StartDocument(ctxt)
+     c_ctxt = <xmlparser.xmlParserCtxt*>ctxt
+     c_doc = c_ctxt.myDoc
+diff --git a/src/lxml/saxparser.pxi b/src/lxml/saxparser.pxi
+index 49e72beaf..1737f0801 100644
+--- a/src/lxml/saxparser.pxi
++++ b/src/lxml/saxparser.pxi
+@@ -294,7 +294,7 @@ cdef void _handleSaxStart(
+         const_xmlChar* c_namespace, int c_nb_namespaces,
+         const_xmlChar** c_namespaces,
+         int c_nb_attributes, int c_nb_defaulted,
+-        const_xmlChar** c_attributes) with gil:
++        const_xmlChar** c_attributes) noexcept with gil:
+     cdef int i
+     cdef size_t c_len
+     c_ctxt = <xmlparser.xmlParserCtxt*>ctxt
+@@ -336,7 +336,7 @@ cdef void _handleSaxTargetStart(
+         const_xmlChar* c_namespace, int c_nb_namespaces,
+         const_xmlChar** c_namespaces,
+         int c_nb_attributes, int c_nb_defaulted,
+-        const_xmlChar** c_attributes) with gil:
++        const_xmlChar** c_attributes) noexcept with gil:
+     cdef int i
+     cdef size_t c_len
+     c_ctxt = <xmlparser.xmlParserCtxt*>ctxt
+@@ -407,7 +407,7 @@ cdef void _handleSaxTargetStart(
+ 
+ 
+ cdef void _handleSaxStartNoNs(void* ctxt, const_xmlChar* c_name,
+-                              const_xmlChar** c_attributes) with gil:
++                              const_xmlChar** c_attributes) noexcept with gil:
+     c_ctxt = <xmlparser.xmlParserCtxt*>ctxt
+     if c_ctxt._private is NULL or c_ctxt.disableSAX:
+         return
+@@ -426,7 +426,7 @@ cdef void _handleSaxStartNoNs(void* ctxt, const_xmlChar* c_name,
+ 
+ 
+ cdef void _handleSaxTargetStartNoNs(void* ctxt, const_xmlChar* c_name,
+-                                    const_xmlChar** c_attributes) with gil:
++                                    const_xmlChar** c_attributes) noexcept with gil:
+     c_ctxt = <xmlparser.xmlParserCtxt*>ctxt
+     if c_ctxt._private is NULL or c_ctxt.disableSAX:
+         return
+@@ -483,7 +483,7 @@ cdef int _pushSaxStartEvent(_SaxParserContext context,
+ 
+ cdef void _handleSaxEnd(void* ctxt, const_xmlChar* c_localname,
+                         const_xmlChar* c_prefix,
+-                        const_xmlChar* c_namespace) with gil:
++                        const_xmlChar* c_namespace) noexcept with gil:
+     c_ctxt = <xmlparser.xmlParserCtxt*>ctxt
+     if c_ctxt._private is NULL or c_ctxt.disableSAX:
+         return
+@@ -506,7 +506,7 @@ cdef void _handleSaxEnd(void* ctxt, const_xmlChar* c_localname,
+         return  # swallow any further exceptions
+ 
+ 
+-cdef void _handleSaxEndNoNs(void* ctxt, const_xmlChar* c_name) with gil:
++cdef void _handleSaxEndNoNs(void* ctxt, const_xmlChar* c_name) noexcept with gil:
+     c_ctxt = <xmlparser.xmlParserCtxt*>ctxt
+     if c_ctxt._private is NULL or c_ctxt.disableSAX:
+         return
+@@ -558,7 +558,7 @@ cdef int _pushSaxEndEvent(_SaxParserContext context,
+     return 0
+ 
+ 
+-cdef void _handleSaxData(void* ctxt, const_xmlChar* c_data, int data_len) with gil:
++cdef void _handleSaxData(void* ctxt, const_xmlChar* c_data, int data_len) noexcept with gil:
+     # can only be called if parsing with a target
+     c_ctxt = <xmlparser.xmlParserCtxt*>ctxt
+     if c_ctxt._private is NULL or c_ctxt.disableSAX:
+@@ -575,7 +575,7 @@ cdef void _handleSaxData(void* ctxt, const_xmlChar* c_data, int data_len) with g
+ 
+ cdef void _handleSaxTargetDoctype(void* ctxt, const_xmlChar* c_name,
+                                   const_xmlChar* c_public,
+-                                  const_xmlChar* c_system) with gil:
++                                  const_xmlChar* c_system) noexcept with gil:
+     # can only be called if parsing with a target
+     c_ctxt = <xmlparser.xmlParserCtxt*>ctxt
+     if c_ctxt._private is NULL or c_ctxt.disableSAX:
+@@ -592,7 +592,7 @@ cdef void _handleSaxTargetDoctype(void* ctxt, const_xmlChar* c_name,
+         return  # swallow any further exceptions
+ 
+ 
+-cdef void _handleSaxStartDocument(void* ctxt) with gil:
++cdef void _handleSaxStartDocument(void* ctxt) noexcept with gil:
+     c_ctxt = <xmlparser.xmlParserCtxt*>ctxt
+     if c_ctxt._private is NULL or c_ctxt.disableSAX:
+         return
+@@ -608,7 +608,7 @@ cdef void _handleSaxStartDocument(void* ctxt) with gil:
+ 
+ 
+ cdef void _handleSaxTargetPI(void* ctxt, const_xmlChar* c_target,
+-                             const_xmlChar* c_data) with gil:
++                             const_xmlChar* c_data) noexcept with gil:
+     # can only be called if parsing with a target
+     c_ctxt = <xmlparser.xmlParserCtxt*>ctxt
+     if c_ctxt._private is NULL or c_ctxt.disableSAX:
+@@ -627,7 +627,7 @@ cdef void _handleSaxTargetPI(void* ctxt, const_xmlChar* c_target,
+ 
+ 
+ cdef void _handleSaxPIEvent(void* ctxt, const_xmlChar* target,
+-                            const_xmlChar* data) with gil:
++                            const_xmlChar* data) noexcept with gil:
+     # can only be called when collecting pi events
+     c_ctxt = <xmlparser.xmlParserCtxt*>ctxt
+     if c_ctxt._private is NULL or c_ctxt.disableSAX:
+@@ -645,7 +645,7 @@ cdef void _handleSaxPIEvent(void* ctxt, const_xmlChar* target,
+         return  # swallow any further exceptions
+ 
+ 
+-cdef void _handleSaxTargetComment(void* ctxt, const_xmlChar* c_data) with gil:
++cdef void _handleSaxTargetComment(void* ctxt, const_xmlChar* c_data) noexcept with gil:
+     # can only be called if parsing with a target
+     c_ctxt = <xmlparser.xmlParserCtxt*>ctxt
+     if c_ctxt._private is NULL or c_ctxt.disableSAX:
+@@ -661,7 +661,7 @@ cdef void _handleSaxTargetComment(void* ctxt, const_xmlChar* c_data) with gil:
+         return  # swallow any further exceptions
+ 
+ 
+-cdef void _handleSaxComment(void* ctxt, const_xmlChar* text) with gil:
++cdef void _handleSaxComment(void* ctxt, const_xmlChar* text) noexcept with gil:
+     # can only be called when collecting comment events
+     c_ctxt = <xmlparser.xmlParserCtxt*>ctxt
+     if c_ctxt._private is NULL or c_ctxt.disableSAX:
+diff --git a/src/lxml/serializer.pxi b/src/lxml/serializer.pxi
+index 79a02829e..e1c76e1ba 100644
+--- a/src/lxml/serializer.pxi
++++ b/src/lxml/serializer.pxi
+@@ -699,10 +699,10 @@ cdef class _FilelikeWriter:
+         finally:
+             return retval  # and swallow any further exceptions
+ 
+-cdef int _writeFilelikeWriter(void* ctxt, char* c_buffer, int length):
++cdef int _writeFilelikeWriter(void* ctxt, char* c_buffer, int length) except -1:
+     return (<_FilelikeWriter>ctxt).write(c_buffer, length)
+ 
+-cdef int _closeFilelikeWriter(void* ctxt):
++cdef int _closeFilelikeWriter(void* ctxt) except -1:
+     return (<_FilelikeWriter>ctxt).close()
+ 
+ cdef _tofilelike(f, _Element element, encoding, doctype, method,
+diff --git a/src/lxml/xmlerror.pxi b/src/lxml/xmlerror.pxi
+index 1b50444fb..793e1d923 100644
+--- a/src/lxml/xmlerror.pxi
++++ b/src/lxml/xmlerror.pxi
+@@ -634,7 +634,7 @@ def use_global_python_log(PyErrorLog log not None):
+ 
+ 
+ # local log functions: forward error to logger object
+-cdef void _forwardError(void* c_log_handler, xmlerror.xmlError* error) with gil:
++cdef void _forwardError(void* c_log_handler, xmlerror.xmlError* error) noexcept with gil:
+     cdef _BaseErrorLog log_handler
+     if c_log_handler is not NULL:
+         log_handler = <_BaseErrorLog>c_log_handler
+@@ -645,27 +645,27 @@ cdef void _forwardError(void* c_log_handler, xmlerror.xmlError* error) with gil:
+     log_handler._receive(error)
+ 
+ 
+-cdef void _receiveError(void* c_log_handler, xmlerror.xmlError* error) nogil:
++cdef void _receiveError(void* c_log_handler, xmlerror.xmlError* error) noexcept nogil:
+     # no Python objects here, may be called without thread context !
+     if __DEBUG:
+         _forwardError(c_log_handler, error)
+ 
+ 
+-cdef void _receiveXSLTError(void* c_log_handler, char* msg, ...) nogil:
++cdef void _receiveXSLTError(void* c_log_handler, char* msg, ...) noexcept nogil:
+     # no Python objects here, may be called without thread context !
+     cdef cvarargs.va_list args
+     cvarargs.va_start(args, msg)
+     _receiveGenericError(c_log_handler, xmlerror.XML_FROM_XSLT, msg, args)
+     cvarargs.va_end(args)
+ 
+-cdef void _receiveRelaxNGParseError(void* c_log_handler, char* msg, ...) nogil:
++cdef void _receiveRelaxNGParseError(void* c_log_handler, char* msg, ...) noexcept nogil:
+     # no Python objects here, may be called without thread context !
+     cdef cvarargs.va_list args
+     cvarargs.va_start(args, msg)
+     _receiveGenericError(c_log_handler, xmlerror.XML_FROM_RELAXNGP, msg, args)
+     cvarargs.va_end(args)
+ 
+-cdef void _receiveRelaxNGValidationError(void* c_log_handler, char* msg, ...) nogil:
++cdef void _receiveRelaxNGValidationError(void* c_log_handler, char* msg, ...) noexcept nogil:
+     # no Python objects here, may be called without thread context !
+     cdef cvarargs.va_list args
+     cvarargs.va_start(args, msg)
+@@ -673,7 +673,7 @@ cdef void _receiveRelaxNGValidationError(void* c_log_handler, char* msg, ...) no
+     cvarargs.va_end(args)
+ 
+ # dummy function: no log output at all
+-cdef void _nullGenericErrorFunc(void* ctxt, char* msg, ...) nogil:
++cdef void _nullGenericErrorFunc(void* ctxt, char* msg, ...) noexcept nogil:
+     pass
+ 
+ 
+@@ -694,7 +694,7 @@ cdef void _connectGenericErrorLog(log, int c_domain=-1):
+ 
+ 
+ cdef void _receiveGenericError(void* c_log_handler, int c_domain,
+-                               char* msg, cvarargs.va_list args) nogil:
++                               char* msg, cvarargs.va_list args) noexcept nogil:
+     # no Python objects here, may be called without thread context !
+     cdef xmlerror.xmlError c_error
+     cdef char* c_text
+diff --git a/src/lxml/xpath.pxi b/src/lxml/xpath.pxi
+index a7cae4bff..704338e89 100644
+--- a/src/lxml/xpath.pxi
++++ b/src/lxml/xpath.pxi
+@@ -99,7 +99,7 @@ cdef class _XPathContext(_BaseContext):
+ 
+ 
+ cdef void _registerExsltFunctionsForNamespaces(
+-        void* _c_href, void* _ctxt, const_xmlChar* c_prefix):
++        void* _c_href, void* _ctxt, const_xmlChar* c_prefix) noexcept:
+     c_href = <const_xmlChar*> _c_href
+     ctxt = <xpath.xmlXPathContext*> _ctxt
+ 
