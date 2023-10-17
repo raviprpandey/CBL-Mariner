@@ -163,6 +163,7 @@ rm -f %{_datadir}/cracklib/pw_dict.pwi
 %{_datadir}/cracklib/cracklib.magic
 %{_datadir}/cracklib/empty*
 %{_libdir}/libcrack.so.*
+%{_mandir}/man8/*
 
 %files devel
 %defattr(-,root,root)
@@ -170,6 +171,7 @@ rm -f %{_datadir}/cracklib/pw_dict.pwi
 %{_includedir}/*
 %{_libdir}/libcrack.so
 %{_libdir}/libcrack.la
+%{_mandir}/man3/*
 
 %files -n python3-cracklib
 %defattr(-,root,root)
