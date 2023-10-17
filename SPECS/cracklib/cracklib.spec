@@ -97,7 +97,7 @@ install %{SOURCE1} dicts/
 
 %build
 autoreconf -fiv
-
+PYTHON=python3
 CFLAGS="$RPM_OPT_FLAGS" ./configure \
   --prefix=%{_prefix} \
   --mandir=%{_mandir} \
@@ -105,12 +105,8 @@ CFLAGS="$RPM_OPT_FLAGS" ./configure \
   --libexecdir=%{_libdir} \
   --datadir=%{_datadir} \
   --disable-static \
-  --without-python
 
 make
-pushd python
-python3 setup.py build
-popd
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -120,6 +116,7 @@ chmod 755 ./util/cracklib-packer
 util/cracklib-format dicts/cracklib* | util/cracklib-packer $RPM_BUILD_ROOT/%{_datadir}/cracklib/words
 echo password | util/cracklib-packer $RPM_BUILD_ROOT/%{_datadir}/cracklib/empty
 rm -f $RPM_BUILD_ROOT/%{_datadir}/cracklib/cracklib-small
+rm -rf $RPM_BUILD_ROOT/%{python3_sitelib}/__pycache__
 ln -s cracklib-format $RPM_BUILD_ROOT/%{_sbindir}/mkdict
 
 pushd python
