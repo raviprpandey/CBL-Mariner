@@ -146,13 +146,6 @@ Requires:       python3
 %description -n python3-perf
 This package contains the Python 3 extension for the 'perf' performance analysis tools for Linux kernel.
 
-%package dtb
-Summary:        This package contains common device tree blobs (dtb)
-Group:          System Environment/Kernel
-
-%description dtb
-This package contains common device tree blobs (dtb)
-
 %package -n     bpftool
 Summary:        Inspection and simple manipulation of eBPF programs and maps
 
@@ -234,7 +227,6 @@ install -vm 600 arch/x86/boot/bzImage %{buildroot}/boot/vmlinuz-%{uname_r}
 
 %ifarch aarch64
 install -vm 600 arch/arm64/boot/Image %{buildroot}/boot/vmlinuz-%{uname_r}
-install -D -m 640 arch/arm64/boot/dts/freescale/imx8mq-evk.dtb %{buildroot}/boot/dtb/fsl-imx8mq-evk.dtb
 %endif
 
 # Restrict the permission on System.map-X file
@@ -415,18 +407,14 @@ ln -sf linux-%{uname_r}.cfg /boot/mariner.cfg
 %files -n python3-perf
 %{python3_sitearch}/*
 
-%ifarch aarch64
-%files dtb
-/boot/dtb/fsl-imx8mq-evk.dtb
-%endif
-
 %files -n bpftool
 %{_sbindir}/bpftool
 %{_sysconfdir}/bash_completion.d/bpftool
 
 %changelog
-* Thu Oct 12 2023 Rachel Menge <rachelmenge@microsoft.com> - 6.1.55.1-1
+* Thu Oct 19 2023 Rachel Menge <rachelmenge@microsoft.com> - 6.1.55.1-1
 - Upgrade to 6.1.55.1
+- Remove support for imx8 dtb subpackage
 
 * Tue Sep 26 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 5.15.133.1-1
 - Auto-upgrade to 5.15.133.1
