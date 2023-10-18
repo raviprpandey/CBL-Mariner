@@ -8,8 +8,8 @@ Distribution:   Mariner
 URL:            https://swig.sourceforge.net/
 #Source0:       https://github.com/swig/swig/archive/refs/tags/v%{version}.tar.gz
 Source0:        %{name}-%{version}.tar.gz
-BuildRequires:  pcre-devel
-Requires:       pcre
+BuildRequires:  pcre2-devel
+Requires:       pcre2
 %if %{with_check}
 BuildRequires:  python3
 BuildRequires:  python3-devel
