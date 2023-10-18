@@ -2437,8 +2437,8 @@
         "type": "other",
         "other": {
           "name": "Cython",
-          "version": "3.0.2",
-          "downloadUrl": "https://github.com/cython/cython/releases/download/3.0.2/Cython-3.0.2.tar.gz"
+          "version": "3.0.4",
+          "downloadUrl": "https://files.pythonhosted.org/packages/3f/aa/1a5c72615e0ba4dc30cc36de7e8a9a2eca2158922b0677654fced0d3476c/Cython-3.0.4.tar.gz"
         }
       }
     },

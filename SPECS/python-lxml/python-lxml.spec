@@ -3,7 +3,7 @@
 Summary:        XML and HTML with Python
 Name:           python-lxml
 Version:        4.9.3
-Release:        3%{?dist}
+Release:        1%{?dist}
 # Test suite (and only the test suite) is GPLv2+
 License:        BSD and GPLv2+
 Vendor:         Microsoft Corporation
@@ -11,9 +11,10 @@ Distribution:   Mariner
 URL:            https://lxml.de
 Source0:        https://github.com/lxml/lxml/releases/download/lxml-%{version}/lxml-%{version}.tar.gz
 
-# Cython 3 support backported from future lxml 5.0 (https://github.com/lxml/lxml/commit/...)
-Patch:         dcbc0cc1cb0cedf8019184aaca805d2a649cd8de.patch
-Patch:         a03a4b3c6b906d33c5ef1a15f3d5ca5fff600c76.patch
+# fix build issue due Cython 3 breaking changes
+# backport 2 commit from upstream master (https://github.com/lxml/lxml/commit/...)
+Patch0:         dcbc0cc1cb0cedf8019184aaca805d2a649cd8de.patch
+Patch1:         a03a4b3c6b906d33c5ef1a15f3d5ca5fff600c76.patch
 
 BuildRequires:  libxslt-devel
 BuildRequires:  libxml2-devel
@@ -38,7 +39,7 @@ ElementTree API.
 
 
 %prep
-%autosetup -n lxml-%{version}
+%autosetup -n lxml-%{version} -p1
 find -type f -name "*.c" -delete -print
 
 %build
