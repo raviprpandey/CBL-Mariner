@@ -1,6 +1,6 @@
 Summary:        Glib networking modules
 Name:           glib-networking
-Version:        2.70.0
+Version:        2.76.1
 Release:        1%{?dist}
 License:        GPLv2+ WITH exceptions
 Vendor:         Microsoft Corporation
@@ -47,6 +47,9 @@ implementation.
 %{_libdir}/gio/modules/libgiognutls.so
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.76.1-1
+- Auto-upgrade to 2.76.1 - Azure Linux 3.0 - package upgrades
+
 * Fri Feb 11 2022 Cameron Baird <cameronbaird@microsoft.com> - 2.70.0-1
 - Update source to v2.70.0
 
