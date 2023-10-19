@@ -1,6 +1,6 @@
 Name:         kf5-kcoreaddons
-Version:      5.61.0
-Release:      4%{?dist}
+Version:      5.109.0
+Release:      1%{?dist}
 Summary:      KDE Frameworks 5 Tier 1 addon with various classes on top of QtCore
 Vendor:       Microsoft Corporation
 Distribution: Mariner
@@ -86,6 +86,9 @@ update-mime-database %{_datadir}/mime &> /dev/null || :
 
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 5.109.0-1
+- Auto-upgrade to 5.109.0 - Azure Linux 3.0 - package upgrades
+
 * Fri May 25 2023 Thien Trung Vuong <tvuong@microsoft.com> - 5.61.0-4
 - License verified.
 
