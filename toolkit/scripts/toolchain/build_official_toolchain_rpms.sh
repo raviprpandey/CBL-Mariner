@@ -539,6 +539,10 @@ chroot_and_install_rpms gtk-doc
 build_rpm_in_chroot_no_install libtasn1
 
 build_rpm_in_chroot_no_install libsepol
+
+# swig needs pcre2
+build_rpm_in_chroot_no_install pcre2
+chroot_and_install_rpms pcre2
 build_rpm_in_chroot_no_install swig
 
 # libselinux requires libsepol and swig
