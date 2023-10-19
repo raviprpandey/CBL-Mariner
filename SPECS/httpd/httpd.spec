@@ -2,8 +2,8 @@
 %define _confdir %{_sysconfdir}
 Summary:        The Apache HTTP Server
 Name:           httpd
-Version:        2.4.56
-Release:        2%{?dist}
+Version:        2.4.57
+Release:        1%{?dist}
 License:        Apache-2.0
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -345,6 +345,9 @@ fi
 %{_libexecdir}/httpd-ssl-pass-dialog
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.4.57-1
+- Auto-upgrade to 2.4.57 - Azure Linux 3.0 - package upgrades
+
 * Wed Aug 16 2023 Andy Zaugg <azaugg@linkedin.com> - 2.4.56-1
 - Patch config.layout and provide and provide a real log path
 - Fix PIDfile reference to /run/httpd/httpd.pid
