@@ -1447,8 +1447,8 @@
         "type": "other",
         "other": {
           "name": "calamares",
-          "version": "3.2.11",
-          "downloadUrl": "https://github.com/calamares/calamares/releases/download/v3.2.11/calamares-3.2.11.tar.gz"
+          "version": "3.2.62",
+          "downloadUrl": "https://github.com/calamares/calamares/releases/download/v3.2.62/calamares-3.2.62.tar.gz"
         }
       }
     },
