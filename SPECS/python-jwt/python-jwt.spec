@@ -17,8 +17,8 @@ claims to be transferred between two parties encoded as digitally signed and
 encrypted JSON objects.}
 
 Name:           python-%{pkgname}
-Version:        2.4.0
-Release:        2%{?dist}
+Version:        4.0.0
+Release:        1%{?dist}
 Summary:        JSON Web Token implementation in Python
 License:        MIT
 Vendor:         Microsoft Corporation
@@ -70,6 +70,9 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} \
 %endif
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 4.0.0-1
+- Auto-upgrade to 4.0.0 - Azure Linux 3.0 - package upgrades
+
 * Fri Sep 30 2022 Saul Paredes <saulparedes@microsoft.com> - 2.4.0-2
 - Updating to 2.4.0-2 to fix CVE-2022-39227 (no patch, false positive confusion with python-jwt. Scanning tool to be updated).
 
