@@ -1,7 +1,7 @@
 Summary:        Compressed file format
 Name:           zchunk
-Version:        1.1.16
-Release:        2%{?dist}
+Version:        1.3.1
+Release:        1%{?dist}
 License:        BSD 2-Clause AND MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -87,6 +87,9 @@ DESTDIR=%{buildroot}/ ninja install
 %{_includedir}/zck.h
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.3.1-1
+- Auto-upgrade to 1.3.1 - Azure Linux 3.0 - package upgrades
+
 * Mon Apr 11 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 1.1.16-2
 - Fixing invalid source URL.
 
