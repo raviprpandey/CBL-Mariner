@@ -1,7 +1,7 @@
 %global macrosdir %(d=%{_rpmconfigdir}/macros.d; [ -d $d ] || d=%{_sysconfdir}/rpm; echo $d)
 Summary:        Provides dynamic modification of a user's environment
 Name:           environment-modules
-Version:        5.2.0
+Version:        5.3.1
 Release:        1%{?dist}
 License:        GPLv2+
 Vendor:         Microsoft Corporation
@@ -169,6 +169,9 @@ fi
 %{_datadir}/Modules/nagelfar/*
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 5.3.1-1
+- Auto-upgrade to 5.3.1 - Azure Linux 3.0 - package upgrades
+
 * Fri Feb 03 2023 Riken Maharjan <rmaharjan@microsoft.com> - 5.2.0-1
 - Move from extended to Core.
 - Update to 5.2.0 (from Fedora 38 (license: MIT)).
