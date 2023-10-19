@@ -1,6 +1,6 @@
 Summary:        Atomic memory update operations portable implementation
 Name:           libatomic_ops
-Version:        7.6.12
+Version:        7.8.0
 Release:        1%{?dist}
 License:        GPLv2 and MIT
 Vendor:         Microsoft Corporation
@@ -57,6 +57,9 @@ rm -rf %{buildroot}%{_docdir}/%{name}/{COPYING,LICENSING.txt}
 %{_libdir}/pkgconfig/atomic_ops.pc
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 7.8.0-1
+- Auto-upgrade to 7.8.0 - Azure Linux 3.0 - package upgrades
+
 * Wed Jan 12 2022 Thomas Crain <thcrain@microsoft.com> - 7.6.12-1
 - Upgrade to latest upstream version
 - Remove static libraries
