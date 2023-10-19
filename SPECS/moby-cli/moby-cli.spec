@@ -3,7 +3,7 @@
 
 Summary: The open-source application container engine client.
 Name: moby-%{upstream_name}
-Version: 20.10.25
+Version: 24.0.5
 Release: 1%{?dist}
 License: ASL 2.0
 Group: Tools/Container
@@ -80,6 +80,9 @@ install -p -m 644 contrib/completion/fish/docker.fish %{buildroot}%{_datadir}/fi
 %{_datadir}/fish/vendor_completions.d/docker.fish
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 24.0.5-1
+- Auto-upgrade to 24.0.5 - Azure Linux 3.0 - package upgrades
+
 * Thu Aug 17 2023 Muhammad Falak <mwani@microsoft.com> - 20.10.25-1
 - Bump version to 20.10.25
 
