@@ -1,7 +1,7 @@
 Summary:        Adaptive Entropy Coding library
 Name:           libaec
-Version:        1.0.4
-Release:        5%{?dist}
+Version:        1.0.6
+Release:        1%{?dist}
 License:        BSD-2-Clause
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -62,6 +62,9 @@ make -C build test CTEST_OUTPUT_ON_FAILURE=1
 %{_libdir}/lib*.so
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.0.6-1
+- Auto-upgrade to 1.0.6 - Azure Linux 3.0 - package upgrades
+
 * Tue Nov 01 2022 Riken Maharjan <rmaharjan@microsoft.com> - 1.0.4-5
 - Move to core
 - License verified
