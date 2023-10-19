@@ -23574,8 +23574,8 @@
         "type": "other",
         "other": {
           "name": "python-pam",
-          "version": "1.8.4",
-          "downloadUrl": "https://pypi.python.org/packages/source/p/python-pam/python-pam-1.8.4.tar.gz"
+          "version": "2.0.2",
+          "downloadUrl": "https://files.pythonhosted.org/packages/6a/da/879f1c849e886b783239b8a4710daac73535ba2cfcf672ee4548543e3a74/python-pam-2.0.2.tar.gz"
         }
       }
     },
