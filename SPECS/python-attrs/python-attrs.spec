@@ -1,7 +1,7 @@
 Summary:        Attributes without boilerplate.
 Name:           python-attrs
-Version:        21.4.0
-Release:        2%{?dist}
+Version:        23.1.0
+Release:        1%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -45,6 +45,9 @@ LANG=en_US.UTF-8 tox -e py%{python3_version_nodots}
 %{python3_sitelib}/*
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 23.1.0-1
+- Auto-upgrade to 23.1.0 - Azure Linux 3.0 - package upgrades
+
 * Tue Jul 12 2022 Olivia Crain <oliviacrain@microsoft.com> - 21.4.0-2
 - Add upstream patch to fix mypy tests
 
