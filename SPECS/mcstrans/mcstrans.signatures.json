@@ -1,6 +1,6 @@
 {
- "Signatures": {
-  "mcstrans-3.2.tar.gz": "fafaf7614b7114b95c582643f8b2a6ae1605093fbaf3b571d9b01fc81fb70929",
-  "secolor.conf.8": "9f86a0b630281205ef5830339fa580f592b34524a3a11da670c01ccbed55f3f8"
- }
+  "Signatures": {
+    "secolor.conf.8": "9f86a0b630281205ef5830339fa580f592b34524a3a11da670c01ccbed55f3f8",
+    "mcstrans-3.5.tar.gz": "0e94ee10a883a47526d8658a8ec7f8a37e00a2dfeb72435c333aba4d95110fc4"
+  }
 }
