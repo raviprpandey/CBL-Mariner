@@ -20,8 +20,8 @@
 
 Summary:        Tool for creating supermin appliances
 Name:           supermin
-Version:        5.2.1
-Release:        8%{?dist}
+Version:        5.2.2
+Release:        1%{?dist}
 License:        GPLv2+
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -129,6 +129,9 @@ make check || {
 %{_rpmconfigdir}/supermin-find-requires
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 5.2.2-1
+- Auto-upgrade to 5.2.2 - Azure Linux 3.0 - package upgrades
+
 * Tue Oct 03 2023 Mandeep Plaha <mandeepplaha@microsoft.com> - 5.2.1-8
 - Bump release to rebuild against glibc 2.35-5
 
