@@ -1,7 +1,7 @@
 Summary:        C library that provide processing for data in the UTF-8 encoding
 Name:           utf8proc
-Version:        2.6.1
-Release:        2%{?dist}
+Version:        2.8.0
+Release:        1%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -60,6 +60,9 @@ LANG=en_US.UTF-8 LANGUAGE=en_US.UTF-8 LC_ALL=en_US.UTF-8 make check
 %{_libdir}/libutf8proc.so
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.8.0-1
+- Auto-upgrade to 2.8.0 - Azure Linux 3.0 - package upgrades
+
 * Tue Mar 01 2022 Bala <balakumaran.kannan@microsoft.com> - 2.6.1-2
 - BR ruby for ptest
 - Set Locale before running ptest
