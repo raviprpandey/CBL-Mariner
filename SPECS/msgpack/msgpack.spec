@@ -1,6 +1,6 @@
 Summary:        MessagePack implementation for C and C++
 Name:           msgpack
-Version:        3.3.0
+Version:        6.1.0
 Release:        1%{?dist}
 License:        Boost
 Vendor:         Microsoft Corporation
@@ -50,6 +50,9 @@ make install DESTDIR=%{buildroot}
 %{_libdir}/*.a
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 6.1.0-1
+- Auto-upgrade to 6.1.0 - Azure Linux 3.0 - package upgrades
+
 * Thu Mar 03 2022 Minghe Ren <mingheren@microsoft.com> - 3.3.0-1
 - Upgrade to version 3.3.0
 
