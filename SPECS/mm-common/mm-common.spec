@@ -1,6 +1,6 @@
 Summary:        mm-common module
 Name:           mm-common
-Version:        1.0.4
+Version:        1.0.5
 Release:        1%{?dist}
 License:        LGPLv2+
 Vendor:         Microsoft Corporation
@@ -40,6 +40,9 @@ make install DESTDIR=%{buildroot}
 %{_mandir}/*
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.0.5-1
+- Auto-upgrade to 1.0.5 - Azure Linux 3.0 - package upgrades
+
 * Thu Feb 17 2022 Max Brodeur-Urbas <maxbr@microsoft.com> - 1.0.4-1
 - Upgrading to v1.0.4
 
