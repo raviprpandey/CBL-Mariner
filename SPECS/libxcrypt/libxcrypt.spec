@@ -101,7 +101,7 @@
 %endif
 Summary:        Extended crypt library for descrypt, md5crypt, bcrypt, and others
 Name:           libxcrypt
-Version:        4.4.27
+Version:        4.4.36
 Release:        1%{?dist}
 # For explicit license breakdown, see the
 # LICENSING file in the source tarball.
@@ -449,6 +449,9 @@ ln -s %{_libdir}/libcrypt-%{glibcversion}.so %{_libdir}/libcrypt.so.1
 
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 4.4.36-1
+- Auto-upgrade to 4.4.36 - Azure Linux 3.0 - package upgrades
+
 * Thu Apr 14 2022 Andrew Phelps <anphel@microsoft.com> - 4.4.27-2
 - Update glibcversion variable to 2.35
 
