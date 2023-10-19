@@ -1,6 +1,6 @@
 Summary:        A library for retrieving information onrunning processes and system utilization
 Name:           python-psutil
-Version:        5.9.0
+Version:        5.9.5
 Release:        1%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
@@ -56,6 +56,9 @@ LANG=en_US.UTF-8 PYTHONPATH=%{buildroot}%{python3_sitelib} make test PYTHON=pyth
 %{python3_sitelib}/*
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 5.9.5-1
+- Auto-upgrade to 5.9.5 - Azure Linux 3.0 - package upgrades
+
 * Tue Jan 25 2022 Thomas Crain <thcrain@microsoft.com> - 5.9.0-1
 - Upgrade to latest upstream version
 - Update skipped tests patch
