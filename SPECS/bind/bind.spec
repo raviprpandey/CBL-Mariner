@@ -9,7 +9,7 @@
 
 Summary:        Domain Name System software
 Name:           bind
-Version:        9.16.44
+Version:        9.18.18
 Release:        1%{?dist}
 License:        ISC
 Vendor:         Microsoft Corporation
@@ -613,6 +613,9 @@ fi;
 %{_mandir}/man8/named-nzd2nzf.8*
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 9.18.18-1
+- Auto-upgrade to 9.18.18 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 27 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 9.16.44-1
 - Auto-upgrade to 9.16.44 - Fix CVE-2023-3341
 
