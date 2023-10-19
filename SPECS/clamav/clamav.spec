@@ -1,7 +1,7 @@
 Summary:        Open source antivirus engine
 Name:           clamav
-Version:        0.105.2
-Release:        3%{?dist}
+Version:        1.1.1
+Release:        1%{?dist}
 License:        ASL 2.0 AND BSD AND bzip2-1.0.4 AND GPLv2 AND LGPLv2+ AND MIT AND Public Domain AND UnRar
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -15,7 +15,6 @@ Source0:        https://github.com/Cisco-Talos/clamav/archive/refs/tags/%{name}-
 # Note: Required an updated cargo cache when rust was updated to 1.72.0, added "-rev2" to the filename to indicate the new cache for this
 # specific event. Revert back to the original filename when a new cache is created for a different version.
 Source1:        %{name}-%{name}-%{version}-cargo-rev2.tar.gz
-Patch0:         CVE-2022-48579.patch
 BuildRequires:  bzip2-devel
 BuildRequires:  check-devel
 BuildRequires:  cmake
@@ -132,6 +131,9 @@ fi
 %dir %attr(-,clamav,clamav) %{_sharedstatedir}/clamav
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.1.1-1
+- Auto-upgrade to 1.1.1 - Azure Linux 3.0 - package upgrades
+
 * Thu Sep 07 2023 Daniel McIlvaney <damcilva@microsoft.com> - 0.105.2-3
 - Bump package to rebuild with rust 1.72.0
 
