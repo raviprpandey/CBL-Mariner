@@ -14743,8 +14743,8 @@
         "type": "other",
         "other": {
           "name": "ocaml-base",
-          "version": "0.15.0",
-          "downloadUrl": "https://github.com/janestreet/base/archive/v0.15.0/base-0.15.0.tar.gz"
+          "version": "0.16.3",
+          "downloadUrl": "https://github.com/janestreet/base/archive/v0.16.3/base-0.16.3.tar.gz"
         }
       }
     },
