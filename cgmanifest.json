@@ -14833,8 +14833,8 @@
         "type": "other",
         "other": {
           "name": "ocaml-cppo",
-          "version": "1.6.6",
-          "downloadUrl": "https://github.com/ocaml-community/cppo/archive/v1.6.6.tar.gz"
+          "version": "1.6.9",
+          "downloadUrl": "https://github.com/ocaml-community/cppo/archive/v1.6.9.tar.gz"
         }
       }
     },
