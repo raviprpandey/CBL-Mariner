@@ -12,8 +12,8 @@ data types and data structures and their HDF5 equivalents vastly\
 simplifies the process of reading and writing data from Python.
 Summary:        A Python interface to the HDF5 library
 Name:           h5py
-Version:        3.7.0
-Release:        4%{?dist}
+Version:        3.9.0
+Release:        1%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -92,6 +92,9 @@ cd -
 %{python3_sitearch}/%{name}-%{version}-*.egg-info
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.9.0-1
+- Auto-upgrade to 3.9.0 - Azure Linux 3.0 - package upgrades
+
 * Tue Nov 01 2022 Riken Maharjan <rmaharjan@microsoft.com> - 3.7.0-4
 - License verified
 - Initial CBL-Mariner import from Fedora 37 (license: MIT).
