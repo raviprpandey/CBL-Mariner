@@ -3,8 +3,8 @@
 
 Summary:        Iconic font set
 Name:           %{fontname}-fonts
-Version:        4.7.0
-Release:        11%{?dist}
+Version:        6.4.2
+Release:        1%{?dist}
 License:        OFL AND MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -81,6 +81,9 @@ cp -a css less scss %{buildroot}%{_datadir}/font-awesome-web/
 %{_datadir}/fonts/fontawesome/fontawesome-webfont.eot
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 6.4.2-1
+- Auto-upgrade to 6.4.2 - Azure Linux 3.0 - package upgrades
+
 * Sun Dec 05 2021 Pawel Winogrodzki <pawelwi@microsoft.com> - 4.7.0-11
 - License verified.
 - Updated sources URL.
