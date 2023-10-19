@@ -7,8 +7,8 @@
 
 Summary:        A composable build system for OCaml
 Name:           ocaml-%{libname}
-Version:        2.8.5
-Release:        3%{?dist}
+Version:        3.10.0
+Release:        1%{?dist}
 # Dune itself is MIT.  Some bundled libraries have a different license:
 # ISC:
 # - vendor/cmdliner
@@ -224,6 +224,9 @@ cp -ar README.md CHANGES.md MIGRATION.md doc/_build/* %{buildroot}%{_pkgdocdir}/
 %endif
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.10.0-1
+- Auto-upgrade to 3.10.0 - Azure Linux 3.0 - package upgrades
+
 * Thu Mar 31 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 2.8.5-3
 - Cleaning-up spec. License verified.
 
