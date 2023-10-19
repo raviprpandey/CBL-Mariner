@@ -6,7 +6,7 @@ parsing/unpacking it first, while still having great forwards/backwards
 compatibility.}
 Summary:        Memory efficient serialization library
 Name:           flatbuffers
-Version:        2.0.8
+Version:        23.5.26
 Release:        1%{?dist}
 # The entire source code is Apache-2.0. Even code from grpc, which is
 # BSD-3-Clause in its upstream, is intended to be Apache-2.0 in this project.
@@ -63,6 +63,9 @@ popd
 %license LICENSE.txt
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 23.5.26-1
+- Auto-upgrade to 23.5.26 - Azure Linux 3.0 - package upgrades
+
 * Mon Oct 24 2022 Riken Maharjan <rmaharjan@microsoft.com> - 2.0.8-1
 - Initial CBL-Mariner import from Fedora 37 (license: MIT).
 - License verified.
