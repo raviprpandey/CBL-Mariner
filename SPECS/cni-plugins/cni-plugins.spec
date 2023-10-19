@@ -1,8 +1,8 @@
 %define _default_cni_plugins_dir /opt/cni/bin
 Summary:        Container Network Interface (CNI) plugins
 Name:           cni-plugins
-Version:        0.9.1
-Release:        14%{?dist}
+Version:        1.3.0
+Release:        1%{?dist}
 License:        ASL 2.0
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -39,6 +39,9 @@ make -k check |& tee %{_specdir}/%{name}-check-log || %{nocheck}
 %{_default_cni_plugins_dir}/*
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.3.0-1
+- Auto-upgrade to 1.3.0 - Azure Linux 3.0 - package upgrades
+
 * Mon Aug 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 0.9.1-14
 - Bump release to rebuild with go 1.19.12
 
