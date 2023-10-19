@@ -1,6 +1,6 @@
 Summary:        USB network redirection protocol libraries
 Name:           usbredir
-Version:        0.12.0
+Version:        0.13.0
 Release:        1%{?dist}
 License:        LGPLv2+
 Vendor:         Microsoft Corporation
@@ -78,6 +78,9 @@ A simple USB host TCP server, using libusbredirhost.
 %{_mandir}/man1/usbredirserver.1*
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 0.13.0-1
+- Auto-upgrade to 0.13.0 - Azure Linux 3.0 - package upgrades
+
 * Tue Jun 07 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 0.12.0-1
 - Updating to 0.12.0 to fix CVE-2021-3700.
 
