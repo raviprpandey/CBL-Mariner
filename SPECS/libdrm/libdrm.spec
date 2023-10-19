@@ -49,8 +49,8 @@ end}
 %endif
 Summary:        Direct Rendering Manager runtime library
 Name:           libdrm
-Version:        2.4.114
-Release:        2%{?dist}
+Version:        2.4.116
+Release:        1%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -290,6 +290,9 @@ cp %{SOURCE1} %{buildroot}%{_docdir}/libdrm
 %endif
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.4.116-1
+- Auto-upgrade to 2.4.116 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 2.4.114-2
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
 
