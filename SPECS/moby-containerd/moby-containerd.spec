@@ -4,7 +4,7 @@
 
 Summary: Industry-standard container runtime
 Name: moby-%{upstream_name}
-Version: 1.6.22
+Version: 1.7.5
 Release: 1%{?dist}
 License: ASL 2.0
 Group: Tools/Container
@@ -86,6 +86,9 @@ fi
 %config(noreplace) %{_sysconfdir}/containerd/config.toml
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.7.5-1
+- Auto-upgrade to 1.7.5 - Azure Linux 3.0 - package upgrades
+
 * Wed Aug 16 2023 Muhammad Falak <mwani@microsoft.com> - 1.6.22-1
 - Bump version to 1.6.22
 
