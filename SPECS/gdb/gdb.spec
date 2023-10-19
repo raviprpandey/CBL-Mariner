@@ -1,7 +1,7 @@
 Summary:        C debugger
 Name:           gdb
-Version:        11.2
-Release:        2%{?dist}
+Version:        13.1
+Release:        1%{?dist}
 License:        GPLv2+
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -88,6 +88,9 @@ rm -f $(dirname $(gcc -print-libgcc-file-name))/../specs
 %{_mandir}/*/*
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 13.1-1
+- Auto-upgrade to 13.1 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 11.2-2
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
 
