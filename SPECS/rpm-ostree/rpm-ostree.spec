@@ -1,7 +1,7 @@
 Summary:        Commit RPMs to an OSTree repository
 Name:           rpm-ostree
-Version:        2022.1
-Release:        6%{?dist}
+Version:        2023.6
+Release:        1%{?dist}
 License:        LGPLv2+
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -9,9 +9,7 @@ URL:            https://github.com/coreos/rpm-ostree
 Source0:        %{url}/releases/download/v%{version}/%{name}-%{version}.tar.xz
 Patch0:         rpm-ostree-libdnf-build.patch
 Patch1:         rpm-ostree-disable-selinux.patch
-Patch2:         CVE-2022-31394.patch
 Patch3:         rpm-ostree-drop-lint-which-treats-warning-as-error.patch
-Patch4:         CVE-2022-47085.patch
 BuildRequires:  attr-devel
 BuildRequires:  autoconf
 BuildRequires:  autogen
@@ -157,6 +155,9 @@ make check
 %{_datadir}/gir-1.0/*-1.0.gir
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2023.6-1
+- Auto-upgrade to 2023.6 - Azure Linux 3.0 - package upgrades
+
 * Thu Sep 07 2023 Daniel McIlvaney <damcilva@microsoft.com> - 2022.1-6
 - Bump package to rebuild with rust 1.72.0
 
