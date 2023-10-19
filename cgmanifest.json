@@ -14913,8 +14913,8 @@
         "type": "other",
         "other": {
           "name": "ocaml-findlib",
-          "version": "1.8.1",
-          "downloadUrl": "http://download.camlcity.org/download/findlib-1.8.1.tar.gz"
+          "version": "1.9.6",
+          "downloadUrl": "http://download.camlcity.org/download/findlib-1.9.6.tar.gz"
         }
       }
     },
