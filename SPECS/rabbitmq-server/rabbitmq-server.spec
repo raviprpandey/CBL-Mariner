@@ -1,7 +1,7 @@
 %define  debug_package %{nil}
 Summary:        rabbitmq-server
 Name:           rabbitmq-server
-Version:        3.11.11
+Version:        3.12.4
 Release:        1%{?dist}
 License:        Apache-2.0 and MPL 2.0
 Vendor:         Microsoft Corporation
@@ -115,6 +115,9 @@ done
 %{_libdir}/rabbitmq/lib/rabbitmq_server-%{version}/*
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.12.4-1
+- Auto-upgrade to 3.12.4 - Azure Linux 3.0 - package upgrades
+
 * Tue Mar 14 2023 Sam Meluch <sammeluch@microsoft.com> - 3.11.11-1
 - Original version for CBL-Mariner
 - License Verified
