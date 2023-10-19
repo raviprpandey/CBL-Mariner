@@ -1,8 +1,8 @@
 %global debug_package %{nil}
 Summary:        Application Gateway Ingress Controller
 Name:           application-gateway-kubernetes-ingress
-Version:        1.4.0
-Release:        14%{?dist}
+Version:        1.7.2
+Release:        1%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -54,6 +54,9 @@ cp appgw-ingress %{buildroot}%{_bindir}/
 %{_bindir}/appgw-ingress
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.7.2-1
+- Auto-upgrade to 1.7.2 - Azure Linux 3.0 - package upgrades
+
 * Mon Aug 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.4.0-14
 - Bump release to rebuild with go 1.19.12
 
