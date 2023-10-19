@@ -1,13 +1,12 @@
 Summary:           A toolkit for defining and handling authorizations.
 Name:              polkit
-Version:           0.119
-Release:           3%{?dist}
+Version:           121
+Release:           1%{?dist}
 Group:             Applications/System
 Vendor:            Microsoft Corporation
 License:           GPLv2+
 URL:               https://www.freedesktop.org/software/polkit/docs/latest/polkit.8.html
 Source0:           https://www.freedesktop.org/software/polkit/releases/%{name}-%{version}.tar.gz
-Patch0:            CVE-2021-4034.patch
 Distribution:      Mariner
 BuildRequires:     autoconf
 BuildRequires:     expat-devel
@@ -111,6 +110,9 @@ fi
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 121-1
+- Auto-upgrade to 121 - Azure Linux 3.0 - package upgrades
+
 *   Thu Mar 17 2022 Andrew Phelps <anphel@microsoft.com> - 0.119-3
 -   Disable documentation
 

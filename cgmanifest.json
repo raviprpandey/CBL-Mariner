@@ -21404,8 +21404,8 @@
         "type": "other",
         "other": {
           "name": "polkit",
-          "version": "0.119",
-          "downloadUrl": "https://www.freedesktop.org/software/polkit/releases/polkit-0.119.tar.gz"
+          "version": "121",
+          "downloadUrl": "https://www.freedesktop.org/software/polkit/releases/polkit-121.tar.gz"
         }
       }
     },
