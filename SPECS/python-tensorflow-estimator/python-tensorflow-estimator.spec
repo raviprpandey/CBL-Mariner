@@ -6,7 +6,7 @@ A high-level TensorFlow API that greatly simplifies machine learning programming
 
 Summary:        A high-level TensorFlow API that greatly simplifies machine learning programming
 Name:           python-%{pypi_name}
-Version:        2.11.0
+Version:        2.13.0
 Release:        1%{?dist}
 License:        ASL 2.0
 Vendor:         Microsoft Corporation
@@ -61,6 +61,9 @@ bazel --batch build //tensorflow_estimator/tools/pip_package:build_pip_package
 %{python3_sitelib}/*
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.13.0-1
+- Auto-upgrade to 2.13.0 - Azure Linux 3.0 - package upgrades
+
 * Fri Nov 11 2022 Riken Maharjan <rmaharjan@microsoft.com> - 2.11.0-1
 - Original version for CBL-Mariner. License Verified.
 
