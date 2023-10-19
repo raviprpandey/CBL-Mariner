@@ -2357,8 +2357,8 @@
         "type": "other",
         "other": {
           "name": "csi-driver-lvm",
-          "version": "0.4.1",
-          "downloadUrl": "https://github.com/metal-stack/csi-driver-lvm/archive/refs/tags/v0.4.1.tar.gz"
+          "version": "0.5.2",
+          "downloadUrl": "https://github.com/metal-stack/csi-driver-lvm/archive/refs/tags/v0.5.2.tar.gz"
         }
       }
     },
