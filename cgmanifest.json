@@ -8141,8 +8141,8 @@
         "type": "other",
         "other": {
           "name": "kde-settings",
-          "version": "36.0",
-          "downloadUrl": "https://pagure.io/fedora-kde/kde-settings/archive/36.0/kde-settings-36.0.tar.gz"
+          "version": "38.3",
+          "downloadUrl": "https://pagure.io/fedora-kde/kde-settings/archive/38.3/kde-settings-38.3.tar.gz"
         }
       }
     },
