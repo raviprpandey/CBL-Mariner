@@ -15093,8 +15093,8 @@
         "type": "other",
         "other": {
           "name": "ocaml-re",
-          "version": "1.9.0",
-          "downloadUrl": "https://github.com/ocaml/ocaml-re/archive/1.9.0/ocaml-re-1.9.0.tar.gz"
+          "version": "1.11.0",
+          "downloadUrl": "https://github.com/ocaml/ocaml-re/archive/1.11.0/ocaml-re-1.11.0.tar.gz"
         }
       }
     },
