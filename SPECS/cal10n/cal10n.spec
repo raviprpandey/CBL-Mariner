@@ -16,8 +16,8 @@
 #
 Summary:        Compiler assisted localization library (CAL10N)
 Name:           cal10n
-Version:        0.7.7
-Release:        6%{?dist}
+Version:        0.8.1
+Release:        1%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -125,6 +125,9 @@ popd
 %{_javadocdir}/%{name}-%{version}
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 0.8.1-1
+- Auto-upgrade to 0.8.1 - Azure Linux 3.0 - package upgrades
+
 * Fri Mar 17 2023 Mykhailo Bykhovtsev <mbykhovtsev@microsoft.com> - 0.7.7-6
 - Moved from extended to core
 - Updated source URL
