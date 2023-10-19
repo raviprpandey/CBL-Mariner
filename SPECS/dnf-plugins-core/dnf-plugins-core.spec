@@ -8,8 +8,8 @@
 
 Summary:        Core Plugins for DNF
 Name:           dnf-plugins-core
-Version:        4.0.24
-Release:        3%{?dist}
+Version:        4.4.2
+Release:        1%{?dist}
 License:        GPLv2
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -411,6 +411,9 @@ python3 -m unittest discover -t . -s tests/
 %endif
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 4.4.2-1
+- Auto-upgrade to 4.4.2 - Azure Linux 3.0 - package upgrades
+
 * Mon May 22 2023 Olivia Crain <oliviacrain@microsoft.com> - 4.0.24-3
 - Fix tests by replacing nose with built-in unittests runner, per upstream recommendation
 
