@@ -1,7 +1,7 @@
 Summary:        NFS client utils
 Name:           nfs-utils
-Version:        2.5.4
-Release:        3%{?dist}
+Version:        2.6.3
+Release:        1%{?dist}
 License:        MIT and GPLv2 and GPLv2+ and BSD
 URL:            https://linux-nfs.org/
 Group:          Applications/Nfs-utils-client
@@ -167,6 +167,9 @@ fi
 %{_libdir}/libnfsidmap.so
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.6.3-1
+- Auto-upgrade to 2.6.3 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 2.5.4-3
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
 
