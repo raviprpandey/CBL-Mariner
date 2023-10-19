@@ -11,8 +11,8 @@
 %endif
 Summary:        A general purpose library and file format for storing scientific data
 Name:           hdf5
-Version:        1.12.1
-Release:        12%{?dist}
+Version:        1.14.2
+Release:        1%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -409,6 +409,9 @@ done
 
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.14.2-1
+- Auto-upgrade to 1.14.2 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 1.12.1-12
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
 
