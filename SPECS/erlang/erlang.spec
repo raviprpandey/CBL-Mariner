@@ -1,7 +1,7 @@
 %define  debug_package %{nil}
 Summary:        erlang
 Name:           erlang
-Version:        25.2
+Version:        26.0.2
 Release:        1%{?dist}
 License:        Apache-2.0
 Vendor:         Microsoft Corporation
@@ -46,6 +46,9 @@ make
 %{_libdir}/erlang/*
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 26.0.2-1
+- Auto-upgrade to 26.0.2 - Azure Linux 3.0 - package upgrades
+
 * Tue Feb 14 2023 Sam Meluch <sammeluch@microsoft.com> - 25.2-1
 - Update to version 25.2
 
