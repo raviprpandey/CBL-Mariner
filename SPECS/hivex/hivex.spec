@@ -7,8 +7,8 @@
 
 Summary:        Read and write Windows Registry binary hive files
 Name:           hivex
-Version:        1.3.21
-Release:        3%{?dist}
+Version:        1.3.23
+Release:        1%{?dist}
 License:        LGPLv2+
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -244,6 +244,9 @@ fi
 %{ruby_vendorarchdir}/_hivex.so
 
 %changelog
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.3.23-1
+- Auto-upgrade to 1.3.23 - Azure Linux 3.0 - package upgrades
+
 * Tue Sep 26 2023 Pawel Winogrodzki <pawelwi@microsoft.com> - 1.3.21-3
 - Removing 'exit' calls from the '%%check' section.
 
