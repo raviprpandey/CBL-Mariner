@@ -1,7 +1,7 @@
 %global debug_package %{nil}
 
 Name:          helm
-Version:       3.12.3
+Version:       3.13.1
 Release:       1%{?dist}
 Summary:       The Kubernetes Package Manager
 Group:         Applications/Networking
@@ -55,8 +55,8 @@ install -m 755 ./helm %{buildroot}%{_bindir}
 go test -v ./cmd/helm
 
 %changelog
-* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.12.3-1
-- Auto-upgrade to 3.12.3 - Azure Linux 3.0 - package upgrades
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.13.1-1
+- Auto-upgrade to 3.13.1 - Azure Linux 3.0 - package upgrades
 
 * Mon Aug 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.10.3-9
 - Bump release to rebuild with go 1.19.12
