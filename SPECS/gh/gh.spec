@@ -1,6 +1,6 @@
 Summary:        GitHub official command line tool
 Name:           gh
-Version:        2.33.0
+Version:        2.37.0
 Release:        1%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
@@ -72,8 +72,8 @@ make test
 %{_datadir}/zsh/site-functions/_gh
 
 %changelog
-* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.33.0-1
-- Auto-upgrade to 2.33.0 - Azure Linux 3.0 - package upgrades
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.37.0-1
+- Auto-upgrade to 2.37.0 - Azure Linux 3.0 - package upgrades
 
 * Mon Aug 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.13.0-14
 - Bump release to rebuild with go 1.19.12

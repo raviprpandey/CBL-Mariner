@@ -1,6 +1,6 @@
 {
   "Signatures": {
-    "gh-2.13.0-vendor.tar.gz": "03e0c39ca04ed79490e9ee4f0db5ce1fa167e31113547df7adb896c63b36edee",
-    "cli-2.33.0.tar.gz": "27e22a8e637501ee8e9d45c702dbc5c5c559c2a4fe59cd3d807e075cdbefddd2"
+    "gh-2.37.0-vendor.tar.gz": "d22e0fd69a342b9cb00ab6753cb42407f7548c0bf19ab1b8534acaeb002a9be4",
+    "cli-2.37.0.tar.gz": "527ca3aeaf6a565a0b058825748683ec5f5e199d5754466943c1f5c69a7d5bfe"
   }
 }
