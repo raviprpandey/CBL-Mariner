@@ -2,8 +2,8 @@
 %global debug_package %{nil}
 Summary:        Keras is a high-level neural networks API.
 Name:           keras
-Version:        2.13.1
-Release:        1%{?dist}
+Version:        2.11.0
+Release:        2%{?dist}
 License:        ASL 2.0
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -69,9 +69,6 @@ bazel --batch build  --verbose_explanations //keras/tools/pip_package:build_pip_
 
 
 %changelog
-* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.13.1-1
-- Auto-upgrade to 2.13.1 - Azure Linux 3.0 - package upgrades
-
 * Tue Aug 01 2023 Riken Maharjan <rmaharjan@microsoft.com> - 2.11.0-2
 - Remove bazel version.
 
