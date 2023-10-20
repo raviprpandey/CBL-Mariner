@@ -32,14 +32,14 @@ Source1:        hamcrest-core-MANIFEST.MF
 Source2:        hamcrest-library-MANIFEST.MF
 Source3:        hamcrest-integration-MANIFEST.MF
 Source4:        hamcrest-generator-MANIFEST.MF
-Patch0:         %{name}-%{version}-build.patch
-Patch1:         %{name}-%{version}-no-jarjar.patch
-Patch3:         %{name}-%{version}-javadoc.patch
-Patch4:         %{name}-%{version}-qdox-2.0.patch
-Patch5:         %{name}-%{version}-fork-javac.patch
-Patch6:         %{name}-%{version}-javadoc9.patch
-Patch7:         %{name}-%{version}-javadoc10.patch
-Patch8:         %{name}-%{version}-random-build-crash.patch
+# Patch0:         %{name}-%{version}-build.patch
+# Patch1:         %{name}-%{version}-no-jarjar.patch
+# Patch3:         %{name}-%{version}-javadoc.patch
+# Patch4:         %{name}-%{version}-qdox-2.0.patch
+# Patch5:         %{name}-%{version}-fork-javac.patch
+# Patch6:         %{name}-%{version}-javadoc9.patch
+# Patch7:         %{name}-%{version}-javadoc10.patch
+# Patch8:         %{name}-%{version}-random-build-crash.patch
 BuildRequires:  ant
 BuildRequires:  fdupes
 BuildRequires:  javapackages-local-bootstrap
@@ -106,14 +106,14 @@ rm -fr hamcrest-integration/src/main/java/org/hamcrest/integration/EasyMock2Adap
 rm -fr hamcrest-integration/src/main/java/org/hamcrest/EasyMock2Matchers.java
 %endif
 
-%patch0 -p1
-%patch1 -p1
-%patch3 -p1
-%patch4 -p1
-%patch5 -p1
-%patch6 -p1
-%patch7 -p1
-%patch8 -p1
+# %patch0 -p1
+# %patch1 -p1
+# %patch3 -p1
+# %patch4 -p1
+# %patch5 -p1
+# %patch6 -p1
+# %patch7 -p1
+# %patch8 -p1
 
 sed -i 's/\r//' LICENSE.txt
 
