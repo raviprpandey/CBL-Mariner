@@ -1,6 +1,6 @@
 Summary:        Automatically provision and manage TLS certificates in Kubernetes
 Name:           cert-manager
-Version:        1.12.3
+Version:        1.13.1
 Release:        1%{?dist}
 License:        ASL 2.0
 Vendor:         Microsoft Corporation
@@ -17,8 +17,8 @@ Source0:        https://github.com/jetstack/%{name}/archive/refs/tags/v%{version
 #           --mtime="2021-04-26 00:00Z" \
 #           --owner=0 --group=0 --numeric-owner \
 #           --pax-option=exthdr.name=%d/PaxHeaders/%f,delete=atime,delete=ctime \
-#           -cf %%{name}-%%{version}-govendor.tar.gz vendor
-Source1:        %{name}-%{version}-govendor.tar.gz
+#           -cf %%{name}-%%{version}-vendor.tar.gz vendor
+Source1:        %{name}-%{version}-vendor.tar.gz
 BuildRequires:  golang
 Requires:       %{name}-acmesolver
 Requires:       %{name}-cainjector
@@ -109,8 +109,8 @@ install -D -m0755 bin/webhook %{buildroot}%{_bindir}/
 %{_bindir}/webhook
 
 %changelog
-* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.12.3-1
-- Auto-upgrade to 1.12.3 - Azure Linux 3.0 - package upgrades
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.13.1-1
+- Auto-upgrade to 1.13.1 - Azure Linux 3.0 - package upgrades
 
 * Mon Aug 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.11.2-4
 - Bump release to rebuild with go 1.19.12
