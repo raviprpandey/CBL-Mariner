@@ -7,7 +7,7 @@ Vendor:         Microsoft Corporation
 Distribution:   Mariner
 Group:          System Environment/Base
 URL:            https://sourceforge.net/projects/openipmi/
-Source0:        https://downloads.sourceforge.net/openipmi/OpenIPMI-2.0.32.tar.gz
+Source0:        https://downloads.sourceforge.net/openipmi/OpenIPMI-%{version}.tar.gz
 Source1:        openipmi-helper
 Source2:        ipmi.service
 BuildRequires:  ncurses-devel
