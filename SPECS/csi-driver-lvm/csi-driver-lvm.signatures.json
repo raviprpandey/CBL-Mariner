@@ -1,6 +1,6 @@
 {
   "Signatures": {
-    "csi-driver-lvm-0.4.1-govendor.tar.gz": "497d08975022e0eab94d1a59b2a05f9e19c7831cb233917e35a38bd8f1ee26ac",
+    "csi-driver-lvm-0.5.2-vendor.tar.gz": "403bef568a60032428494c43ea998ad23d9334b302b3c2434abb08ac1ca6d71e",
     "csi-driver-lvm-0.5.2.tar.gz": "5b347ca6a4c32f16c6524094be00c97081ca7e260068922cec65e7b841566c4a"
   }
 }
