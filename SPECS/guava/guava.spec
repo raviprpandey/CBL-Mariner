@@ -25,7 +25,6 @@ Group:          Development/Libraries/Java
 URL:            https://github.com/google/guava
 Source0:        https://github.com/google/guava/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 Source1:        %{name}-build.tar.xz
-Patch0:         %{name}-%{version}-java8compat.patch
 BuildRequires:  ant
 BuildRequires:  fdupes
 BuildRequires:  javapackages-local-bootstrap
@@ -62,7 +61,6 @@ guava-testlib provides additional functionality for conveninent unit testing
 
 %prep
 %setup -q -a1
-%patch0 -p1
 
 find . -name '*.jar' -delete
 
