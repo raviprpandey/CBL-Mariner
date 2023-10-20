@@ -1,6 +1,7 @@
 %global security_hardening none
 %global sha512hmac bash %{_sourcedir}/sha512hmac-openssl.sh
 %define uname_r %{version}-%{release}
+%define mariner_version 3
 
 # find_debuginfo.sh arguments are set by default in rpm's macros.
 # The default arguments regenerate the build-id for vmlinux in the 
@@ -27,14 +28,14 @@
 
 Summary:        Linux Kernel
 Name:           kernel-azure
-Version:        5.15.133.1
+Version:        6.1.58.1
 Release:        1%{?dist}
 License:        GPLv2
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
 Group:          System Environment/Kernel
 URL:            https://github.com/microsoft/CBL-Mariner-Linux-Kernel
-Source0:        https://github.com/microsoft/CBL-Mariner-Linux-Kernel/archive/rolling-lts/mariner-2/%{version}.tar.gz#/kernel-%{version}.tar.gz
+Source0:        https://github.com/microsoft/CBL-Mariner-Linux-Kernel/archive/rolling-lts/mariner-%{mariner_version}/%{version}.tar.gz#/kernel-%{version}.tar.gz
 Source1:        config
 Source2:        config_aarch64
 Source3:        sha512hmac-openssl.sh
@@ -140,13 +141,6 @@ Requires:       python3
 %description -n python3-perf
 This package contains the Python 3 extension for the 'perf' performance analysis tools for Linux kernel.
 
-%package dtb
-Summary:        This package contains common device tree blobs (dtb)
-Group:          System Environment/Kernel
-
-%description dtb
-This package contains common device tree blobs (dtb)
-
 %package -n     bpftool
 Summary:        Inspection and simple manipulation of eBPF programs and maps
 
@@ -155,7 +149,7 @@ This package contains the bpftool, which allows inspection and simple
 manipulation of eBPF programs and maps.
 
 %prep
-%setup -q -n CBL-Mariner-Linux-Kernel-rolling-lts-mariner-2-%{version}
+%setup -q -n CBL-Mariner-Linux-Kernel-rolling-lts-mariner-%{mariner_version}-%{version}
 
 make mrproper
 
@@ -228,7 +222,6 @@ install -vm 600 arch/x86/boot/bzImage %{buildroot}/boot/vmlinuz-%{uname_r}
 
 %ifarch aarch64
 install -vm 600 arch/arm64/boot/Image %{buildroot}/boot/vmlinuz-%{uname_r}
-install -D -m 640 arch/arm64/boot/dts/freescale/imx8mq-evk.dtb %{buildroot}/boot/dtb/fsl-imx8mq-evk.dtb
 %endif
 
 # Restrict the permission on System.map-X file
@@ -409,16 +402,14 @@ ln -sf linux-%{uname_r}.cfg /boot/mariner.cfg
 %files -n python3-perf
 %{python3_sitearch}/*
 
-%ifarch aarch64
-%files dtb
-/boot/dtb/fsl-imx8mq-evk.dtb
-%endif
-
 %files -n bpftool
 %{_sbindir}/bpftool
 %{_sysconfdir}/bash_completion.d/bpftool
 
 %changelog
+* Thu Oct 19 2023 Rachel Menge <rachelmenge@microsoft.com> - 6.1.58.1-1
+- Upgrade to 6.1.58.1
+
 * Tue Sep 26 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 5.15.133.1-1
 - Auto-upgrade to 5.15.133.1
 

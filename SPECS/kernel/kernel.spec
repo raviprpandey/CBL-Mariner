@@ -28,7 +28,7 @@
 
 Summary:        Linux Kernel
 Name:           kernel
-Version:        6.1.55.1
+Version:        6.1.58.1
 Release:        1%{?dist}
 License:        GPLv2
 Vendor:         Microsoft Corporation
@@ -412,8 +412,8 @@ ln -sf linux-%{uname_r}.cfg /boot/mariner.cfg
 %{_sysconfdir}/bash_completion.d/bpftool
 
 %changelog
-* Thu Oct 19 2023 Rachel Menge <rachelmenge@microsoft.com> - 6.1.55.1-1
-- Upgrade to 6.1.55.1
+* Thu Oct 19 2023 Rachel Menge <rachelmenge@microsoft.com> - 6.1.58.1-1
+- Upgrade to 6.1.58.1
 - Remove support for imx8 dtb subpackage
 
 * Tue Sep 26 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 5.15.133.1-1
