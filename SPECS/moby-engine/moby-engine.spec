@@ -1,22 +1,16 @@
 %define upstream_name moby
-%define commit_hash 5df983c7dbe2f8914e6efd4dd6e0083a20c41ce1
+%define commit_hash 1a7969545d73537545645f5cd2c79b7a77e7d39f
 
 Summary: The open-source application container engine
 Name:    %{upstream_name}-engine
-Version: 24.0.5
+Version: 24.0.6
 Release: 1%{?dist}
 License: ASL 2.0
 Group:   Tools/Container
 URL: https://mobyproject.org
 Vendor: Microsoft Corporation
 Distribution: Mariner
-
-Source0: https://github.com/moby/moby/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
-# docker-proxy binary comes from libnetwork
-# - The libnetwork version (more accurately commit hash) 
-#   that moby relies on is hard coded in 
-#   "hack/dockerfile/install/proxy.installer" (in moby github repo above)
-Source1: https://github.com/moby/libnetwork/archive/master.tar.gz/#/%{upstream_name}-libnetwork-%{version}.tar.gz
+Source0: https://github.com/moby/moby/archive/refs/tags/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 Source3: docker.service
 Source4: docker.socket
 
@@ -67,7 +61,6 @@ Moby is an open-source project created by Docker to enable and accelerate softwa
 
 %prep
 %autosetup -p1 -n %{upstream_name}-%{version}
-tar xf %{SOURCE1} --no-same-owner
 
 mkdir -p %{OUR_GOPATH}/src/github.com/docker
 LIBNETWORK_FOLDER=$(find -type d -name "libnetwork-*")
@@ -125,8 +118,8 @@ fi
 %{_unitdir}/*
 
 %changelog
-* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 24.0.5-1
-- Auto-upgrade to 24.0.5 - Azure Linux 3.0 - package upgrades
+* Thu Oct 19 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 24.0.6-1
+- Auto-upgrade to 24.0.6 - Azure Linux 3.0 - package upgrades
 
 * Thu Aug 17 2023 Muhammad Falak <mwani@microsoft.com> - 20.10.25-1
 - Bump version to 20.10.25

@@ -13453,8 +13453,8 @@
         "type": "other",
         "other": {
           "name": "moby-engine",
-          "version": "24.0.5",
-          "downloadUrl": "https://github.com/moby/moby/archive/v24.0.5.tar.gz"
+          "version": "24.0.6",
+          "downloadUrl": "https://github.com/moby/moby/archive/refs/tags/v24.0.6.tar.gz"
         }
       }
     },
