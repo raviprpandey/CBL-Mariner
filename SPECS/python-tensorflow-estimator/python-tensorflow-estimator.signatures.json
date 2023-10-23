@@ -1,6 +1,6 @@
 {
   "Signatures": {
-    "python-tensorflow-estimator-2.11.0-cache.tar.gz": "d10ac3f8470dd3e26ecca88b399d8cd927ab69b70ac876ce702063b648047cee",
-    "python-tensorflow-estimator-2.13.0.tar.gz": "4175e9276a1eb8b5e4e876d228e4605871832e7bd8517965d6a47f1481af2c3e"
+   "python-tensorflow-estimator-2.11.0.tar.gz": "922f9187de79e8e7f7d7a5b2d6d3aabc81bbbd6ba5f12a4f52967dd302214a43",
+   "python-tensorflow-estimator-2.11.0-cache.tar.gz": "d10ac3f8470dd3e26ecca88b399d8cd927ab69b70ac876ce702063b648047cee"
   }
-}
+ }
