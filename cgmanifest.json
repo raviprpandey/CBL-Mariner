@@ -23164,8 +23164,8 @@
         "type": "other",
         "other": {
           "name": "python-kubernetes",
-          "version": "27.2.0",
-          "downloadUrl": "https://github.com/kubernetes-client/python/archive/v27.2.0.tar.gz"
+          "version": "28.1.0",
+          "downloadUrl": "https://github.com/kubernetes-client/python/archive/v28.1.0.tar.gz"
         }
       }
     },
