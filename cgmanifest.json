@@ -14943,8 +14943,8 @@
         "type": "other",
         "other": {
           "name": "ocaml-uutf",
-          "version": "1.0.2",
-          "downloadUrl": "https://github.com/dbuenzli/uutf/archive/v1.0.2/uutf-1.0.2.tar.gz"
+          "version": "1.0.3",
+          "downloadUrl": "https://github.com/dbuenzli/uutf/archive/v1.0.3/uutf-1.0.3.tar.gz"
         }
       }
     },
