@@ -2,8 +2,8 @@
 %global gem_name bigdecimal
 Summary:        BigDecimal provides arbitrary-precision floating point decimal arithmetic
 Name:           rubygem-bigdecimal
-Version:        3.1.2
-Release:        3%{?dist}
+Version:        3.1.4
+Release:        1%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -44,6 +44,9 @@ cp LICENSE.txt %{buildroot}%{gem_instdir}/
 %{gemdir}
 
 %changelog
+* Tue Oct 31 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.1.4-1
+- Auto-upgrade to 3.1.4 - Azure Linux 3.0 - package upgrades
+
 * Tue May 31 2022 Neha Agarwal <nehaagarwal@microsoft.com> - 3.1.2-3
 - Cleanup
 
