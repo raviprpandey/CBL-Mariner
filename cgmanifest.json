@@ -14703,8 +14703,8 @@
         "type": "other",
         "other": {
           "name": "ocaml-integers",
-          "version": "0.4.0",
-          "downloadUrl": "https://github.com/ocamllabs/ocaml-integers/archive/0.4.0/ocaml-integers-0.4.0.tar.gz"
+          "version": "0.7.0",
+          "downloadUrl": "https://github.com/ocamllabs/ocaml-integers/archive/0.7.0/ocaml-integers-0.7.0.tar.gz"
         }
       }
     },
