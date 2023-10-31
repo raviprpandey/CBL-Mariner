@@ -21054,8 +21054,8 @@
         "type": "other",
         "other": {
           "name": "plexus-utils",
-          "version": "3.3.0",
-          "downloadUrl": "https://github.com/codehaus-plexus/plexus-utils/archive/plexus-utils-3.3.0.tar.gz"
+          "version": "4.0.0",
+          "downloadUrl": "https://github.com/codehaus-plexus/plexus-utils/archive/plexus-utils-4.0.0.tar.gz"
         }
       }
     },
