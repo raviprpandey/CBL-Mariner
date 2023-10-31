@@ -1,7 +1,7 @@
 Summary:        Library to control and monitor control groups
 Name:           libcgroup
-Version:        2.0.1
-Release:        2%{?dist}
+Version:        3.1.0
+Release:        1%{?dist}
 License:        LGPLv2+
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -188,6 +188,9 @@ getent group cgred >/dev/null || groupadd -r cgred
 /tests/gunit/.libs/lt-gtest
 
 %changelog
+* Tue Oct 31 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.1.0-1
+- Auto-upgrade to 3.1.0 - Azure Linux 3.0 - package upgrades
+
 * Tue Aug 29 2023 Andy Zaugg <azaugg@linkedin.com> - 2.0.1-2
 - Create CGCONFIG_CONF_DIR directories on package install
 
