@@ -14723,8 +14723,8 @@
         "type": "other",
         "other": {
           "name": "ocaml-luv",
-          "version": "0.5.10",
-          "downloadUrl": "https://github.com/aantron/luv/releases/download/0.5.10/luv-0.5.10.tar.gz"
+          "version": "0.5.12",
+          "downloadUrl": "https://github.com/aantron/luv/releases/download/0.5.12/luv-0.5.12.tar.gz"
         }
       }
     },
