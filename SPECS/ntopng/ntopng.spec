@@ -1,8 +1,8 @@
 %global nDPIver 4.2
 Summary:        Web-based Network Traffic Monitoring Application
 Name:           ntopng
-Version:        5.2.1
-Release:        2%{?dist}
+Version:        5.6
+Release:        1%{?dist}
 License:        GPLv3
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -12,7 +12,6 @@ URL:            https://www.ntop.org/
 Source0:        %{name}-%{version}.tar.gz
 #Source1:       https://github.com/ntop/nDPI/archive/%{nDPIver}.tar.gz
 Source1:        nDPI-%{nDPIver}.tar.gz
-Patch1:         CVE-2021-45985.patch
 BuildRequires:  curl-devel
 BuildRequires:  gcc
 BuildRequires:  glib-devel
@@ -62,6 +61,9 @@ mv nDPI-%{nDPIver} nDPI
 %{_datadir}/ntopng/*
 
 %changelog
+* Tue Oct 31 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 5.6-1
+- Auto-upgrade to 5.6 - Azure Linux 3.0 - package upgrades
+
 * Tue Apr 18 2023 Bala <balakumaran.kannan@microsoft.com> - 5.2.1-2
 - Patch CVE-2021-45985 on integrated lua source
 
