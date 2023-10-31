@@ -17,8 +17,8 @@
 
 Summary:        Simple Logging Facade for Java
 Name:           slf4j
-Version:        1.7.30
-Release:        5%{?dist}
+Version:        2.0.7
+Release:        1%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -234,6 +234,9 @@ rm -rf target/site
 %{_docdir}/%{name}-%{version}/site
 
 %changelog
+* Tue Oct 31 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.0.7-1
+- Auto-upgrade to 2.0.7 - Azure Linux 3.0 - package upgrades
+
 * Fri Mar 17 2023 Mykhailo Bykhovtsev <mbykhovtsev@microsoft.com> - 1.7.30-5
 - Fixing maven provides
 
