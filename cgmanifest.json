@@ -13973,8 +13973,8 @@
         "type": "other",
         "other": {
           "name": "netplan",
-          "version": "0.95",
-          "downloadUrl": "https://github.com/canonical/netplan/archive/0.95/0.95.tar.gz"
+          "version": "0.107",
+          "downloadUrl": "https://github.com/canonical/netplan/archive/0.107/0.107.tar.gz"
         }
       }
     },
