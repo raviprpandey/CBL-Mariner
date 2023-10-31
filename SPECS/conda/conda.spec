@@ -1,6 +1,6 @@
 Summary:        Cross-platform, Python-agnostic binary package manager
 Name:           conda
-Version:        4.11.0
+Version:        23.7.3
 Release:        1%{?dist}
 License:        BSD and ASL 2.0 and LGPLv2+ and MIT
 # The conda code is BSD
@@ -242,6 +242,9 @@ python%{python3_version} -m pytest -vv -m "not integration" \
 
 
 %changelog
+* Tue Oct 31 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 23.7.3-1
+- Auto-upgrade to 23.7.3 - Azure Linux 3.0 - package upgrades
+
 * Fri Jan 28 2022 Rachel Menge <rachelmenge@microsoft.com> - 4.11.0-1
 - Update source to 4.11.0
 
