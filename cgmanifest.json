@@ -5040,8 +5040,8 @@
         "type": "other",
         "other": {
           "name": "guava",
-          "version": "25.0",
-          "downloadUrl": "https://github.com/google/guava/archive/v25.0.tar.gz"
+          "version": "32.1.2",
+          "downloadUrl": "https://github.com/google/guava/archive/v32.1.0.tar.gz"
         }
       }
     },
