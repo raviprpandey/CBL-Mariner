@@ -1,8 +1,8 @@
 %global gem_name mocha
 Summary:        Mocking and stubbing library
 Name:           rubygem-mocha
-Version:        1.13.0
-Release:        4%{?dist}
+Version:        2.1.0
+Release:        1%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -38,6 +38,9 @@ cp COPYING.md %{buildroot}%{gem_instdir}/
 %{gemdir}
 
 %changelog
+* Tue Oct 31 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.1.0-1
+- Auto-upgrade to 2.1.0 - Azure Linux 3.0 - package upgrades
+
 * Thu Apr 21 2022 Neha Agarwal <nehaagarwal@microsoft.com> - 1.13.0-4
 - Cleanup
 
