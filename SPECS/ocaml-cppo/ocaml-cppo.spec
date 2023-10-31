@@ -8,8 +8,8 @@
 
 Summary:        Equivalent of the C preprocessor for OCaml programs
 Name:           ocaml-cppo
-Version:        1.6.6
-Release:        5%{?dist}
+Version:        1.6.9
+Release:        1%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -61,6 +61,9 @@ make test
 %{_bindir}/cppo
 
 %changelog
+* Tue Oct 31 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.6.9-1
+- Auto-upgrade to 1.6.9 - Azure Linux 3.0 - package upgrades
+
 * Thu Mar 31 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 1.6.6-5
 - Cleaning-up spec. License verified.
 
