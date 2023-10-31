@@ -15234,8 +15234,8 @@
         "type": "other",
         "other": {
           "name": "openscap",
-          "version": "1.3.5",
-          "downloadUrl": "https://github.com/OpenSCAP/openscap/releases/download/1.3.5/openscap-1.3.5.tar.gz"
+          "version": "1.3.8",
+          "downloadUrl": "https://github.com/OpenSCAP/openscap/releases/download/1.3.8/openscap-1.3.8.tar.gz"
         }
       }
     },
