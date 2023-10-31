@@ -2,8 +2,8 @@
 %global pkgname conda_package_handling
 Summary:        Create and extract conda packages of various formats
 Name:           python-%{srcname}
-Version:        1.7.2
-Release:        3%{?dist}
+Version:        2.2.0
+Release:        1%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -66,6 +66,9 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} \
 %{python3_sitelib}/%{pkgname}/
 
 %changelog
+* Tue Oct 31 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.2.0-1
+- Auto-upgrade to 2.2.0 - Azure Linux 3.0 - package upgrades
+
 * Wed Jun 23 2021 Rachel Menge <rachelmenge@microsoft.com> - 1.7.2-3
 - Initial CBL-Mariner import from Fedora 34 (license: MIT)
 - License verified
