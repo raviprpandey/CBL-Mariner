@@ -4360,8 +4360,8 @@
         "type": "other",
         "other": {
           "name": "glibmm",
-          "version": "2.70.0",
-          "downloadUrl": "http://ftp.gnome.org/pub/GNOME/sources/glibmm/2.70/glibmm-2.70.0.tar.xz"
+          "version": "2.77.0",
+          "downloadUrl": "http://ftp.gnome.org/pub/GNOME/sources/glibmm/2.77/glibmm-2.77.0.tar.xz"
         }
       }
     },
