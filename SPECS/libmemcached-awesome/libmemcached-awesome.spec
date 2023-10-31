@@ -11,8 +11,8 @@
 %global libname libmemcached
 Summary:        Client library and command line tools for memcached server
 Name:           %{libname}-awesome
-Version:        1.1.1
-Release:        4%{?dist}
+Version:        1.1.4
+Release:        1%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -142,6 +142,9 @@ rm -r %{buildroot}%{_docdir}/%{name}/
 %{_mandir}/man1/mem*
 
 %changelog
+* Tue Oct 31 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.1.4-1
+- Auto-upgrade to 1.1.4 - Azure Linux 3.0 - package upgrades
+
 * Sun Feb 13 2022 Jon Slobodzian <joslobo@microsoft.com> - 1.1.1-4
 - Adding python-devel to fix python-sphinx build issue
 
