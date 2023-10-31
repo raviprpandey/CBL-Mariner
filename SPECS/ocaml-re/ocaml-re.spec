@@ -6,8 +6,8 @@
 
 Summary:        A regular expression library for OCaml
 Name:           ocaml-re
-Version:        1.9.0
-Release:        21%{?dist}
+Version:        1.11.0
+Release:        1%{?dist}
 License:        LGPLv2+ WITH exceptions
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -85,6 +85,9 @@ cp -aLr _build/install/default/lib/* %{buildroot}%{_libdir}/ocaml/
 %{_libdir}/ocaml/re/*.mli
 
 %changelog
+* Tue Oct 31 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.11.0-1
+- Auto-upgrade to 1.11.0 - Azure Linux 3.0 - package upgrades
+
 * Thu Mar 31 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 1.9.0-21
 - Cleaning-up spec. License verified.
 
