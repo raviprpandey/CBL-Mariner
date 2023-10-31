@@ -14633,8 +14633,8 @@
         "type": "other",
         "other": {
           "name": "ocaml-dune",
-          "version": "2.8.5",
-          "downloadUrl": "https://github.com/ocaml/dune/archive/2.8.5/dune-2.8.5.tar.gz"
+          "version": "3.10.0",
+          "downloadUrl": "https://github.com/ocaml/dune/archive/3.10.0_alpha1/dune-3.10.0_alpha1.tar.gz"
         }
       }
     },
