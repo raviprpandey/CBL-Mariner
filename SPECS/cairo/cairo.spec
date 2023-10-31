@@ -1,7 +1,7 @@
 Summary:        A 2D graphics library.
 Name:           cairo
-Version:        1.17.4
-Release:        3%{?dist}
+Version:        1.17.8
+Release:        1%{?dist}
 License:        LGPLv2 OR MPLv1.1
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -138,6 +138,9 @@ rm -rf %{buildroot}%{_datadir}/gtk-doc
 %{_libdir}/%{name}/
 
 %changelog
+* Tue Oct 31 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.17.8-1
+- Auto-upgrade to 1.17.8 - Azure Linux 3.0 - package upgrades
+
 * Wed Oct 06 2021 Pawel Winogrodzki <pawelwi@microsoft.com> - 1.17.4-3
 - Adding X components from "UI-cairo".
 - Adding the "tools" subpackage.
