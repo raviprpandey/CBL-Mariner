@@ -14873,8 +14873,8 @@
         "type": "other",
         "other": {
           "name": "ocaml-seq",
-          "version": "0.2.2",
-          "downloadUrl": "https://github.com/c-cube/seq/archive/0.2.2/seq-0.2.2.tar.gz"
+          "version": "0.3.1",
+          "downloadUrl": "https://github.com/c-cube/seq/archive/v0.3.1/seq-v0.3.1.tar.gz"
         }
       }
     },
