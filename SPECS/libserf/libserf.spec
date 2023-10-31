@@ -1,7 +1,7 @@
 Summary:        A high performance C-based HTTP client library built upon the Apache Portable Runtime (APR) library
 Name:           libserf
-Version:        1.3.9
-Release:        8%{?dist}
+Version:        1.3.10
+Release:        1%{?dist}
 License:        ASL 2.0
 URL:            https://serf.apache.org/
 Group:          System Environment/Libraries
@@ -74,6 +74,9 @@ scons check
 
 
 %changelog
+* Tue Oct 31 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.3.10-1
+- Auto-upgrade to 1.3.10 - Azure Linux 3.0 - package upgrades
+
 * Thu Feb 17 2022 Thomas Crain <thcrain@microsoft.com> - 1.3.9-8
 - Add Fedora patch to enable build with python3
 
