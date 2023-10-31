@@ -1,8 +1,8 @@
 
 Summary:        Apache Maven Artifact Resolver library
 Name:           maven-resolver
-Version:        1.7.3
-Release:        7%{?dist}
+Version:        1.9.15
+Release:        1%{?dist}
 License:        ASL 2.0
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -90,6 +90,9 @@ done
 %license LICENSE NOTICE
 
 %changelog
+* Tue Oct 31 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.9.15-1
+- Auto-upgrade to 1.9.15 - Azure Linux 3.0 - package upgrades
+
 * Fri Mar 24 2023 Riken Maharjan <rmaharjan@microsoft.com> - 1.7.3-7
 - Initial CBL-Mariner import from Fedora 36 (license: MIT)
 - License verified
