@@ -7,14 +7,10 @@ Vendor:         Microsoft Corporation
 Distribution:   Mariner
 Group:          System Environment/Security
 URL:            https://www.clamav.net
-Source0:        https://github.com/Cisco-Talos/clamav/archive/refs/tags/%{name}-%{version}.tar.gz
-# Note: the %%{name}-%%{name}-%%{version}-cargo.tar.gz file contains a cache created by capturing the contents downloaded into $CARGO_HOME.
-# To update the cache run:
-#   [repo_root]/toolkit/scripts/build_cargo_cache.sh %%{name}-%%{version}.tar.gz %%{name}-%%{name}-%%{version}
-
-# Note: Required an updated cargo cache when rust was updated to 1.72.0, added "-rev2" to the filename to indicate the new cache for this
-# specific event. Revert back to the original filename when a new cache is created for a different version.
-Source1:        %{name}-%{name}-%{version}-cargo-rev2.tar.gz
+#               souce code is available on github but production src tarball is hosted on clamav.net
+#               production tar.gz contains 'vendored' cargo dependencies (src tarball from github does not)
+#               github repo -> https://github.com/Cisco-Talos/clamav
+Source0:        https://www.clamav.net/downloads/production/clamav-1.0.3.tar.gz
 BuildRequires:  bzip2-devel
 BuildRequires:  check-devel
 BuildRequires:  cmake

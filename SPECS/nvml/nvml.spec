@@ -9,7 +9,6 @@
 
 %define min_libfabric_ver 1.4.2
 %define min_ndctl_ver 60.1
-%define upstreamversion 1.8
 
 # Debug variants of the libraries should be filtered out of the provides.
 %global __provides_exclude_from ^%{_libdir}/pmdk_debug/.*\\.so.*$
@@ -31,7 +30,7 @@ License:        BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
 URL:            http://pmem.io/pmdk
-Source0:        https://github.com/pmem/pmdk/releases/download/%{upstreamversion}/pmdk-%{upstreamversion}.tar.gz
+Source0:        https://github.com/pmem/pmdk/archive/refs/tags/%{version}.tar.gz#/pmdk-%{version}.tar.gz
 Patch0:         0001-test-py-add-require_free_space.patch
 Patch1:         0002-test-Fix-obj_zones-for-ppc64le.patch
 Patch2:         0003-test-build-obj_defrag_advanced-with-some-optimizatio.patch
@@ -356,7 +355,7 @@ provided in the command line options to check whether files are in a consistent 
 %endif
 
 %prep
-%autosetup -p1 -n pmdk-%{upstreamversion}
+%autosetup -p1 -n pmdk-%{version}
 
 %build
 %make_build NORPATH=1
