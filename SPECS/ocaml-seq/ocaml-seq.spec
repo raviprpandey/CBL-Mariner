@@ -2,8 +2,8 @@
 
 Summary:        Compatibility package for OCaml's standard iterator type
 Name:           ocaml-seq
-Version:        0.2.2
-Release:        7%{?dist}
+Version:        0.3.1
+Release:        1%{?dist}
 License:        LGPLv2+ WITH exceptions
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -65,6 +65,9 @@ rm -fr %{buildroot}%{_prefix}/doc
 %{_libdir}/ocaml/seq/opam
 
 %changelog
+* Thu Nov 02 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 0.3.1-1
+- Auto-upgrade to 0.3.1 - Azure Linux 3.0 - package upgrades
+
 * Thu Mar 31 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 0.2.2-7
 - Cleaning-up spec. License verified.
 
