@@ -1,8 +1,8 @@
 %global glib2_version 2.48.0
 Summary:        An image loading library
 Name:           gdk-pixbuf2
-Version:        2.40.0
-Release:        5%{?dist}
+Version:        2.42.10
+Release:        1%{?dist}
 License:        LGPLv2+
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -116,6 +116,9 @@ gdk-pixbuf-query-loaders-%{__isa_bits} --update-cache
 %{_datadir}/installed-tests
 
 %changelog
+* Thu Nov 02 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.42.10-1
+- Auto-upgrade to 2.42.10 - Azure Linux 3.0 - package upgrades
+
 * Fri Mar 31 2023 Pawel Winogrodzki <pawelwi@microsoft.com> - 2.40.0-5
 - Bumping release to re-build with newer 'libtiff' libraries.
 
