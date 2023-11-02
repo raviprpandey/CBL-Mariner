@@ -14793,8 +14793,8 @@
         "type": "other",
         "other": {
           "name": "ocaml-ocplib-endian",
-          "version": "1.1",
-          "downloadUrl": "https://github.com/OCamlPro/ocplib-endian/archive/1.1/ocplib-endian-1.1.tar.gz"
+          "version": "1.2",
+          "downloadUrl": "https://github.com/OCamlPro/ocplib-endian/archive/1.2/ocplib-endian-1.2.tar.gz"
         }
       }
     },
