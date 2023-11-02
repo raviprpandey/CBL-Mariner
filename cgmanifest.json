@@ -14733,8 +14733,8 @@
         "type": "other",
         "other": {
           "name": "ocaml-lwt",
-          "version": "5.4.1",
-          "downloadUrl": "https://github.com/ocsigen/lwt/archive/refs/tags/5.4.1.tar.gz"
+          "version": "5.7.0",
+          "downloadUrl": "https://github.com/ocsigen/lwt/archive/refs/tags/5.7.0.tar.gz"
         }
       }
     },

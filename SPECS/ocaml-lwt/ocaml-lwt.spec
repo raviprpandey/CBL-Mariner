@@ -1,7 +1,7 @@
 Summary:        OCaml lightweight thread library
 Name:           ocaml-lwt
-Version:        5.4.1
-Release:        9%{?dist}
+Version:        5.7.0
+Release:        1%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -253,6 +253,9 @@ dune runtest --profile=release
 %{_libdir}/ocaml/lwt_ppx/*.mli
 
 %changelog
+* Thu Nov 02 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 5.7.0-1
+- Auto-upgrade to 5.7.0 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 5.4.1-9
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
 
