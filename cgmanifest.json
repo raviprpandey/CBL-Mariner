@@ -25525,8 +25525,8 @@
         "type": "other",
         "other": {
           "name": "rpm-ostree",
-          "version": "2022.1",
-          "downloadUrl": "https://github.com/coreos/rpm-ostree/releases/download/v2022.1/rpm-ostree-2022.1.tar.xz"
+          "version": "2023.6",
+          "downloadUrl": "https://github.com/coreos/rpm-ostree/releases/download/v2023.6/rpm-ostree-2023.6.tar.xz"
         }
       }
     },
