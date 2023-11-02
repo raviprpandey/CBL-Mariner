@@ -2,7 +2,7 @@
 
 Summary:        Plexus Cipher: encryption/decryption Component
 Name:           plexus-cipher
-Version:        1.7
+Version:        2
 Release:        1%{?dist}
 License:        Apache-2.0
 Vendor:         Microsoft Corporation
@@ -56,6 +56,9 @@ Plexus Cipher: encryption/decryption Component
 %license LICENSE.txt NOTICE.txt
 
 %changelog
+* Thu Nov 02 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2-1
+- Auto-upgrade to 2 - Azure Linux 3.0 - package upgrades
+
 * Fri Mar 17 2023 Mykhailo Bykhovtsev <mbykhovtsev@microsoft.com> - 1.7-1
 - Initial CBL-Mariner import from Fedora 35 (license: MIT)
 - License verified
