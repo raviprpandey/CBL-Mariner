@@ -2,8 +2,8 @@
 
 Summary:        File mapping functionality
 Name:           ocaml-mmap
-Version:        1.1.0
-Release:        19%{?dist}
+Version:        1.2.0
+Release:        1%{?dist}
 # License is LGPL 2.1 with standard OCaml exceptions
 License:        LGPLv2+ WITH exceptions
 Vendor:         Microsoft Corporation
@@ -64,6 +64,9 @@ dune runtest
 %{_libdir}/ocaml/%{libname}/*.mli
 
 %changelog
+* Thu Nov 02 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.2.0-1
+- Auto-upgrade to 1.2.0 - Azure Linux 3.0 - package upgrades
+
 * Thu Mar 31 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 1.1.0-19
 - Cleaning-up spec. License verified.
 
