@@ -10,8 +10,8 @@
 %define majorver %(echo %{version} | cut -d. -f1-2)
 Summary:        Terminal emulator library
 Name:           vte291
-Version:        0.66.2
-Release:        2%{?dist}
+Version:        0.73.93
+Release:        1%{?dist}
 License:        CC-BY AND GPLv2+ AND LGPLv2+
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -119,6 +119,9 @@ sed -i -e "/^vte_systemduserunitdir =/s|vte_prefix|'/usr'|" meson.build
 %{_sysconfdir}/profile.d/vte.sh
 
 %changelog
+* Thu Nov 02 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 0.73.93-1
+- Auto-upgrade to 0.73.93 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 0.66.2-2
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
 
