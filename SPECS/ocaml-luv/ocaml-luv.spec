@@ -6,8 +6,8 @@
 
 Summary:        OCaml binding to libuv for cross-platform asynchronous I/O
 Name:           ocaml-%{srcname}
-Version:        0.5.10
-Release:        3%{?dist}
+Version:        0.5.12
+Release:        1%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -135,6 +135,9 @@ dune runtest
 %endif
 
 %changelog
+* Thu Nov 02 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 0.5.12-1
+- Auto-upgrade to 0.5.12 - Azure Linux 3.0 - package upgrades
+
 * Thu Mar 31 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 0.5.10-3
 - Cleaning-up spec. License verified.
 
