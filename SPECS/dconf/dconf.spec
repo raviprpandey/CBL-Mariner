@@ -2,8 +2,8 @@
 %define majmin %(echo %{version} | cut -d. -f1-2)
 Summary:        A configuration system
 Name:           dconf
-Version:        0.36.0
-Release:        4%{?dist}
+Version:        0.40.0
+Release:        1%{?dist}
 License:        LGPLv2+
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -90,6 +90,9 @@ dconf update
 %{_datadir}/vala
 
 %changelog
+* Thu Nov 02 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 0.40.0-1
+- Auto-upgrade to 0.40.0 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 0.36.0-4
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
 
