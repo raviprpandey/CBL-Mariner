@@ -1,7 +1,7 @@
 Summary:        Next generation system logger facilty
 Name:           syslog-ng
-Version:        3.33.2
-Release:        4%{?dist}
+Version:        4.3.1
+Release:        1%{?dist}
 License:        BSD AND GPLv2+ AND LGPLv2+
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -147,6 +147,9 @@ fi
 %{_libdir}/pkgconfig/*
 
 %changelog
+* Thu Nov 02 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 4.3.1-1
+- Auto-upgrade to 4.3.1 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 3.33.2-4
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
 
