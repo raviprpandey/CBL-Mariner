@@ -4,8 +4,8 @@
 
 Summary: Industry-standard container runtime
 Name: moby-%{upstream_name}
-Version: 1.6.22
-Release: 4%{?dist}
+Version: 1.7.5
+Release: 1%{?dist}
 License: ASL 2.0
 Group: Tools/Container
 URL: https://www.containerd.io
@@ -90,6 +90,9 @@ fi
 %dir /opt/containerd/lib
 
 %changelog
+* Thu Nov 02 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.7.5-1
+- Auto-upgrade to 1.7.5 - Azure Linux 3.0 - package upgrades
+
 * Tue Oct 18 2023 Chris PeBenito <chpebeni@microsoft.com> - 1.6.22-4
 - Precreate /opt/containerd/{bin,lib} to ensure correct SELinux labeling.
 
