@@ -53,7 +53,6 @@ Source1:        https://github.com/%{name}/%{name}/releases/download/%{version}/
 Source2:        50-kata
 Source3:        mariner-build-uvm.sh
 Patch0:         0001-Merged-PR-9607-Allow-10-seconds-for-VM-creation-star.patch
-#Patch1:         0002-Merged-PR-9671-Wait-for-a-possibly-slow-Guest.patch
 #Patch2:         0003-Merged-PR-9805-Add-support-for-MSHV.patch
 Patch3:         0004-Merged-PR-9806-Fix-enable_debug-for-hypervisor.clh.patch
 Patch4:         0005-Merged-PR-9956-shim-avoid-memory-hotplug-timeout.patch
@@ -230,6 +229,10 @@ ln -sf %{_bindir}/kata-runtime %{buildroot}%{_prefix}/local/bin/kata-runtime
 %exclude %{kataosbuilderdir}/rootfs-builder/ubuntu
 
 %changelog
+* Thu Nov 02 2023 Muhammad Falak <mwani@microsoft.com> - 3.2.0-1
+- Upgrade version to 3.2.0
+- Drop patch setting dial_timeout=60s in favour of a default of 45s
+
 * Mon Oct 16 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.1.0-9
 - Bump release to rebuild with go 1.20.10
 
