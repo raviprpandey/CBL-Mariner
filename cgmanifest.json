@@ -14673,8 +14673,8 @@
         "type": "other",
         "other": {
           "name": "ocaml-fmt",
-          "version": "0.8.9",
-          "downloadUrl": "https://github.com/dbuenzli/fmt/archive/v0.8.9/fmt-0.8.9.tar.gz"
+          "version": "0.9.0",
+          "downloadUrl": "https://github.com/dbuenzli/fmt/archive/v0.9.0/fmt-0.9.0.tar.gz"
         }
       }
     },
