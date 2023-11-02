@@ -10,8 +10,8 @@
 
 Summary:        Base library and tools for ppx rewriters
 Name:           ocaml-%{srcname}
-Version:        0.24.0
-Release:        3%{?dist}
+Version:        0.30.0
+Release:        1%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -158,6 +158,9 @@ dune runtest
 %endif
 
 %changelog
+* Thu Nov 02 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 0.30.0-1
+- Auto-upgrade to 0.30.0 - Azure Linux 3.0 - package upgrades
+
 * Fri May 19 2023 Olivia Crain <oliviacrain@microsoft.com> - 0.24.0-3
 - Add upstream patch to fix tests with ocaml-sexplib0-0.15.0
 - Remove %%{arm} arch gating on tests (not supported by Mariner)
