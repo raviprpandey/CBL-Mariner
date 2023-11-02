@@ -174,6 +174,7 @@ BuildRequires:  perl-IPC-Cmd
 # BuildRequires:  perl-Pod-Html
 BuildRequires:  perl(Pod::Html)
 BuildRequires:  perl(Digest::SHA)
+BuildRequires:  perl(Math::BigInt)
 
 # BuildRequires:  perl-Test-Warnings
 # BuildRequires:  perl-Text-Template
