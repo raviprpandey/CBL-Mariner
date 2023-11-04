@@ -50,6 +50,8 @@
 %{set_build_flags}\
 %{?mariner_ccache_enabled:PATH="/usr/lib/ccache:$PATH" ; export PATH ;}\
 %{?mariner_ccache_enabled:CCACHE_DIR="/ccache-dir" ; export CCACHE_DIR ;}\
+%{?mariner_ccache_enabled:CCACHE_DEBUG=1 ; export CCACHE_DEBUG ;}\
+%{?mariner_ccache_enabled:CCACHE_DEBUGDIR="/ccache-dir-debug" ; export CCACHE_DEBUGDIR ;}\
 %{nil}
 
 # use zstd compression for binary package payloads
@@ -93,6 +95,8 @@
     %{__os_install_post_leave_signatures} \
     %{?__brp_strip} \
     %{?mariner_ccache_enabled:CCACHE_DIR="/ccache-dir" ; export CCACHE_DIR ;} \
+    %{?mariner_ccache_enabled:CCACHE_DEBUG=1 ; export CCACHE_DEBUG ;}\
+    %{?mariner_ccache_enabled:CCACHE_DEBUGDIR="/ccache-dir-debug" ; export CCACHE_DEBUGDIR ;}\
     %{?mariner_ccache_enabled:ccache --show-stats} \
     %{nil}
 

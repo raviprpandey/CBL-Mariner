@@ -238,14 +238,18 @@ func (c *Chroot) Initialize(tarPath string, extraDirectories []string, extraMoun
 	}
 
 	// Create extra directories
+	logger.Log.Infof("-- george -- Creating extra directories...")
 	for _, dir := range extraDirectories {
-		err = os.MkdirAll(filepath.Join(c.rootDir, dir), os.ModePerm)
+		dirFullPath := filepath.Join(c.rootDir, dir)
+		logger.Log.Infof("-- george -- Creating extra directory (%s), (%s)...", dir, dirFullPath)
+		err = os.MkdirAll(dirFullPath, os.ModePerm)
 		if err != nil {
 			logger.Log.Warnf("Could not create extra directory inside chroot (%s)", dir)
 			return
 		}
 	}
 
+	logger.Log.Infof("-- george -- Mounting directories...")
 	// mount is only supported in regular pipeline
 	if buildpipeline.IsRegularBuild() {
 		// Create kernel mountpoints
@@ -635,7 +639,7 @@ func (c *Chroot) restoreRoot(originalRoot, originalWd *os.File) {
 func (c *Chroot) createMountPoints(allMountPoints []*MountPoint) (err error) {
 	for _, mountPoint := range allMountPoints {
 		fullPath := filepath.Join(c.rootDir, mountPoint.target)
-		logger.Log.Debugf("Mounting: source: (%s), target: (%s), fstype: (%s), flags: (%#x), data: (%s)",
+		logger.Log.Infof("Mounting: source: (%s), target: (%s), fstype: (%s), flags: (%#x), data: (%s)",
 			mountPoint.source, fullPath, mountPoint.fstype, mountPoint.flags, mountPoint.data)
 
 		err = os.MkdirAll(fullPath, os.ModePerm)
