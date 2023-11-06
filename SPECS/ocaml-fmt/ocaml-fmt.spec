@@ -6,8 +6,8 @@
 
 Summary:        OCaml Format pretty-printer combinators
 Name:           ocaml-%{srcname}
-Version:        0.8.9
-Release:        4%{?dist}
+Version:        0.9.0
+Release:        1%{?dist}
 License:        ISC
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -105,6 +105,9 @@ ocaml pkg/pkg.ml test
 %{_libdir}/ocaml/%{srcname}/%{srcname}*.mli
 
 %changelog
+* Mon Nov 06 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 0.9.0-1
+- Auto-upgrade to 0.9.0 - Azure Linux 3.0 - package upgrades
+
 * Thu Mar 31 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 0.8.9-4
 - Cleaning-up spec. License verified.
 
