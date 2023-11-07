@@ -3,8 +3,8 @@
 %bcond_without debug
 
 Name:           chrony
-Version:        4.1
-Release:        2%{?dist}
+Version:        4.4
+Release:        1%{?dist}
 Summary:        An NTP client/server
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -206,6 +206,9 @@ systemctl start chronyd.service
 %dir %attr(-,chrony,chrony) %{_localstatedir}/log/chrony
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 4.4-1
+- Auto-upgrade to 4.4 - Azure Linux 3.0 - package upgrades
+
 * Thu May 18 2023 Tobias Brick <tobiasb@microsoft.com> - 4.1-2
 - Explicitly run chronyd as the user chrony
 
