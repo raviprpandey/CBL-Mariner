@@ -1,8 +1,8 @@
 %define _hardened_build 1
 Summary:        An advanced interactive monitor to view the load on system and process level
 Name:           atop
-Version:        2.6.0
-Release:        9%{?dist}
+Version:        2.9.0
+Release:        1%{?dist}
 License:        GPLv2+
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -93,6 +93,9 @@ install -Dp -m 0644 atop-rotate.* %{buildroot}%{_unitdir}/
 %{_sbindir}/atopacctd
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.9.0-1
+- Auto-upgrade to 2.9.0 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 2.6.0-9
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
 
