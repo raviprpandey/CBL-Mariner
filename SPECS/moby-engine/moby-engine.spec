@@ -3,8 +3,8 @@
 
 Summary: The open-source application container engine
 Name:    %{upstream_name}-engine
-Version: 20.10.25
-Release: 3%{?dist}
+Version: 24.0.6
+Release: 1%{?dist}
 License: ASL 2.0
 Group:   Tools/Container
 URL: https://mobyproject.org
@@ -19,7 +19,6 @@ Source0: https://github.com/moby/moby/archive/v%{version}.tar.gz#/%{name}-%{vers
 Source1: https://github.com/moby/libnetwork/archive/master.tar.gz/#/%{upstream_name}-libnetwork-%{version}.tar.gz
 Source3: docker.service
 Source4: docker.socket
-Patch0:  CVE-2023-25153.patch
 
 %{?systemd_requires}
 
@@ -126,6 +125,9 @@ fi
 %{_unitdir}/*
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 24.0.6-1
+- Auto-upgrade to 24.0.6 - Azure Linux 3.0 - package upgrades
+
 * Mon Oct 16 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 20.10.25-3
 - Bump release to rebuild with go 1.20.10
 
