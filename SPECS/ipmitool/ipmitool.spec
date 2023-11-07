@@ -3,8 +3,8 @@
 
 Name:          ipmitool
 Summary:       Utility for IPMI control
-Version:       1.8.18
-Release:       22%{?dist}
+Version:       1.8.19
+Release:       1%{?dist}
 License:       BSD
 Vendor:        Microsoft Corporation
 Distribution:  Mariner
@@ -187,6 +187,9 @@ install -Dm 755 contrib/bmc-snmp-proxy         %{buildroot}%{_libexecdir}/bmc-sn
 %{_libexecdir}/bmc-snmp-proxy
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.8.19-1
+- Auto-upgrade to 1.8.19 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 1.8.18-22
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
 
