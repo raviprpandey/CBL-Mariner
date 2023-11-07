@@ -1,8 +1,8 @@
 %global debug_package %{nil}
 Summary:       Git extension for versioning large files
 Name:          git-lfs
-Version:       3.1.4
-Release:       15%{?dist}
+Version:       3.4.0
+Release:       1%{?dist}
 Group:         System Environment/Programming
 Vendor:        Microsoft Corporation
 Distribution:  Mariner
@@ -77,6 +77,9 @@ git lfs uninstall
 %{_mandir}/man5/*
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.4.0-1
+- Auto-upgrade to 3.4.0 - Azure Linux 3.0 - package upgrades
+
 * Mon Oct 16 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.1.4-15
 - Bump release to rebuild with go 1.20.10
 
