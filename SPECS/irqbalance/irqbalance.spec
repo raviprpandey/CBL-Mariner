@@ -1,7 +1,7 @@
 Summary:        Irqbalance daemon
 Name:           irqbalance
-Version:        1.8.0
-Release:        4%{?dist}
+Version:        1.9.2
+Release:        1%{?dist}
 License:        GPLv2
 URL:            https://github.com/Irqbalance/irqbalance
 Group:          System Environment/Services
@@ -58,6 +58,9 @@ make -k check |& tee %{_specdir}/%{name}-check-log || %{nocheck}
 %{_datadir}/*
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.9.2-1
+- Auto-upgrade to 1.9.2 - Azure Linux 3.0 - package upgrades
+
 * Fri Oct 06 2023 Henry Beberman <henry.beberman@microsoft.com> - 1.8.0-4
 - Apply upstream fix for unsigned subtraction overflow in load calculation
 
