@@ -2,8 +2,8 @@
 %define libselinuxver 3.2-1
 Summary:        SELinux binary policy manipulation library
 Name:           libsemanage
-Version:        3.2
-Release:        2%{?dist}
+Version:        3.5
+Release:        1%{?dist}
 License:        LGPLv2+
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -108,6 +108,9 @@ ln -sf  %{_libdir}/libsemanage.so.2 %{buildroot}/%{_libdir}/libsemanage.so
 %{_libexecdir}/selinux/semanage_migrate_store
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.5-1
+- Auto-upgrade to 3.5 - Azure Linux 3.0 - package upgrades
+
 * Wed Aug 10 2022 Chris PeBenito <chpebeni@microsoft.com> - 3.2-2
 - Do not ignore /root for genhomedircon, otherwise it will not
 - get correct labeling.
