@@ -1,6 +1,6 @@
 Summary:        Kpatch tooling
 Name:           kpatch
-Version:        0.9.7
+Version:        0.9.8
 Release:        1%{?dist}
 License:        GPLv2
 Vendor:         Microsoft Corporation
@@ -78,6 +78,9 @@ rm -rf %{buildroot}%{_mandir}
 %{_bindir}/kpatch-build
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 0.9.8-1
+- Auto-upgrade to 0.9.8 - Azure Linux 3.0 - package upgrades
+
 * Tue Nov 29 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 0.9.7-1
 - Updating to version 0.9.7 to add support for the "return_sites" section.
 
