@@ -1,7 +1,7 @@
 Summary:        Linux-native io_uring I/O access library
 Name:           liburing
-Version:        2.0
-Release:        3%{?dist}
+Version:        2.4
+Release:        1%{?dist}
 License:        (GPLv2 WITH exceptions AND LGPLv2+) OR MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -53,6 +53,9 @@ for the Linux-native io_uring.
 %{_mandir}/man7/*
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.4-1
+- Auto-upgrade to 2.4 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 22 2021 Thomas Crain <thcrain@microsoft.com> - 2.0-3
 - Initial CBL-Mariner import from Fedora 35 (license: MIT)
 - Lint spec
