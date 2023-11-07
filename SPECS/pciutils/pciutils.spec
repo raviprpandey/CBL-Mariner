@@ -2,8 +2,8 @@
 
 Summary:        System utilities to list pci devices
 Name:           pciutils
-Version:        3.7.0
-Release:        3%{?dist}
+Version:        3.10.0
+Release:        1%{?dist}
 License:        GPLv2
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -63,6 +63,9 @@ make DESTDIR=%{buildroot} \
 %{_includedir}/*
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.10.0-1
+- Auto-upgrade to 3.10.0 - Azure Linux 3.0 - package upgrades
+
 * Thu Apr 14 2022 Nicolas Guibourge <nicolasg@microsoft.com> - 3.7.0-3
 - Do not change libpci.so rights during install
 
