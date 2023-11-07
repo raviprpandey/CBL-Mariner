@@ -3,8 +3,8 @@
 %define majmin %(echo %{version} | cut -d. -f1-2)
 
 Name:           kf5-%{framework}
-Version:        5.61.0
-Release:        3%{?dist}
+Version:        5.109.0
+Release:        1%{?dist}
 Summary:        KDE Frameworks 5 Tier 1 addon with advanced configuration system
 License:        LGPLv2+
 URL:            https://cgit.kde.org/%{framework}.git
@@ -110,6 +110,9 @@ popd
 
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 5.109.0-1
+- Auto-upgrade to 5.109.0 - Azure Linux 3.0 - package upgrades
+
 * Thu Apr 23 2020 Pawel Winogrodzki <pawelwi@microsoft.com> - 5.61.0-3
 - License verified.
 - Fixed Source0 tag.
