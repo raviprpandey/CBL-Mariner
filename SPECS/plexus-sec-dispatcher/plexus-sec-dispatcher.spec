@@ -2,7 +2,7 @@
 
 Summary:        Plexus Security Dispatcher Component
 Name:           plexus-sec-dispatcher
-Version:        1.4
+Version:        2
 Release:        1%{?dist}
 License:        Apache-2.0
 Vendor:         Microsoft Corporation
@@ -52,6 +52,9 @@ cp %{SOURCE1} .
 %license LICENSE-2.0.txt
  
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2-1
+- Auto-upgrade to 2 - Azure Linux 3.0 - package upgrades
+
 * Mon Mar 22 2023 Mykhailo Bykhovtsev <mbykhovtsev@microsoft.com> - 1.4-1
 - Initial CBL-Mariner import from Fedora 35 (license: MIT)
 - License verified
