@@ -1,7 +1,7 @@
 Summary:        Manipulate netfilter connection tracking table and run High Availability
 Name:           conntrack-tools
-Version:        1.4.5
-Release:        8%{?dist}
+Version:        1.4.7
+Release:        1%{?dist}
 License:        GPLv2
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -96,6 +96,9 @@ echo "disable conntrackd.service" > %{buildroot}%{_libdir}/systemd/system-preset
 %systemd_postun conntrackd.service
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.4.7-1
+- Auto-upgrade to 1.4.7 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 1.4.5-8
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
 

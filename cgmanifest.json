@@ -2007,8 +2007,8 @@
         "type": "other",
         "other": {
           "name": "conntrack-tools",
-          "version": "1.4.5",
-          "downloadUrl": "https://netfilter.org/projects/conntrack-tools/files/conntrack-tools-1.4.5.tar.bz2"
+          "version": "1.4.7",
+          "downloadUrl": "https://netfilter.org/projects/conntrack-tools/files/conntrack-tools-1.4.7.tar.bz2"
         }
       }
     },
