@@ -1,8 +1,8 @@
 %global srcname filelock
 Summary:        A platform independent file lock
 Name:           python-%{srcname}
-Version:        3.0.12
-Release:        13%{?dist}
+Version:        3.12.2
+Release:        1%{?dist}
 License:        Unlicense
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -71,6 +71,9 @@ python%{python3_version} test.py
 %{_mandir}/man1/py-%{srcname}.1.gz
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.12.2-1
+- Auto-upgrade to 3.12.2 - Azure Linux 3.0 - package upgrades
+
 * Fri Apr 29 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 3.0.12-13
 - Updating source URL.
 
