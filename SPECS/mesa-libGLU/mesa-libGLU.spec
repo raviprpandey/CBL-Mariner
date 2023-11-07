@@ -1,7 +1,7 @@
 Summary:        Mesa libGLU library
 Name:           mesa-libGLU
-Version:        9.0.1
-Release:        4%{?dist}
+Version:        9.0.3
+Release:        1%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -55,6 +55,9 @@ rm -rf %{buildroot}%{_mandir}/man3/gl[A-Z]*
 %{_libdir}/pkgconfig/glu.pc
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 9.0.3-1
+- Auto-upgrade to 9.0.3 - Azure Linux 3.0 - package upgrades
+
 * Wed Jul 21 2021 Vinicius Jarina <vinja@microsoft.com> - 9.0.1-4
 - Initial CBL-Mariner import from Fedora 33 (license: MIT).
 - Added a "LICENSE.PTR" source clarifying the project's license.

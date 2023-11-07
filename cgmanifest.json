@@ -12971,8 +12971,8 @@
         "type": "other",
         "other": {
           "name": "mesa-libGLU",
-          "version": "9.0.1",
-          "downloadUrl": "https://mesa.freedesktop.org/archive/glu/glu-9.0.1.tar.xz"
+          "version": "9.0.3",
+          "downloadUrl": "https://mesa.freedesktop.org/archive/glu/glu-9.0.3.tar.xz"
         }
       }
     },
