@@ -7,8 +7,8 @@
 
 Summary:        Code coverage for OCaml and Reason
 Name:           ocaml-%{srcname}
-Version:        2.6.3
-Release:        3%{?dist}
+Version:        2.8.3
+Release:        1%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -112,6 +112,9 @@ find %{buildroot}%{_libdir}/ocaml -name \*.ml -delete
 %{_libdir}/ocaml/%{upname}/runtime/*.mli
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.8.3-1
+- Auto-upgrade to 2.8.3 - Azure Linux 3.0 - package upgrades
+
 * Thu Mar 31 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 2.6.3-3
 - Cleaning-up spec. License verified.
 
