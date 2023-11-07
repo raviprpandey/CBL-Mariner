@@ -3,8 +3,8 @@
 
 Summary:        Simple and easy way to configure a layer 3 network fabric designed for Kubernetes
 Name:           flannel
-Version:        0.14.0
-Release:        20%{?dist}
+Version:        0.22.2
+Release:        1%{?dist}
 License:        ASL 2.0
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -48,6 +48,9 @@ install -p -m 755 -t %{buildroot}%{_bindir} ./dist/flanneld
 %{_bindir}/flanneld
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 0.22.2-1
+- Auto-upgrade to 0.22.2 - Azure Linux 3.0 - package upgrades
+
 * Wed Oct 18 2023 Minghe Ren <mingheren@microsoft.com> - 0.14.0-20
 - Bump release to rebuild against glibc 2.35-6
 
