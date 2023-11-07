@@ -1,6 +1,6 @@
 Summary:        Command line utility for i-node notifications and management.
 Name:           inotify-tools
-Version:        3.22.1.0
+Version:        4.23.8.0
 Release:        1%{?dist}
 License:        GPLv2
 Vendor:         Microsoft Corporation
@@ -75,6 +75,9 @@ make %{?_smp_mflags} check
 %{_libdir}/libinotifytools.so
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 4.23.8.0-1
+- Auto-upgrade to 4.23.8.0 - Azure Linux 3.0 - package upgrades
+
 * Thu Jan 27 2022 Rachel Menge <rachelmenge@microsoft.com> - 3.22.1.0-1
 - Update to 3.22.1.0
 
