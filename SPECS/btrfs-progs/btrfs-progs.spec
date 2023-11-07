@@ -1,6 +1,6 @@
 Name:       btrfs-progs
-Version:    5.16
-Release:    102%{?dist}
+Version:    6.5
+Release:    1%{?dist}
 Summary:    Userspace programs for btrfs
 Group:      System Environment/Base
 License:    GPLv2+
@@ -77,6 +77,9 @@ make DISABLE_DOCUMENTATION=1 mandir=%{_mandir} bindir=%{_sbindir} libdir=%{_libd
 
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 6.5-1
+- Auto-upgrade to 6.5 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 5.16-102
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
 
