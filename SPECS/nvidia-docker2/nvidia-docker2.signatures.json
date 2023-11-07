@@ -1,5 +1,5 @@
 {
- "Signatures": {
-  "nvidia-docker-2.10.0.tar.gz": "1b0050c500a0d728824ea0e6abcd2d8612097e7b7031f3b2fdf587c2bc2843a8"
- }
+  "Signatures": {
+    "nvidia-docker-2.14.0.tar.gz": "3a2dbb7eb52ea596c78394174026bb0cfb5986417f3cb0cb393a726a386a826f"
+  }
 }
