@@ -1,8 +1,8 @@
 %define with_desktop_subpackages 0
 Summary:        Delivery framework for general Input Method configuration
 Name:           imsettings
-Version:        1.8.2
-Release:        3%{?dist}
+Version:        1.8.3
+Release:        1%{?dist}
 License:        LGPLv2+
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -314,6 +314,9 @@ fi
 
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.8.3-1
+- Auto-upgrade to 1.8.3 - Azure Linux 3.0 - package upgrades
+
 * Wed Dec 08 2021 Thomas Crain <thcrain@microsoft.com> - 1.8.2-3
 - License verified
 - Lint spec
