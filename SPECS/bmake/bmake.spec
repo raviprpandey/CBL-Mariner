@@ -1,7 +1,7 @@
 Summary:       The NetBSD make(1) tool
 Name:          bmake
-Version:       20211221
-Release:       2%{?dist}
+Version:       20230723
+Release:       1%{?dist}
 License:       BSD
 Vendor:        Microsoft Corporation
 Distribution:  Mariner
@@ -64,6 +64,9 @@ chmod a-x %{buildroot}%{_datadir}/mk/mkopt.sh
 %{_datadir}/mk
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 20230723-1
+- Auto-upgrade to 20230723 - Azure Linux 3.0 - package upgrades
+
 * Tue Mar 22 2022 Cameron Baird <cameronbaird@microsoft.com> - 20211221-2
 - Add patch remove-inconsistent-time-tests.patch, which disables unreliably failing
 - tests in varmod-localtime.mk
