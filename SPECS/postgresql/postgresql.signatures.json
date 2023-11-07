@@ -1,5 +1,5 @@
 {
- "Signatures": {
-  "postgresql-14.8.tar.bz2": "39d38f0030737ed03835debeefee3b37d335462ce4995e2497bc38d621ebe45a"
- }
+  "Signatures": {
+    "postgresql-16.0.tar.bz2": "df9e823eb22330444e1d48e52cc65135a652a6fdb3ce325e3f08549339f51b99"
+  }
 }
