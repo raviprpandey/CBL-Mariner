@@ -1,6 +1,6 @@
 Summary:        C++ Common Libraries
 Name:           abseil-cpp
-Version:        20220623.0
+Version:        20230802
 Release:        1%{?dist}
 License:        ASL 2.0
 Vendor:         Microsoft Corporation
@@ -81,6 +81,9 @@ ctest --output-on-failure
 %{_libdir}/pkgconfig/*.pc
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 20230802-1
+- Auto-upgrade to 20230802 - Azure Linux 3.0 - package upgrades
+
 * Thu Jun 30 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 20220623.0-1
 - Updating to 20220623.0 to remove workaround patches for GTest.
 
