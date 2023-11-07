@@ -2,8 +2,8 @@
 %global enginesdir %{_libdir}/engines-1.1
 Summary:        A PKCS#11 engine for use with OpenSSL
 Name:           openssl-pkcs11
-Version:        0.4.10
-Release:        10%{?dist}
+Version:        0.4.12
+Release:        1%{?dist}
 # The source code is LGPLv2+ except eng_back.c and eng_parse.c which are BSD
 License:        LGPLv2+ AND BSD
 Vendor:         Microsoft Corporation
@@ -99,6 +99,9 @@ make check %{?_smp_mflags} || { cat tests/*.log; false; }
 %{_includedir}/*.h
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 0.4.12-1
+- Auto-upgrade to 0.4.12 - Azure Linux 3.0 - package upgrades
+
 * Tue Sep 26 2023 Pawel Winogrodzki <pawelwi@microsoft.com> - 0.4.10-10
 - Removing 'exit' calls from the '%%check' section.
 
