@@ -16,8 +16,8 @@
 %global artifactId javax.servlet-api
 Summary:        Java Servlet API
 Name:           glassfish-servlet-api
-Version:        3.1.0
-Release:        4%{?dist}
+Version:        4.0.1
+Release:        1%{?dist}
 License:        (CDDL-1.0 OR GPL-2.0-only WITH Classpath-exception-2.0) AND Apache-2.0
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -84,6 +84,9 @@ cp -pr target/site/apidocs/* %{buildroot}%{_javadocdir}/%{name}/
 %license src/main/resources/META-INF/LICENSE-2.0.txt
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 4.0.1-1
+- Auto-upgrade to 4.0.1 - Azure Linux 3.0 - package upgrades
+
 * Fri Mar 17 2023 Mykhailo Bykhovtsev <mbykhovtsev@microsoft.com> - 3.1.0-4
 - Moved from extended to core
 - License verified
