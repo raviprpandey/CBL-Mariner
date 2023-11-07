@@ -2,8 +2,8 @@
 
 Name:           rocksdb
 Summary:        A library that provides an embeddable, persistent key-value store for fast storage.
-Version:        6.26.0
-Release:        2%{?dist}
+Version:        8.3.2
+Release:        1%{?dist}
 License:        GPLv2+ and ASL 2.0 and BSD
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -58,6 +58,9 @@ make install DESTDIR=%{buildroot}
 %{_libdir}/cmake/rocksdb
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 8.3.2-1
+- Auto-upgrade to 8.3.2 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 6.26.0-2
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
 
