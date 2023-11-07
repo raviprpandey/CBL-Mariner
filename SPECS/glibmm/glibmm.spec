@@ -3,8 +3,8 @@
 
 Summary:        C++ interface to the glib
 Name:           glibmm
-Version:        2.70.0
-Release:        2%{?dist}
+Version:        2.77.0
+Release:        1%{?dist}
 License:        LGPLv2+
 URL:            https://developer.gnome.org/glibmm/stable/
 Group:          Applications/System
@@ -94,6 +94,9 @@ export GIO_EXTRA_MODULES=/usr/lib/gio/modules
 %doc %{_docdir}/glibmm-%{apiver}/
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.77.0-1
+- Auto-upgrade to 2.77.0 - Azure Linux 3.0 - package upgrades
+
 * Mon Feb 28 2022 Cameron Baird <cameronbaird@microsoft.com> - 2.70.0-2
 - Fix %check section
 
