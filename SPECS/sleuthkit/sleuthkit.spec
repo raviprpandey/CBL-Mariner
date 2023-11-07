@@ -1,7 +1,7 @@
 Summary:        The Sleuth Kit (TSK)
 Name:           sleuthkit
-Version:        4.9.0
-Release:        4%{?dist}
+Version:        4.12.0
+Release:        1%{?dist}
 License:        BSD AND CPL AND GPLv2+ AND IBM AND MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -140,6 +140,9 @@ find %{buildroot} -type f -name "*.la" -delete -print
 %{_libdir}/*.so
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 4.12.0-1
+- Auto-upgrade to 4.12.0 - Azure Linux 3.0 - package upgrades
+
 * Fri Apr 01 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 4.9.0-4
 - Cleaning-up spec. License verified.
 
