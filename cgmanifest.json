@@ -25595,8 +25595,8 @@
         "type": "other",
         "other": {
           "name": "rt-tests",
-          "version": "1.8",
-          "downloadUrl": "https://www.kernel.org/pub/linux/utils/rt-tests/older/rt-tests-1.8.tar.xz"
+          "version": "2.5",
+          "downloadUrl": "https://www.kernel.org/pub/linux/utils/rt-tests/older/rt-tests-2.5.tar.xz"
         }
       }
     },

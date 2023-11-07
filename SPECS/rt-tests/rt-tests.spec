@@ -1,7 +1,7 @@
 Summary:       Programs that test various rt-features
 Name:          rt-tests
-Version:       1.8
-Release:       13%{?dist}
+Version:       2.5
+Release:       1%{?dist}
 License:       GPLv2
 Vendor:        Microsoft Corporation
 Distribution:  Mariner
@@ -104,6 +104,9 @@ make %{?_smp_mflags} DESTDIR=%{buildroot} prefix=%{_prefix} install
 /usr/share/man/man8/get_cyclictest_snapshot.8.gz
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.5-1
+- Auto-upgrade to 2.5 - Azure Linux 3.0 - package upgrades
+
 * Thu Jan 20 2022 Cameron Baird <cameronbaird@microsoft.com> 1.8-13
 - Initial CBL-Mariner import from CentOS 8 (license: MIT).
 - License verified
