@@ -1,8 +1,8 @@
 %global build_flags prefix=%{_prefix} lib_dir=%{_libdir} libexec_dir=%{_libexecdir}/%{name} etc_dir=%{_sysconfdir}/%{name}
 
 Name:           authbind
-Version:        2.1.2
-Release:        4%{?dist}
+Version:        2.1.3
+Release:        1%{?dist}
 Summary:        Allow non-root users to open restricted ports
 License:        GPLv2
 Vendor:         Microsoft Corporation
@@ -39,6 +39,9 @@ ports, without any changes to the application.
 %dir %{_sysconfdir}/%{name}/byuid
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.1.3-1
+- Auto-upgrade to 2.1.3 - Azure Linux 3.0 - package upgrades
+
 * Fri Feb 17 2023 Suresh Babu Chalamalasetty <schalam@microsoft.com> - 2.1.2-4
 - Initial CBL-Mariner import from Fedora 38 (license: MIT).
 - License Verified
