@@ -2,8 +2,8 @@
 
 Summary:        Routing daemon
 Name:           frr
-Version:        8.5.3
-Release:        2%{?dist}
+Version:        9.0
+Release:        1%{?dist}
 License:        GPL-2.0-or-later
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -197,6 +197,9 @@ rm tests/lib/*grpc*
 %{_sysusersdir}/%{name}.conf
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 9.0-1
+- Auto-upgrade to 9.0 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 8.5.3-2
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
 
