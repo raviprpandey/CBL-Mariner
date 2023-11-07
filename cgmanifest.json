@@ -4060,8 +4060,8 @@
         "type": "other",
         "other": {
           "name": "gcovr",
-          "version": "5.0",
-          "downloadUrl": "https://github.com/gcovr/gcovr/archive/5.0/gcovr-5.0.tar.gz"
+          "version": "6",
+          "downloadUrl": "https://github.com/gcovr/gcovr/archive/6.0/gcovr-6.0.tar.gz"
         }
       }
     },
