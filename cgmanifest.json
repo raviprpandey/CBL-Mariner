@@ -4820,8 +4820,8 @@
         "type": "other",
         "other": {
           "name": "graphviz",
-          "version": "2.42.4",
-          "downloadUrl": "https://gitlab.com/graphviz/graphviz/-/archive/2.42.4/graphviz-2.42.4.tar.bz2"
+          "version": "8.1.0",
+          "downloadUrl": "https://gitlab.com/graphviz/graphviz/-/archive/8.1.0/graphviz-8.1.0.tar.bz2"
         }
       }
     },
