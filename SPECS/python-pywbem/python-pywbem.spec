@@ -2,8 +2,8 @@
 
 Summary:        Python WBEM client interface and related utilities
 Name:           python-%{pkgname}
-Version:        1.0.1
-Release:        6%{?dist}
+Version:        1.6.2
+Release:        1%{?dist}
 License:        LGPLv2.1
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -73,6 +73,9 @@ rm -rf %{buildroot}%{_bindir}/*.bat
 %doc README.rst
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.6.2-1
+- Auto-upgrade to 1.6.2 - Azure Linux 3.0 - package upgrades
+
 * Fri Apr 29 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 1.0.1-6
 - License verified.
 
