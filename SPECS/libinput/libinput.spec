@@ -2,8 +2,8 @@
 
 Summary:        Input device library
 Name:           libinput
-Version:        1.21.0
-Release:        2%{?dist}
+Version:        1.24.0
+Release:        1%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -102,6 +102,9 @@ find %{buildroot}/%{_mandir}/man1 -type f -regextype posix-egrep -regex "$UTILS_
 %{_mandir}/man1/libinput-test-suite.1*
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.24.0-1
+- Auto-upgrade to 1.24.0 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 1.21.0-2
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
 
