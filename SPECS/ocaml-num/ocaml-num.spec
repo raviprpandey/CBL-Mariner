@@ -1,7 +1,7 @@
 Summary:        Legacy Num library for arbitrary-precision integer and rational arithmetic
 Name:           ocaml-num
-Version:        1.3
-Release:        2%{?dist}
+Version:        1.4
+Release:        1%{?dist}
 License:        LGPLv2+ WITH exceptions
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -84,6 +84,9 @@ find $OCAMLFIND_DESTDIR -name '*.cmti' -delete
 %{_libdir}/ocaml/*.mli
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.4-1
+- Auto-upgrade to 1.4 - Azure Linux 3.0 - package upgrades
+
 * Fri Apr 29 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 1.3-2
 - Fixing source URL.
 
