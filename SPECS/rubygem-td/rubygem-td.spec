@@ -3,8 +3,8 @@
 %global gems_version 3.1.0
 Summary:        CUI Interface
 Name:           rubygem-%{gem_name}
-Version:        0.16.8
-Release:        2%{?dist}
+Version:        0.17.1
+Release:        1%{?dist}
 License:        Apache 2.0
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -44,6 +44,9 @@ gem install -V --local --force --install-dir %{buildroot}/%{gemdir} --bindir %{b
 %{gemdir}
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 0.17.1-1
+- Auto-upgrade to 0.17.1 - Azure Linux 3.0 - package upgrades
+
 * Wed Jun 22 2022 Neha Agarwal <nehaagarwal@microsoft.com> - 0.16.8-2
 - Build from .tar.gz source.
 
