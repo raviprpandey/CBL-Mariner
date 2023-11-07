@@ -29,7 +29,7 @@ Postgres, or Redis) and third party APIs (like Mailchimp, AWS CloudWatch, or Goo
 
 %prep
 %autosetup -p1
-tar -xf %{SOURCE1}
+tar -xf %{SOURCE0}
 
 %build
 go build -mod=vendor ./cmd/telegraf
