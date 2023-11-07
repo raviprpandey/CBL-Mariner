@@ -15,8 +15,8 @@ Summary:        Plexus Common Utilities
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 Name:           plexus-utils
-Version:        3.3.0
-Release:        3%{?dist}
+Version:        4.0.0
+Release:        1%{?dist}
 License:        Apache-2.0
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -77,6 +77,9 @@ cp -pr target/site/apidocs/* %{buildroot}%{_javadocdir}/%{name}/
 %{_javadocdir}/%{name}
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 4.0.0-1
+- Auto-upgrade to 4.0.0 - Azure Linux 3.0 - package upgrades
+
 * Fri Mar 17 2023 Mykhailo Bykhovtsev <mbykhovtsev@microsoft.com> - 3.3.0-3
 - Moved from extended to core
 - License verified
