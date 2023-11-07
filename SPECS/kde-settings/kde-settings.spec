@@ -1,7 +1,7 @@
 
 Summary:        Config files for kde
 Name:           kde-settings
-Version:        36.0
+Version:        38.3
 Release:        1%{?dist}
 License:        MIT
 Url:            https://pagure.io/fedora-kde/kde-settings
@@ -109,6 +109,9 @@ rm -fv %{buildroot}%{_datadir}/plasma/look-and-feel/org.fedoraproject.fedora.des
 
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 38.3-1
+- Auto-upgrade to 38.3 - Azure Linux 3.0 - package upgrades
+
 * Tue Feb 08 2022 Cameron Baird <cameronbaird@microsoft.com> 36.0-1
 - Update source to v36.0
 - License verified
