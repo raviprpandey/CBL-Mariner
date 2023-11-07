@@ -17,8 +17,8 @@
 %define short_name commons-%{base_name}
 Summary:        Apache Commons Lang Package
 Name:           apache-%{short_name}
-Version:        3.8.1
-Release:        5%{?dist}
+Version:        3.11
+Release:        1%{?dist}
 License:        Apache-2.0
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -98,6 +98,9 @@ cp -pr target/apidocs/* %{buildroot}%{_javadocdir}/%{name}/
 %{_javadocdir}/%{name}
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.11-1
+- Auto-upgrade to 3.11 - Azure Linux 3.0 - package upgrades
+
 * Fri Mar 17 2023 Mykhailo Bykhovtsev <mbykhovtsev@microsoft.com> - 3.8.1-5
 - Moved from extended to core
 - License verified
