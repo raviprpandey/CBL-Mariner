@@ -1,7 +1,7 @@
 Summary:        Git for operating system binaries
 Name:           ostree
-Version:        2022.1
-Release:        3%{?dist}
+Version:        2023.6
+Release:        1%{?dist}
 License:        LGPLv2+
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -155,6 +155,9 @@ install -vdm 755 %{buildroot}%{_sysconfdir}/ostree/remotes.d
 %{_libexecdir}/libostree/grub2*
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2023.6-1
+- Auto-upgrade to 2023.6 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 2022.1-3
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
 

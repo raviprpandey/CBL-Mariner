@@ -15494,8 +15494,8 @@
         "type": "other",
         "other": {
           "name": "ostree",
-          "version": "2022.1",
-          "downloadUrl": "https://github.com/ostreedev/ostree/releases/download/v2022.1/libostree-2022.1.tar.xz"
+          "version": "2023.6",
+          "downloadUrl": "https://github.com/ostreedev/ostree/releases/download/v2023.6/libostree-2023.6.tar.xz"
         }
       }
     },
