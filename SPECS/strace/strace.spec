@@ -1,7 +1,7 @@
 %global __requires_exclude ^%{_bindir}/perl$
 Summary:        Tracks system calls that are made by a running process
 Name:           strace
-Version:        6.1
+Version:        6.4
 Release:        1%{?dist}
 License:        GPL-2.0-or-later AND LGPL-2.1-or-later
 Vendor:         Microsoft Corporation
@@ -46,6 +46,9 @@ all the arugments and return values from the system calls. This is useful in deb
 %{_mandir}/man1/*
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 6.4-1
+- Auto-upgrade to 6.4 - Azure Linux 3.0 - package upgrades
+
 * Fri Nov 03 2023 Rachel Menge <rachelmenge@microsoft.com> - 6.1-1
 - Upgrade to 6.1
 
