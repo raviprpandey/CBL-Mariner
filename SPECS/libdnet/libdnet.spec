@@ -1,6 +1,6 @@
 Summary:        A simplified, portable interface to several low-level networking routines
 Name:           libdnet
-Version:        1.14
+Version:        1.16.4
 Release:        1%{?dist}
 License:        BSD
 Vendor:         Microsoft Corporation
@@ -53,6 +53,9 @@ make  %{?_smp_mflags} check
 %{_libdir}/libdnet.a
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.16.4-1
+- Auto-upgrade to 1.16.4 - Azure Linux 3.0 - package upgrades
+
 * Wed Mar 16 2022 Max Brodeur-Urbas <maxbr@microsoft.com> - 1.14-1
 - Upgrading to v1.14
 
