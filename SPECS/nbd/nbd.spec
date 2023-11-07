@@ -1,7 +1,7 @@
 Summary:        Network Block Device user-space tools (TCP version)
 Name:           nbd
-Version:        3.20
-Release:        6%{?dist}
+Version:        3.24
+Release:        1%{?dist}
 License:        GPLv2
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -70,6 +70,9 @@ install -pDm644 %{S:2} %{buildroot}%{_sysconfdir}/sysconfig/nbd-server
 %{_unitdir}/nbd@.service.d
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.24-1
+- Auto-upgrade to 3.24 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 20 2023 Jon Slobodzian <joslobo@microsoft.com> - 3.20-6
 - Recompile with stack-protection fixed gcc version (CVE-2023-4039)
 
