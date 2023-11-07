@@ -1,7 +1,7 @@
 Summary:        An Enchanting Spell Checking Library
 Name:           enchant2
-Version:        2.2.14
-Release:        4%{?dist}
+Version:        2.5.0
+Release:        1%{?dist}
 License:        LGPLv2+
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -93,6 +93,9 @@ find %{buildroot} -type f -name "*.la" -delete -print
 %{_includedir}/enchant-2
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.5.0-1
+- Auto-upgrade to 2.5.0 - Azure Linux 3.0 - package upgrades
+
 * Fri Sep 16 2022 Osama Esmail <osamaesmail@microsoft.com> - 2.2.14-4
 - Moved from SPECS-EXTENDED to SPECS
 
