@@ -2,8 +2,8 @@
 %bcond_with bootstrap
 Summary:        Built-package format for Python
 Name:           python-%{pypi_name}
-Version:        0.33.6
-Release:        7%{?dist}
+Version:        0.41.2
+Release:        1%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -102,6 +102,9 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} py.test3 -v --ignore build
 %endif
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 0.41.2-1
+- Auto-upgrade to 0.41.2 - Azure Linux 3.0 - package upgrades
+
 * Thu Mar 03 2022 Bala <balakumaran.kannan@microsoft.com> - 0.33.6-7
 - BR multiple python3 modules for PTest
 - pip3 install additional modules which not available as RPM
