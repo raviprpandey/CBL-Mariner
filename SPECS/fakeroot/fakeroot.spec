@@ -2,7 +2,7 @@
 
 Summary:        Gives a fake root environment
 Name:           fakeroot
-Version:        1.29
+Version:        1.32.1
 Release:        1%{?dist}
 # setenv.c: LGPLv2+
 # contrib/Fakeroot-Stat-1.8.8: Perl (GPL+ or Artistic)
@@ -179,6 +179,9 @@ fi
 %ghost %{_libdir}/libfakeroot/libfakeroot-0.so
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.32.1-1
+- Auto-upgrade to 1.32.1 - Azure Linux 3.0 - package upgrades
+
 * Mon Jun 27 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 1.29-1
 - Updating to 1.29 to fix a test.
 
