@@ -2,8 +2,8 @@
 
 Summary:        Various signed and unsigned integer types for OCaml
 Name:           ocaml-integers
-Version:        0.4.0
-Release:        3%{?dist}
+Version:        0.7.0
+Release:        1%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -116,6 +116,9 @@ dune runtest
 %endif
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 0.7.0-1
+- Auto-upgrade to 0.7.0 - Azure Linux 3.0 - package upgrades
+
 * Thu Mar 31 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 0.4.0-3
 - Cleaning-up spec. License verified.
 
