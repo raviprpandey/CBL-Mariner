@@ -1,6 +1,6 @@
 Summary:        SELinux Translation Daemon
 Name:           mcstrans
-Version:        3.2
+Version:        3.5
 Release:        1%{?dist}
 License:        GPLv2+
 Vendor:         Microsoft Corporation
@@ -87,6 +87,9 @@ install -m644 %{SOURCE1} %{buildroot}%{_mandir}/man8/
 %{_datadir}/mcstrans/util/*
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 3.5-1
+- Auto-upgrade to 3.5 - Azure Linux 3.0 - package upgrades
+
 * Fri Aug 13 2021 Thomas Crain <thcrain@microsoft.com> - 3.2-1
 - Upgrade to latest upstream version
 - Add -fno-semantic-interposition to CFLAGS as recommended by upstream
