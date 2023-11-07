@@ -1,5 +1,5 @@
 {
- "Signatures": {
-  "nlohmann-json-3.10.4.tar.gz": "1155fd1a83049767360e9a120c43c578145db3204d2b309eba49fbbedd0f4ed3"
- }
+  "Signatures": {
+    "nlohmann-json-3.11.2.tar.gz": "d69f9deb6a75e2580465c6c4c5111b89c4dc2fa94e3a85fcd2ffcd9a143d9273"
+  }
 }
