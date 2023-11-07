@@ -4,8 +4,8 @@
 
 Summary:       Converts documents in Markdown syntax to HTML
 Name:          rubygem-%{gem_name}
-Version:       2.2.0.2
-Release:       3%{?dist}
+Version:       2.2.7.1
+Release:       1%{?dist}
 License:       MIT
 Vendor:	       Microsoft Corporation
 Distribution:  Mariner
@@ -31,6 +31,9 @@ gem install -V --local --force --install-dir %{buildroot}/%{gemdir} %{gem_name}-
 %{gemdir}
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 2.2.7.1-1
+- Auto-upgrade to 2.2.7.1 - Azure Linux 3.0 - package upgrades
+
 * Wed Sep 28 2022 Suresh Babu Chalamalasetty <schalam@microsoft.com> - 2.2.0.2-3
 - Move to SPECS directory from Extended.
 
