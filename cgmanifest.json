@@ -28447,8 +28447,8 @@
         "type": "other",
         "other": {
           "name": "tidy",
-          "version": "5.8.0",
-          "downloadUrl": "https://github.com/htacg/tidy-html5/archive/5.8.0.tar.gz"
+          "version": "5.9.9",
+          "downloadUrl": "https://github.com/htacg/tidy-html5/archive/5.9.9-next.tar.gz"
         }
       }
     },
