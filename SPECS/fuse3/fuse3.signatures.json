@@ -1,6 +1,6 @@
 {
- "Signatures": {
-  "fuse-3.10.5.tar.gz": "e73f75e58da59a0e333d337c105093c496c0fd7356ef3a5a540f560697c9c4e6",
-  "fuse.conf": "e9a67590220197d8c8a29dfeae51cfa37172fdda0a347e13c3f41571a69a4318"
- }
+  "Signatures": {
+    "fuse.conf": "e9a67590220197d8c8a29dfeae51cfa37172fdda0a347e13c3f41571a69a4318",
+    "fuse-3.16.1.tar.gz": "75a7140ce2d4589eda2784d2279be9d2b273a9b6b0f79ecb871dc4dded046fb5"
+  }
 }
