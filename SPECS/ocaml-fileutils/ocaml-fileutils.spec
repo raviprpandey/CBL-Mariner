@@ -1,7 +1,7 @@
 Summary:        OCaml library for common file and filename operations
 Name:           ocaml-fileutils
-Version:        0.5.2
-Release:        18%{?dist}
+Version:        0.6.4
+Release:        1%{?dist}
 License:        LGPLv2 WITH exceptions
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -86,6 +86,9 @@ make test
 %{_libdir}/ocaml/fileutils/*.mli
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 0.6.4-1
+- Auto-upgrade to 0.6.4 - Azure Linux 3.0 - package upgrades
+
 * Thu Mar 31 2022 Pawel Winogrodzki <pawelwi@microsoft.com> - 0.5.2-18
 - Cleaning-up spec. License verified.
 
