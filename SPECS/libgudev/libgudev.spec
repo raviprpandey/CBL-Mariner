@@ -1,6 +1,6 @@
 Summary:        A library providing GObject bindings for libudev
 Name:           libgudev
-Version:        237
+Version:        238
 Release:        1%{?dist}
 License:        LGPL2.1
 Group:          System Environment/Libraries
@@ -69,6 +69,9 @@ find %{buildroot} -type f -name "*.la" -delete -print
 %{_datadir}/gir-1.0/GUdev-1.0.gir
 
 %changelog
+* Tue Nov 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 238-1
+- Auto-upgrade to 238 - Azure Linux 3.0 - package upgrades
+
 * Mon Mar 14 2022 Nicolas Guibourge <nicolasg@microsoft.com> - 237-1
 - Upgrade to version 237
 
