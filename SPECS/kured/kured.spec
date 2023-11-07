@@ -24,8 +24,8 @@
 %global debug_package %{nil}
 Summary:        Kubernetes daemonset to perform safe automatic node reboots
 Name:           kured
-Version:        1.9.1
-Release:        15%{?dist}
+Version:        1.13.2
+Release:        1%{?dist}
 License:        Apache-2.0
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -33,6 +33,7 @@ Group:          System/Management
 URL:            https://github.com/weaveworks/kured
 #Source0:       https://github.com/weaveworks/kured/archive/refs/tags/%{version}.tar.gz
 Source0:        %{name}-%{version}.tar.gz
+Source1:        %{name}-%{version}-vendor.tar.gz
 # Below is a manually created tarball, no download link.
 # We're using pre-populated Go modules from this tarball, since network is disabled during build time.
 # How to re-build this file:
@@ -46,7 +47,6 @@ Source0:        %{name}-%{version}.tar.gz
 #           --pax-option=exthdr.name=%d/PaxHeaders/%f,delete=atime,delete=ctime \
 #           -cf %%{name}-%%{version}-vendor.tar.gz vendor
 #
-Source1:        %{name}-%{version}-vendor.tar.gz
 Patch0:         kured-imagePullPolicy.patch
 BuildRequires:  fdupes
 BuildRequires:  go-go-md2man
@@ -122,6 +122,9 @@ sed -i -e 's|image: .*|image: registry.opensuse.org/kubic/kured:%{version}|g' %{
 %{_datarootdir}/k8s-yaml/kured/kured.yaml
 
 %changelog
+* Mon Nov 06 2023 Rachel Menge <rachelmenge@microsoft.com> - 1.13.2-1
+- Upgrade to 1.13.2 for vendored go CVEs
+
 * Mon Oct 16 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.9.1-15
 - Bump release to rebuild with go 1.20.10
 
