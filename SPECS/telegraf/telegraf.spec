@@ -32,7 +32,7 @@ Postgres, or Redis) and third party APIs (like Mailchimp, AWS CloudWatch, or Goo
 tar -xf %{SOURCE0}
 
 %build
-CGO_ENABLED=0 go build -tags "$(BUILDTAGS)" -ldflags "$(LDFLAGS)" ./cmd/telegraf
+CGO_ENABLED=0 go build -mod=vendor -tags "$(BUILDTAGS)" -ldflags "$(LDFLAGS)" ./cmd/telegraf
 
 %install
 mkdir -pv %{buildroot}%{_sysconfdir}/%{name}/%{name}.d
@@ -80,6 +80,7 @@ fi
 * Tue Nov 07 2023 Osama Esmail <osamaesmail@microsoft.com> - 1.28.3-1
 - Upgrade to 1.28.3
 - Redo 'generate_source_tarball.sh' to just have one tarball
+- Added %%check section
 
 * Mon Oct 16 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.27.3-4
 - Bump release to rebuild with go 1.20.10

@@ -53,14 +53,6 @@ if [ -z "$PKG_VERSION" ]; then
     exit 1
 fi
 
-# if [ ! -f "$SRC_TARBALL" ]; then
-#     echo "Error: --srcTarball is not a file." >&2
-#     exit 1
-# fi
-
-# SRC_TARBALL="$(realpath "$SRC_TARBALL")"
-# OUT_FOLDER="$(realpath "$OUT_FOLDER")"
-
 echo "-- create temp folder"
 TEMPDIR=$(mktemp -d)
 function cleanup {
