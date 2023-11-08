@@ -7,8 +7,8 @@ Vendor:         Microsoft Corporation
 Distribution:   Mariner
 Group:          Development/Tools
 URL:            https://github.com/influxdata/telegraf
+# Use the generate_source_tarball.sh script to get the vendored sources.
 Source0:        %{name}-%{version}.tar.gz
-# Patch0:         add-extra-metrics.patch
 BuildRequires:  golang
 BuildRequires:  systemd-devel
 Requires:       logrotate
