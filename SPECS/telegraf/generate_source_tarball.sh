@@ -77,17 +77,9 @@ TELEGRAF_URL="https://github.com/influxdata/telegraf/archive/refs/tags/v$PKG_VER
 cd "$TEMPDIR"
 wget -c $TELEGRAF_URL -O "$NAME_VER.tar.gz"
 tar -xzf "$NAME_VER.tar.gz"
-mkdir temp_vendor
 cd "$NAME_VER"
-make build
 go mod vendor
 
 cd "$TEMPDIR"
-cp -r "$NAME_VER/vendor" temp_vendor
-rm -rf "$NAME_VER"
-tar -xzf "$NAME_VER.tar.gz"
-cp -r "temp_vendor/vendor" "$NAME_VER"
-rm -rf "temp_vendor"
-
 tar -czf "$OUT_FOLDER/$NAME_VER.tar.gz" "$NAME_VER"
 echo "Source tarball $OUT_FOLDER/$NAME_VER.tar.gz successfully created!"
