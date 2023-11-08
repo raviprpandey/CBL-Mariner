@@ -11,7 +11,7 @@
 Summary:        Mariner kernel that has MSHV Host support
 Name:           kernel-mshv
 Version:        5.15.126.mshv9
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        GPLv2
 Group:          Development/Tools
 Vendor:         Microsoft Corporation
@@ -138,7 +138,7 @@ ln -s vmlinux-%{uname_r} %{buildroot}%{_libdir}/debug/lib/modules/%{uname_r}/vml
 
 cat > %{buildroot}/boot/linux-%{uname_r}.cfg << "EOF"
 # GRUB Environment Block
-mariner_cmdline_mshv=rd.auto=1 lockdown=integrity sysctl.kernel.unprivileged_bpf_disabled=1 init=/lib/systemd/systemd ro no-vmw-sta crashkernel=128M audit=0 console=ttyS0,115200n8 earlyprintk
+mariner_cmdline_mshv=rd.auto=1 lockdown=integrity sysctl.kernel.unprivileged_bpf_disabled=1 init=/lib/systemd/systemd ro no-vmw-sta crashkernel=512M-32G:256M,32G-:512M audit=0 console=ttyS0,115200n8 earlyprintk
 mariner_linux_mshv=vmlinuz-%{uname_r}
 mariner_initrd_mshv=initrd.img-%{uname_r}
 EOF
@@ -247,6 +247,10 @@ ln -sf linux-%{uname_r}.cfg /boot/mariner-mshv.cfg
 %{_includedir}/perf/perf_dlfilter.h
 
 %changelog
+* Tue Nov 08 2023 Cameron Baird <cameronbaird@microsoft.com> - 5.15.110.mshv2-5
+- Change crashkernel param to be dynamic based on amount 
+    of system RAM. 
+
 * Mon Nov 6 2023 Dallas Delaney <dadelan@microsoft.com> - 5.15.126.mshv9-1
 - Update to v5.15.126.mshv9
 
