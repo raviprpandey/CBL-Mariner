@@ -28578,7 +28578,7 @@
         "other": {
           "name": "telegraf",
           "version": "1.28.3",
-          "downloadUrl": "https://github.com/influxdata/telegraf/archive/v1.28.3.tar.gz"
+          "downloadUrl": "https://cblmarinerstorage.blob.core.windows.net/sources/core/telegraf-1.28.3.tar.gz"
         }
       }
     },

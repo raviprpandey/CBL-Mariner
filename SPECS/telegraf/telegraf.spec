@@ -8,7 +8,7 @@ Distribution:   Mariner
 Group:          Development/Tools
 URL:            https://github.com/influxdata/telegraf
 # Use the generate_source_tarball.sh script to get the vendored sources.
-Source0:        %{name}-%{version}.tar.gz
+Source0:        %{_mariner_sources_url}/%{name}-%{version}.tar.gz
 BuildRequires:  golang
 BuildRequires:  systemd-devel
 Requires:       logrotate
