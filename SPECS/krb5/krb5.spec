@@ -4,7 +4,7 @@
 Summary:        The Kerberos newtork authentication system
 Name:           krb5
 Version:        1.19.4
-Release:        2%{?dist}
+Release:        3%{?dist}
 License:        MIT
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
@@ -13,6 +13,7 @@ URL:            https://web.mit.edu/kerberos/
 Source0:        https://kerberos.org/dist/%{name}/%{maj_version}/%{name}-%{version}.tar.gz
 Source1:        krb5.conf
 Patch0:         CVE-2023-36054.patch
+Patch1:         downgrade-discarded-qualifiers-from-error-to-warning.patch
 BuildRequires:  e2fsprogs-devel
 BuildRequires:  openssl-devel
 Requires:       e2fsprogs-libs

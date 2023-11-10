@@ -2,7 +2,7 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT License.
 
-set -e
+set -ex
 set -o pipefail
 
 # $1 path to create worker base
@@ -35,7 +35,7 @@ install_one_toolchain_rpm () {
     fi
 
     echo "Found full path for package $1 in $rpm_path: ($full_rpm_path)" >> "$chroot_log"
-    rpm -i -v --nodeps --noorder --force --root "$chroot_builder_folder" --define '_dbpath /var/lib/rpm' "$full_rpm_path" &>> "$chroot_log"
+    rpm -i -v --nodeps --noorder --force --root "$chroot_builder_folder" --define '_dbpath /var/lib/rpm' "$full_rpm_path" &>> "$chroot_log" || { for true; do echo "failed to install package; busy-waiting"; sleep 10; done; }
 
     if [ ! $? -eq 0 ]
     then

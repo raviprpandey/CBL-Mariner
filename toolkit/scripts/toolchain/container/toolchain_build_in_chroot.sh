@@ -652,6 +652,55 @@ popd
 rm -rf libffi-3.4.4
 touch /logs/status_libffi_complete
 
+echo "Perl Test::Warnings"
+tar xf Test-Warnings-0.028.tar.gz
+pushd Test-Warnings-0.028
+env PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+make
+make install
+find . -name 'perllocal.pod' -delete
+popd
+rm -rf Test-Warnings-0.028
+touch /logs/status_test_warnings_complete
+
+echo "Perl Text::Template"
+tar xf Text-Template-1.51.tar.gz
+pushd Text-Template-1.51
+env PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+make
+make install
+find . -name 'perllocal.pod' -delete
+popd
+rm -rf Text-Template-1.51
+touch /logs/status_text_template_complete
+
+# echo OpenSSL-1.1.1k
+# tar xf openssl-1.1.1k.tar.gz
+# pushd openssl-1.1.1k
+echo OpenSSL-3.1.4.tar.gz
+tar xf openssl-3.1.4.tar.gz
+pushd openssl-3.1.4
+
+sslarch=
+./Configure --prefix=/usr \
+         --openssldir=/etc/pki/tls \
+         --libdir=lib \
+         enable-ec_nistp_64_gcc_128 \
+         shared \
+         zlib-dynamic \
+         ${sslarch} \
+         no-mdc2 \
+         no-sm2 \
+         no-sm4 \
+         '-DDEVRANDOM="\"/dev/urandom\""'
+perl ./configdata.pm -d
+make all -j$(nproc)
+sed -i '/INSTALL_LIBS/s/libcrypto.a libssl.a//' Makefile
+make MANSUFFIX=ssl install
+popd
+rm -rf openssl-3.1.4
+touch /logs/status_openssl_complete
+
 echo Python-3.9.13
 tar xf Python-3.9.13.tar.xz
 pushd Python-3.9.13

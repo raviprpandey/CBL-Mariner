@@ -64,6 +64,8 @@ RUN wget -nv --no-clobber --timeout=30 --continue --input-file=$LFS/tools/toolch
 # The 'toolchain-remote-wget-list' is still available and can be used as an alternate to $(SOURCE_URL) if desired.
 #RUN wget -nv --no-clobber --timeout=30 --continue --input-file=$LFS/tools/toolchain-remote-wget-list --directory-prefix=$LFS/sources; exit 0
 RUN wget -nv --no-clobber --timeout=30 --continue https://github.com/microsoft/CBL-Mariner-Linux-Kernel/archive/rolling-lts/mariner-3/6.1.58.1.tar.gz -O kernel-6.1.58.1.tar.gz --directory-prefix=$LFS/sources; exit 0
+RUN wget -nv --no-clobber --timeout=30 --continue https://www.openssl.org/source/openssl-3.1.4.tar.gz -O openssl-3.1.4.tar.gz  --directory-prefix=$LFS/sources; exit 0
+
 USER root
 
 RUN mkdir -pv $LFS/{etc,var} $LFS/usr/{bin,lib,sbin} && \

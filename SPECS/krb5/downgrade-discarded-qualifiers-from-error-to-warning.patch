@@ -1,0 +1,40 @@
+From f28f94e2448b0e0185ba9da8d4c2ff734ba89e6b Mon Sep 17 00:00:00 2001
+From: Tobias Brick <tobiasb@microsoft.com>
+Date: Wed, 8 Nov 2023 20:31:13 +0000
+Subject: [PATCH] downgrade discarded-qualifiers from error to warning, to
+ account for a change to openssl
+
+---
+ src/aclocal.m4 | 2 +-
+ src/configure  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/aclocal.m4 b/src/aclocal.m4
+index 3d66a87..1a5b547 100644
+--- a/src/aclocal.m4
++++ b/src/aclocal.m4
+@@ -545,7 +545,7 @@ if test "$GCC" = yes ; then
+     TRY_WARN_CC_FLAG(-Wno-format-zero-length)
+     # Other flags here may not be supported on some versions of
+     # gcc that people want to use.
+-    for flag in overflow strict-overflow missing-format-attribute missing-prototypes return-type missing-braces parentheses switch unused-function unused-label unused-variable unused-value unknown-pragmas sign-compare newline-eof error=uninitialized no-maybe-uninitialized error=pointer-arith error=int-conversion error=incompatible-pointer-types error=discarded-qualifiers error=implicit-int ; do
++    for flag in overflow strict-overflow missing-format-attribute missing-prototypes return-type missing-braces parentheses switch unused-function unused-label unused-variable unused-value unknown-pragmas sign-compare newline-eof error=uninitialized no-maybe-uninitialized error=pointer-arith error=int-conversion error=incompatible-pointer-types discarded-qualifiers error=implicit-int ; do
+       TRY_WARN_CC_FLAG(-W$flag)
+     done
+     #  old-style-definition? generates many, many warnings
+diff --git a/src/configure b/src/configure
+index e291ab2..f1eaaeb 100755
+--- a/src/configure
++++ b/src/configure
+@@ -4655,7 +4655,7 @@ $as_echo "$ac_res" >&6; }
+ 
+     # Other flags here may not be supported on some versions of
+     # gcc that people want to use.
+-    for flag in overflow strict-overflow missing-format-attribute missing-prototypes return-type missing-braces parentheses switch unused-function unused-label unused-variable unused-value unknown-pragmas sign-compare newline-eof error=uninitialized no-maybe-uninitialized error=pointer-arith error=int-conversion error=incompatible-pointer-types error=discarded-qualifiers error=implicit-int ; do
++    for flag in overflow strict-overflow missing-format-attribute missing-prototypes return-type missing-braces parentheses switch unused-function unused-label unused-variable unused-value unknown-pragmas sign-compare newline-eof error=uninitialized no-maybe-uninitialized error=pointer-arith error=int-conversion error=incompatible-pointer-types discarded-qualifiers error=implicit-int ; do
+         cachevar=`echo "krb5_cv_cc_flag_-W$flag" | sed -e s/=/_eq_/g -e s/-/_dash_/g -e s/[^a-zA-Z0-9_]/_/g`
+   { $as_echo "$as_me:${as_lineno-$LINENO}: checking if C compiler supports -W$flag" >&5
+ $as_echo_n "checking if C compiler supports -W$flag... " >&6; }
+-- 
+2.33.8
+

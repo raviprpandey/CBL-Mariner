@@ -177,7 +177,7 @@ BuildRequires:  perl-IPC-Cmd
 BuildRequires:  perl(Pod::Html)
 BuildRequires:  perl(Digest::SHA)
 BuildRequires:  perl(Math::BigInt)
-BuildRequires:  git
+# BuildRequires:  git
 # BuildRequires: git-core
 
 # BuildRequires:  perl-Test-Warnings
@@ -204,7 +204,7 @@ protocols.
 %package libs
 Summary: A general purpose cryptography library with TLS implementation
 Requires: ca-certificates >= 2008-5
-Requires: crypto-policies >= 20180730
+# Requires: crypto-policies >= 20180730
 Recommends: openssl-pkcs11%{?_isa}
 
 %description libs
@@ -225,7 +225,7 @@ support various cryptographic algorithms and protocols.
 %package static
 Summary:        Libraries for static linking of applications which will use OpenSSL
 # Group:          Development/Libraries
-Requires:       %{name}-devel%{%_isa} = %{epoch}:%{version}-%{release}
+Requires:       %{name}-devel%{?_isa} = %{epoch}:%{version}-%{release}
 
 %description static
 OpenSSL is a toolkit for supporting cryptography. The openssl-static
