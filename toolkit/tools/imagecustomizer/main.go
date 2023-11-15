@@ -27,6 +27,7 @@ var (
 	disableBaseImageRpmRepos = app.Flag("disable-base-image-rpm-repos", "Disable the base image's RPM repos as an RPM source").Bool()
 	logFile                  = exe.LogFileFlag(app)
 	logLevel                 = exe.LogLevelFlag(app)
+	logColor                 = exe.LogColorFlag(app)
 	profFlags                = exe.SetupProfileFlags(app)
 	timestampFile            = app.Flag("timestamp-file", "File that stores timestamps for this program.").String()
 )
@@ -37,7 +38,7 @@ func main() {
 	app.Version(imagecustomizerlib.ToolVersion)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 
-	logger.InitBestEffort(*logFile, *logLevel)
+	logger.InitBestEffort(*logFile, *logLevel, *logColor)
 
 	prof, err := profile.StartProfiling(profFlags)
 	if err != nil {
