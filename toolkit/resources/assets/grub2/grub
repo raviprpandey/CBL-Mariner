@@ -16,7 +16,7 @@ GRUB_CMDLINE_LINUX_DEFAULT="{{.ExtraCommandLine}} $kernelopts"
 #     - and finally GRUB_CMDLINE_LINUX_DEFAULT 
 # =============================notice===============================
 for x in /etc/default/grub.d/*.cfg ; do
-    if [ -x "${x}" ]; then
+    if [ -e "${x}" ]; then
         . "${x}"
     fi
 done
