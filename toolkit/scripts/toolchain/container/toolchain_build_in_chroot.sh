@@ -679,28 +679,6 @@ popd
 rm -rf libffi-3.4.4
 touch /logs/status_libffi_complete
 
-echo "Perl Test::Warnings"
-tar xf Test-Warnings-0.028.tar.gz
-pushd Test-Warnings-0.028
-env PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
-make
-make install
-find . -name 'perllocal.pod' -delete
-popd
-rm -rf Test-Warnings-0.028
-touch /logs/status_test_warnings_complete
-
-echo "Perl Text::Template"
-tar xf Text-Template-1.51.tar.gz
-pushd Text-Template-1.51
-env PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
-make
-make install
-find . -name 'perllocal.pod' -delete
-popd
-rm -rf Text-Template-1.51
-touch /logs/status_text_template_complete
-
 echo Python-3.9.13
 tar xf Python-3.9.13.tar.xz
 pushd Python-3.9.13
