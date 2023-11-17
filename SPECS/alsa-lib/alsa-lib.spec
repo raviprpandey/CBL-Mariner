@@ -32,8 +32,6 @@ make %{?_smp_mflags}
 
 %install
 make DESTDIR=%{buildroot} install
-echo "Error: ALWAYS FAIL !!!!!"
-exit 1
 
 %files
 %defattr(-,root,root)
