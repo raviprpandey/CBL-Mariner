@@ -7,7 +7,7 @@
 %global debug_package %{nil}
 
 Name:         kata-containers-cc
-Version:      0.6.2
+Version:      0.6.3
 Release:      1%{?dist}
 Summary:      Kata Confidential Containers
 License:      ASL 2.0
@@ -17,7 +17,6 @@ Source0:      https://github.com/microsoft/kata-containers/archive/refs/tags/cc-
 Source1:      https://github.com/microsoft/kata-containers/archive/refs/tags/%{name}-%{version}.tar.gz
 Source2:      %{name}-%{version}-cargo.tar.gz
 Source3:      mariner-coco-build-uvm.sh
-Patch0:       keep-uvm-rootfs-dependencies.patch
 
 ExclusiveArch: x86_64
 
@@ -289,6 +288,9 @@ install -D -m 0755 %{_builddir}/%{name}-%{version}/tools/osbuilder/image-builder
 %exclude %{osbuilder}/tools/osbuilder/rootfs-builder/ubuntu
 
 %changelog
+* Mon Nov 20 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 0.6.3-1
+- Auto-upgrade to 0.6.3
+
 *   Fri Nov 3 2023 Dallas Delaney <dadelan@microsoft.com> 0.6.2-1
 -   Upgrade to version 0.6.2
 
@@ -296,7 +298,7 @@ install -D -m 0755 %{_builddir}/%{name}-%{version}/tools/osbuilder/image-builder
 -   Add patch to retain UVM rootfs dependencies
 
 *   Mon Oct 16 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 0.6.1-3
--   Bump release to rebuild with go 1.20.9
+-   Bump release to rebuild with go 1.20.10
 
 *   Tue Oct 10 2023 Dan Streetman <ddstreet@ieee.org> - 0.6.1-2
 -   Bump release to rebuild with updated version of Go.
@@ -315,7 +317,7 @@ install -D -m 0755 %{_builddir}/%{name}-%{version}/tools/osbuilder/image-builder
 *   Mon Aug 07 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 0.6.0-2
 -   Bump release to rebuild with go 1.19.12
 
-*   Tue Jul 11 2023 Dallas Delaney <dadelan@microsoft.com> 0.6.0-1
+*   Tue Jul 13 2023 Dallas Delaney <dadelan@microsoft.com> 0.6.0-1
 -   Upgrade to version 0.6.0
 
 *   Thu Jul 13 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 0.4.2-2
