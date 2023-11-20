@@ -5,7 +5,7 @@
 
 Summary: Industry-standard container runtime for confidential containers
 Name: moby-%{upstream_name}
-Version: 1.7.2
+Version: 1.7.3
 Release: 1%{?dist}
 License: ASL 2.0
 Group: Tools/Container
@@ -77,6 +77,9 @@ fi
 %config(noreplace) %{_sysconfdir}/containerd/config.toml
 
 %changelog
+* Mon Nov 20 2023 CBL-Mariner Servicing Account <cblmargh@microsoft.com> - 1.7.3-1
+- Auto-upgrade to 1.7.3
+
 * Fri Nov 08 2023 Saul Paredes <saulparedes@microsoft.com> - 1.7.2-1
 - Always add TargetLayerDigestLabel label to snapshots
 
