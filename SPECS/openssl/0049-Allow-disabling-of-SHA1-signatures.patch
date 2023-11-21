@@ -514,10 +514,9 @@ diff --git a/util/libcrypto.num b/util/libcrypto.num
 index 9cb8a4dda2..feb660d030 100644
 --- a/util/libcrypto.num
 +++ b/util/libcrypto.num
-@@ -5436,3 +5436,5 @@ EVP_CIPHER_CTX_dup                      5563	3_1_0	EXIST::FUNCTION:
+@@ -5436,2 +5436,4 @@ EVP_CIPHER_CTX_dup                      5563	3_1_0	EXIST::FUNCTION:
  BN_are_coprime                          5564	3_1_0	EXIST::FUNCTION:
  OSSL_CMP_MSG_update_recipNonce          5565	3_0_9	EXIST::FUNCTION:CMP
- ossl_safe_getenv                        ?	3_0_0	EXIST::FUNCTION:
 +ossl_ctx_legacy_digest_signatures_allowed ?	3_0_1	EXIST::FUNCTION:
 +ossl_ctx_legacy_digest_signatures_allowed_set ?	3_0_1	EXIST::FUNCTION:
 -- 

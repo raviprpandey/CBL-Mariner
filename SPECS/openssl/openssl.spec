@@ -33,7 +33,7 @@ Release: 1%{?dist}
 Vendor:         Microsoft Corporation
 Distribution:   Mariner
 Epoch: 1
-Source: openssl-%{version}.tar.gz
+Source: https://www.openssl.org/source/openssl-%{version}.tar.gz
 Source2: Makefile.certificate
 Source3: genpatches
 # Source4: openssl.rpmlintrc
@@ -50,13 +50,13 @@ Patch2:   0002-Use-more-general-default-values-in-openssl.cnf.patch
 # # Do not install html docs
 Patch3:   0003-Do-not-install-html-docs.patch
 # # Override default paths for the CA directory tree
-Patch4:   0004-Override-default-paths-for-the-CA-directory-tree.patch
+# Patch4:   0004-Override-default-paths-for-the-CA-directory-tree.patch
 # # apps/ca: fix md option help text
 Patch5:   0005-apps-ca-fix-md-option-help-text.patch
 # # Disable signature verification with totally unsafe hash algorithms
 Patch6:   0006-Disable-signature-verification-with-totally-unsafe-h.patch
 # # Add support for PROFILE=SYSTEM system default cipherlist
-Patch7:   0007-Add-support-for-PROFILE-SYSTEM-system-default-cipher.patch
+# Patch7:   0007-Add-support-for-PROFILE-SYSTEM-system-default-cipher.patch
 # # Add FIPS_mode() compatibility macro
 Patch8:   0008-Add-FIPS_mode-compatibility-macro.patch
 # # Add check to see if fips flag is enabled in kernel
@@ -204,7 +204,6 @@ protocols.
 %package libs
 Summary: A general purpose cryptography library with TLS implementation
 Requires: ca-certificates >= 2008-5
-# Requires: crypto-policies >= 20180730
 Recommends: openssl-pkcs11%{?_isa}
 
 %description libs
@@ -329,7 +328,6 @@ export HASHBANGPERL=/usr/bin/perl
 # RPM_OPT_FLAGS, so we can skip specifiying them here.
 ./Configure \
 	--prefix=%{_prefix} --openssldir=%{_sysconfdir}/pki/tls ${sslflags} --libdir=lib \
-	--system-ciphers-file=%{_sysconfdir}/crypto-policies/back-ends/openssl.config \
 	zlib enable-camellia enable-seed enable-rfc3779 no-sctp \
 	enable-cms enable-md2 enable-rc5 ${ktlsopt} enable-fips\
 	no-mdc2 no-ec2m no-sm2 no-sm4 enable-buildtest-c++\

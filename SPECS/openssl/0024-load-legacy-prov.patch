@@ -1,23 +1,18 @@
-From 69636828729ecc287863366dcdd6548dee78c7a4 Mon Sep 17 00:00:00 2001
-From: rpm-build <rpm-build>
-Date: Mon, 31 Jul 2023 09:41:28 +0200
-Subject: [PATCH 14/35] 0024-load-legacy-prov.patch
+From fc2fc6cf6e58448ae23bc22743673b2c34c5cc02 Mon Sep 17 00:00:00 2001
+From: Tobias Brick <tobiasb@microsoft.com>
+Date: Mon, 20 Nov 2023 19:21:49 +0000
+Subject: [PATCH] second attempt to patch
 
-Patch-name: 0024-load-legacy-prov.patch
-Patch-id: 24
-Patch-status: |
-    # Instructions to load legacy provider in openssl.cnf
-From-dist-git-commit: 9409bc7044cf4b5773639cce20f51399888c45fd
 ---
- apps/openssl.cnf    | 37 +++++++++++++++----------------------
+ apps/openssl.cnf    | 34 +++++++++++++---------------------
  doc/man5/config.pod |  8 ++++++++
- 2 files changed, 23 insertions(+), 22 deletions(-)
+ 2 files changed, 21 insertions(+), 21 deletions(-)
 
 diff --git a/apps/openssl.cnf b/apps/openssl.cnf
-index 3956235fda..bddb6bc029 100644
+index 8141ab2..fa5d751 100644
 --- a/apps/openssl.cnf
 +++ b/apps/openssl.cnf
-@@ -42,36 +42,29 @@ tsa_policy1 = 1.2.3.4.1
+@@ -42,35 +42,27 @@ tsa_policy1 = 1.2.3.4.1
  tsa_policy2 = 1.2.3.4.5.6
  tsa_policy3 = 1.2.3.4.5.7
  
@@ -31,8 +26,6 @@ index 3956235fda..bddb6bc029 100644
 -
  [openssl_init]
  providers = provider_sect
- # Load default TLS policy configuration
- ssl_conf = ssl_module
  
 -# List of providers to load
 +# Uncomment the sections that start with ## below to enable the legacy provider.
@@ -52,25 +45,24 @@ index 3956235fda..bddb6bc029 100644
 -
 -# If no providers are activated explicitly, the default one is activated implicitly.
 -# See man 7 OSSL_PROVIDER-default for more details.
--#
++##legacy = legacy_sect
+ #
 -# If you add a section explicitly activating any other provider(s), you most
 -# probably need to explicitly activate the default provider, otherwise it
 -# becomes unavailable in openssl.  As a consequence applications depending on
 -# OpenSSL may not work correctly which could lead to significant system
 -# problems including inability to remotely access the system.
-+##legacy = legacy_sect
-+##
  [default_sect]
 -# activate = 1
 +activate = 1
-+
+ 
 +##[legacy_sect]
 +##activate = 1
  
- [ ssl_module ]
- 
+ ####################################################################
+ [ ca ]
 diff --git a/doc/man5/config.pod b/doc/man5/config.pod
-index 8d312c661f..714a10437b 100644
+index 8d312c6..714a104 100644
 --- a/doc/man5/config.pod
 +++ b/doc/man5/config.pod
 @@ -273,6 +273,14 @@ significant.
@@ -89,5 +81,5 @@ index 8d312c661f..714a10437b 100644
  
  If no providers are activated explicitly, the default one is activated implicitly.
 -- 
-2.41.0
+2.33.8
 
